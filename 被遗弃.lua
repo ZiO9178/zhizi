@@ -238,16 +238,30 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local highlights = {} -- 用于存储所有创建的高亮效果
+
 local Toggle = Tab:Toggle({
-        Title = "透视杀手",
-        Desc = "",
-        Locked = false,
-        Callback = function(state)
-        for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
-local highlight = Instance.new("Highlight")
-highlight.Parent = killer
-highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
-highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-end      
-        end
-    })
+    Title = "透视杀手",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = killer
+                highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                highlights[killer] = highlight -- 存储高亮对象
+            end
+        else
+            -- 关闭高亮
+            for killer, highlight in pairs(highlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy() -- 移除高亮效果
+                end
+            end
+            highlights = {} -- 清空存储表
+        end      
+    end
+})
