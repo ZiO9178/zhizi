@@ -1,12 +1,399 @@
-repeat task.wait();until game:IsLoaded() local v0=game:GetService("Players");local v1=game:GetService("RunService");local v2=game:GetService("TweenService");local v3=v0.LocalPlayer;while  not v3 do local v26=0 -0 ;while true do if (v26==(1784 -(599 + 1185))) then task.wait();v3=v0.LocalPlayer;break;end end end pcall(function() if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop();end end);local function v4() local v27=0 + 0 ;local v28;local v29;local v30;while true do if (v27==2) then v28,v29=pcall(function() return gethiddengui and gethiddengui() ;end);if (v28 and v29) then return v29;end v27=3 + 0 ;end if (v27==(574 -(507 + 67))) then local v71=0;while true do if (v71==(1749 -(1013 + 736))) then v28,v29=pcall(function() return gethui and gethui() ;end);if (v28 and v29) then return v29;end v71=1 + 0 ;end if ((2 -1)==v71) then v27=1;break;end end end if (v27==(10 -7)) then local v72=867 -(550 + 317) ;while true do if (0==v72) then v30=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",7 -2 ) ;if v30 then return v30;end v72=1 -0 ;end if (v72==(2 -1)) then v27=289 -(134 + 151) ;break;end end end if (v27==(1669 -(970 + 695))) then return game:GetService("CoreGui");end if (v27==1) then v28,v29=pcall(function() return get_hidden_gui and get_hidden_gui() ;end);if (v28 and v29) then return v29;end v27=2;end end end local v5=v4();local v6=Color3.fromRGB(121 -57 ,2135 -(582 + 1408) ,255);local function v7(v31) local v32=0 -0 ;local v33;local v34;local v35;local v36;local v37;local v38;local v39;local v40;local v41;local v42;local v43;local v44;local v45;local v46;local v47;local v48;local v49;local v50;local v51;local v52;local v53;local v54;local v55;local v56;while true do local v64=0 -0 ;while true do if (v64==(11 -8)) then if (v32==10) then v53.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(336 -81 ,496 -(187 + 54) ,1035 -(162 + 618) )),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(120 + 60 ,220,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(428 -173 ,20 + 235 ,1891 -(1373 + 263) ))});v53.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1 + 0 ),NumberSequenceKeypoint.new(0.5,0.6 -0 ),NumberSequenceKeypoint.new(1,1)});v53.Parent=v52;v54=Instance.new("UIScale",v44);v54.Scale=1;v55,v56=true,nil;_G.ThunderIntro_Stop=function() local v141=0 + 0 ;while true do if (v141==(1 -0)) then if v56 then v56:Disconnect();end if (v41 and v41.Parent) then v41:Destroy();end break;end if (v141==(341 -(218 + 123))) then if  not v55 then return;end v55=false;v141=1;end end end;v32=1592 -(1535 + 46) ;end if (v32==(0 + 0)) then v31=v31 or {} ;v33=v31.size or 210 ;v34=18;v35=3 + 15 ;v36=v31.duration or 6 ;v37=650 -(306 + 254) ;v38=0.9 + 0 ;v32=1;end if (v32==9) then v52.Font=Enum.Font.GothamBlack;v52.Rotation= -(15.56 -7);v52.TextTransparency=1467.1 -(899 + 568) ;v52.ZIndex=5 + 2 ;v52.Parent=v50;v53=Instance.new("UIGradient");v53.Rotation=0 -0 ;v32=613 -(268 + 335) ;end break;end if (v64==(291 -(60 + 230))) then if (v32==1) then v39,v40=572.98 -(426 + 146) ,1.02 + 0 ;v41=Instance.new("ScreenGui");v41.Name="ThunderIntro";v41.IgnoreGuiInset=true;v41.ResetOnSpawn=false;pcall(function() if (syn and syn.protect_gui) then syn.protect_gui(v41);end end);v42=pcall(function() v41.Parent=v5;end);v32=2;end if (v32==5) then v47.BackgroundTransparency=1457 -(282 + 1174) ;v47.ZIndex=v44.ZIndex-(812 -(569 + 242)) ;v47.Parent=v43;v48=Instance.new("UICorner");v48.CornerRadius=UDim.new(0,v35);v48.Parent=v47;v49=Instance.new("UIStroke");v32=17 -11 ;end if ((1 + 6)==v32) then v50.Size=UDim2.fromOffset(v51,v51);v50.AnchorPoint=Vector2.new(0.5,1024.5 -(706 + 318) );v50.Position=UDim2.fromScale(1251.5 -(721 + 530) ,1271.5 -(945 + 326) );v50.BackgroundTransparency=1;v50.ZIndex=12 -7 ;v50.Parent=v43;v52=Instance.new("TextLabel");v32=8 + 0 ;end v64=2;end if (v64==2) then if (v32==(711 -(271 + 429))) then local v110=0;while true do if (v110==2) then return v41;end if (v110==(1 + 0)) then task.spawn(function() while v55 do for v177=1500 -(1408 + 92) ,360,1096 -(461 + 625)  do local v178=1288 -(993 + 295) ;while true do if (v178==(0 + 0)) then v53.Rotation=v177;task.wait(1171.03 -(418 + 753) );break;end end end end end);if (v36 and (v36>0)) then task.delay(v36,function() local v179=0 + 0 ;local v180;while true do if (v179==(1 + 1)) then v2:Create(v52,v180,{TextTransparency=1 + 0 }):Play();task.wait(0.45);v179=1 + 2 ;end if (v179==(532 -(406 + 123))) then _G.ThunderIntro_Stop();break;end if (v179==(1769 -(1749 + 20))) then if  not v55 then return;end v180=TweenInfo.new(0.4,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut);v179=1 + 0 ;end if (v179==(1323 -(1249 + 73))) then v2:Create(v46,v180,{Transparency=1 + 0 }):Play();v2:Create(v49,v180,{Transparency=1146 -(466 + 679) }):Play();v179=4 -2 ;end end end);end v110=5 -3 ;end if (v110==(1900 -(106 + 1794))) then task.spawn(function() while v55 do local v170=0 + 0 ;local v171;local v172;while true do if (v170==2) then v171.Completed:Wait();break;end if (v170==(1 + 0)) then v171:Play();v172:Play();v170=2;end if (v170==(0 -0)) then local v190=0 -0 ;while true do if (v190==(114 -(4 + 110))) then v171=v2:Create(v44,TweenInfo.new(v38,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v44.Rotation + v37 });v172=v2:Create(v47,TweenInfo.new(v38,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v47.Rotation + v37 });v190=585 -(57 + 527) ;end if (1==v190) then v170=1;break;end end end end end end);task.spawn(function() while v55 do local v173=1427 -(41 + 1386) ;local v174;while true do if ((103 -(17 + 86))==v173) then v174=0 + 0 ;while true do if (v174==1) then v2:Create(v54,TweenInfo.new(0.6 -0 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v39}):Play();task.wait(0.6 -0 );break;end if (v174==(166 -(122 + 44))) then v2:Create(v54,TweenInfo.new(0.6,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v40}):Play();task.wait(0.6 -0 );v174=1;end end break;end end end end);v110=3 -2 ;end end end if (v32==(3 + 0)) then v44=Instance.new("Frame");v44.Size=UDim2.fromScale(1 + 0 ,1 -0 );v44.BackgroundTransparency=1;v44.Parent=v43;v45=Instance.new("UICorner");v45.CornerRadius=UDim.new(65 -(30 + 35) ,v35);v45.Parent=v44;v32=3 + 1 ;end if (v32==(1259 -(1043 + 214))) then local v116=0;while true do if (v116==(0 -0)) then if  not v42 then local v175=1212 -(323 + 889) ;local v176;while true do if (v175==(0 -0)) then v176=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",585 -(361 + 219) ) ;if v176 then v41.Parent=v176;end break;end end end v43=Instance.new("Frame");v116=321 -(53 + 267) ;end if (v116==(1 + 0)) then v43.Size=UDim2.fromOffset(v33,v33);v43.AnchorPoint=Vector2.new(413.5 -(15 + 398) ,982.5 -(18 + 964) );v116=7 -5 ;end if (v116==(2 + 1)) then v43.Parent=v41;v32=2 + 1 ;break;end if (v116==(852 -(20 + 830))) then v43.Position=UDim2.fromScale(0.5 + 0 ,126.5 -(116 + 10) );v43.BackgroundTransparency=1 + 0 ;v116=741 -(542 + 196) ;end end end v64=6 -3 ;end if (v64==(0 + 0)) then if (v32==6) then v49.Thickness=16 + 14 ;v49.Color=v6;v49.Transparency=0.75 + 0 ;pcall(function() v49.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v49.Parent=v47;v50=Instance.new("Frame");v51=v33-(v34 * (4 -2)) ;v32=17 -10 ;end if (8==v32) then local v121=0;while true do if (1==v121) then v52.Position=UDim2.fromScale(1551.5 -(1126 + 425) ,405.5 -(118 + 287) );v52.BackgroundTransparency=3 -2 ;v121=1123 -(118 + 1003) ;end if (3==v121) then v52.TextScaled=true;v32=26 -17 ;break;end if ((377 -(142 + 235))==v121) then v52.Size=UDim2.fromScale(0.7 -0 ,0.7 + 0 );v52.AnchorPoint=Vector2.new(977.5 -(553 + 424) ,0.5 -0 );v121=1;end if (v121==2) then v52.Text="被遗弃";v52.TextColor3=v6;v121=3;end end end if (v32==4) then v46=Instance.new("UIStroke");v46.Thickness=v34;v46.Color=v6;pcall(function() v46.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v46.Parent=v44;v47=Instance.new("Frame");v47.Size=UDim2.fromScale(1,1 + 0 );v32=5 + 0 ;end v64=1 + 0 ;end end end end v7({duration=6});print("反挂机开启");local v8=game:GetService("VirtualUser");game:GetService("Players").LocalPlayer.Idled:connect(function() local v57=0 + 0 ;while true do if (v57==(1 + 0)) then v8:Button2Up(Vector2.new(0 -0 ,0 -0 ),workspace.CurrentCamera.CFrame);break;end if (v57==(0 -0)) then v8:Button2Down(Vector2.new(0 + 0 ,0 -0 ),workspace.CurrentCamera.CFrame);wait(754 -(239 + 514) );v57=1;end end end);local v9=Instance.new("Sound");v9.Parent=game.SoundService;v9.SoundId="rbxassetid://4590662766";v9.Volume=2 + 1 ;v9.PlayOnRemove=true;v9:Destroy();local v15=loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))();local v16=v15:CreateWindow({Title="Z脚本|被遗弃",Icon="rbxassetid://1756353186865",Author="作者:Z某人",Folder="CloudHub",Size=UDim2.fromOffset(1909 -(797 + 532) ,460),Transparent=true,Theme="Dark",Resizable=true,SideBarWidth=146 + 54 ,Background="",BackgroundImageTransparency=0.42 + 0 ,HideSearchBar=false,ScrollBarEnabled=true,User={Enabled=true,Anonymous=false,Callback=function() print("clicked");end}});v16:EditOpenButton({Title="   打开Z脚本丨被遗弃   ",Icon="shield-check",CornerRadiu=UDim.new(0,37 -21 ),StrokeThickness=1205 -(373 + 829) ,Color=ColorSequence.new(Color3.fromHex("000000"),Color3.fromHex("FFFFFF"),Color3.fromHex("000000")),Draggable=true});local v17=v16:Tab({Title="透视",Icon="warehouse",Locked=false});local v18={};local v19=v17:Toggle({Title="透视杀手",Desc="",Locked=false,Callback=function(v58) if v58 then for v73,v74 in pairs(workspace.Players.Killers:GetChildren()) do local v75=731 -(476 + 255) ;local v76;while true do if (v75==1) then v76.FillColor=Color3.fromRGB(1385 -(369 + 761) ,0 + 0 ,0);v76.OutlineColor=Color3.fromRGB(463 -208 ,482 -227 ,238 -(64 + 174) );v75=2;end if (v75==2) then v18[v74]=v76;break;end if (v75==0) then v76=Instance.new("Highlight");v76.Parent=v74;v75=1 + 0 ;end end end else local v65=0;while true do if (v65==(0 -0)) then for v130,v131 in pairs(v18) do if (v131 and v131.Parent) then v131:Destroy();end end v18={};break;end end end end});local v20={};local v21=v17:Toggle({Title="透视幸存者",Desc="",Locked=false,Callback=function(v59) if v59 then for v77,v78 in pairs(workspace.Players.Survivors:GetChildren()) do local v79=336 -(144 + 192) ;local v80;while true do if (v79==(217 -(42 + 174))) then v80.FillColor=Color3.fromRGB(0 + 0 ,255,0 + 0 );v80.OutlineColor=Color3.fromRGB(109 + 146 ,255,255);v79=1506 -(363 + 1141) ;end if (v79==(1582 -(1183 + 397))) then v80.FillTransparency=0.3 -0 ;v20[v78]=v80;break;end if ((0 + 0)==v79) then v80=Instance.new("Highlight");v80.Parent=v78;v79=1 + 0 ;end end end else local v66=1975 -(1913 + 62) ;while true do if (v66==(0 + 0)) then for v137,v138 in pairs(v20) do if (v138 and v138.Parent) then v138:Destroy();end end v20={};break;end end end end});local v22={};local v23=v17:Toggle({Title="透视发电机",Desc="",Locked=false,Callback=function(v60) if v60 then local v67=0;local v68;while true do if (0==v67) then v68=nil;function v68() for v147,v148 in pairs(workspace.Map.Ingame.Map:GetChildren()) do if ((v148.Name=="Generator") and  not v22[v148]) then local v166=0;local v167;while true do if (v166==0) then v167=Instance.new("Highlight");v167.Parent=v148;v166=1;end if (v166==1) then v167.FillColor=Color3.fromRGB(0 -0 ,200,255);v167.OutlineColor=Color3.fromRGB(2188 -(565 + 1368) ,958 -703 ,1661 -(1477 + 184) );v166=2;end if (v166==(2 -0)) then v167.FillTransparency=0.5;v22[v148]=v167;break;end end end end end v67=1 + 0 ;end if ((857 -(564 + 292))==v67) then v68();if  not generatorChildAddedConnection then generatorChildAddedConnection=workspace.Map.Ingame.Map.ChildAdded:Connect(function(v153) if (v153.Name=="Generator") then task.wait(0.5 -0 );if GeneratorToggle.Value then local v186=0;local v187;while true do if (v186==(2 -1)) then v187.FillColor=Color3.fromRGB(304 -(244 + 60) ,154 + 46 ,731 -(41 + 435) );v187.OutlineColor=Color3.fromRGB(1256 -(938 + 63) ,197 + 58 ,0);v186=1127 -(936 + 189) ;end if (0==v186) then v187=Instance.new("Highlight");v187.Parent=v153;v186=1;end if (v186==(1 + 1)) then v187.FillTransparency=1613.5 -(1565 + 48) ;v22[v153]=v187;break;end end end end end);end break;end end else local v69=0 + 0 ;while true do if ((1138 -(782 + 356))==v69) then for v139,v140 in pairs(v22) do if (v140 and v140.Parent) then v140:Destroy();end end v22={};v69=268 -(176 + 91) ;end if ((2 -1)==v69) then if generatorChildAddedConnection then local v149=0 -0 ;local v150;while true do if (v149==(1092 -(975 + 117))) then v150=0;while true do if (v150==(1875 -(157 + 1718))) then generatorChildAddedConnection:Disconnect();generatorChildAddedConnection=nil;break;end end break;end end end break;end end end end});local v24=nil;local v25=Tab4:Toggle({Title="自动修机",Desc="",Locked=false,Callback=function(v61) local v62=0;local v63;while true do if (v62==0) then _G.BTE=v61;_G.REP=_G.REP or (1.8 + 0) ;v62=3 -2 ;end if (1==v62) then v63=nil;function v63() local v81=0 -0 ;local v82;local v83;local v84;while true do if (v81==(1019 -(697 + 321))) then v84=v83 and v83:FindFirstChild("Map") ;if v84 then for v168,v169 in ipairs(v84:GetChildren()) do if ((v169.Name=="Generator") and v169:FindFirstChild("Progress") and (v169.Progress.Value<(272 -172))) then local v188=0 -0 ;local v189;while true do if (v188==(0 -0)) then v189=v169:FindFirstChild("Remotes") and v169.Remotes:FindFirstChild("RE") ;if v189 then v189:FireServer();end break;end end end end end break;end if (v81==0) then v82=workspace:FindFirstChild("Map");v83=v82 and v82:FindFirstChild("Ingame") ;v81=1 + 0 ;end end end v62=2;end if (v62==2) then if v61 then task.spawn(function() while _G.BTE do local v151=0 -0 ;local v152;while true do if (v151==(0 -0)) then v152=0;while true do if (v152==0) then v63();task.wait(_G.REP);break;end end break;end end end end);end break;end end end});
--- ⚠️ WARNING: integrity protected!
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+repeat task.wait() until game:IsLoaded()
 
-]]--
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local LocalPlayer = Players.LocalPlayer
+while not LocalPlayer do
+	task.wait()
+	LocalPlayer = Players.LocalPlayer
+end
+
+pcall(function()
+	if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop() end
+end)
+
+local function resolveGuiParent()
+	local ok, res = pcall(function() return (gethui and gethui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (get_hidden_gui and get_hidden_gui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (gethiddengui and gethiddengui()) end)
+	if ok and res then return res end
+	local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+	if pg then return pg end
+	return game:GetService("CoreGui")
+end
+
+local guiParent = resolveGuiParent()
+
+local BLUE  = Color3.fromRGB(64, 145, 255)
+
+local function Start(opts)
+	opts = opts or {}
+	local SIZE            = opts.size or 210
+	local STROKE_THICK    = 18
+	local CORNER          = 18
+	local DURATION        = opts.duration or 6 
+	local SPIN_STEP_DEG   = 90
+	local SPIN_STEP_TIME  = 0.90
+	local BREATH_MIN, BREATH_MAX = 0.98, 1.02
+
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "ThunderIntro"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	pcall(function() if syn and syn.protect_gui then syn.protect_gui(gui) end end)
+	local ok = pcall(function() gui.Parent = guiParent end)
+	if not ok then
+		local fallback = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+		if fallback then gui.Parent = fallback end
+	end
+
+	local root = Instance.new("Frame")
+	root.Size = UDim2.fromOffset(SIZE, SIZE)
+	root.AnchorPoint = Vector2.new(0.5, 0.5)
+	root.Position = UDim2.fromScale(0.5, 0.5)
+	root.BackgroundTransparency = 1
+	root.Parent = gui
+
+	local ring = Instance.new("Frame")
+	ring.Size = UDim2.fromScale(1, 1)
+	ring.BackgroundTransparency = 1
+	ring.Parent = root
+	local cornerRing = Instance.new("UICorner") cornerRing.CornerRadius = UDim.new(0, CORNER) cornerRing.Parent = ring
+	local ringStroke = Instance.new("UIStroke")
+	ringStroke.Thickness = STROKE_THICK
+	ringStroke.Color = BLUE
+	pcall(function() ringStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	ringStroke.Parent = ring
+
+	local glow = Instance.new("Frame")
+	glow.Size = UDim2.fromScale(1, 1)
+	glow.BackgroundTransparency = 1
+	glow.ZIndex = ring.ZIndex - 1
+	glow.Parent = root
+	local cornerGlow = Instance.new("UICorner") cornerGlow.CornerRadius = UDim.new(0, CORNER) cornerGlow.Parent = glow
+	local glowStroke = Instance.new("UIStroke")
+	glowStroke.Thickness = 30
+	glowStroke.Color = BLUE
+	glowStroke.Transparency = 0.75
+	pcall(function() glowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	glowStroke.Parent = glow
+
+	local inner = Instance.new("Frame")
+	local innerSize = SIZE - STROKE_THICK * 2
+	inner.Size = UDim2.fromOffset(innerSize, innerSize)
+	inner.AnchorPoint = Vector2.new(0.5, 0.5)
+	inner.Position = UDim2.fromScale(0.5, 0.5)
+	inner.BackgroundTransparency = 1
+	inner.ZIndex = 5
+	inner.Parent = root
+
+	
+	local thunderText = Instance.new("TextLabel")
+	thunderText.Size = UDim2.fromScale(0.7, 0.7)
+	thunderText.AnchorPoint = Vector2.new(0.5, 0.5)
+	thunderText.Position = UDim2.fromScale(0.5, 0.5)
+	thunderText.BackgroundTransparency = 1
+	thunderText.Text = "被遗弃"
+	thunderText.TextColor3 = BLUE
+	thunderText.TextScaled = true
+	thunderText.Font = Enum.Font.GothamBlack
+	thunderText.Rotation = -8.56
+	thunderText.TextTransparency = 0.10
+	thunderText.ZIndex = 7
+	thunderText.Parent = inner
+
+	
+	local gradient = Instance.new("UIGradient")
+	gradient.Rotation = 0
+	gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,220,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255))
+	}
+	gradient.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 1),
+		NumberSequenceKeypoint.new(0.5, 0.6),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	gradient.Parent = thunderText
+
+	local ringScale = Instance.new("UIScale", ring) ringScale.Scale = 1
+
+	local alive, hbConn = true, nil
+	_G.ThunderIntro_Stop = function()
+		if not alive then return end
+		alive = false
+		if hbConn then hbConn:Disconnect() end
+		if gui and gui.Parent then gui:Destroy() end
+	end
+	
+	-- Spin
+	task.spawn(function()
+		while alive do
+			local tw1 = TweenService:Create(ring, TweenInfo.new(SPIN_STEP_TIME, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = ring.Rotation + SPIN_STEP_DEG})
+			local tw2 = TweenService:Create(glow, TweenInfo.new(SPIN_STEP_TIME,   Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = glow.Rotation + SPIN_STEP_DEG})
+			tw1:Play() tw2:Play()
+			tw1.Completed:Wait()
+		end
+	end)
+	
+	-- Breathe
+	task.spawn(function()
+		while alive do
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MAX}):Play()
+			task.wait(0.6)
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MIN}):Play()
+			task.wait(0.6)
+		end
+	end)
+
+	-- Gradient sheen animation
+	task.spawn(function()
+		while alive do
+			for i = 0,360,10 do
+				gradient.Rotation = i
+				task.wait(0.03)
+			end
+		end
+	end)
+
+	-- Auto fade + destroy
+	if DURATION and DURATION > 0 then
+		task.delay(DURATION, function()
+			if not alive then return end
+			local ti = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+			TweenService:Create(ringStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(glowStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(thunderText, ti, {TextTransparency = 1}):Play()
+			task.wait(0.45)
+			_G.ThunderIntro_Stop()
+		end)
+	end
+
+	return gui
+end
+
+Start({duration = 6}) -- lasts longer
+
+print("反挂机开启")
+		local vu = game:GetService("VirtualUser")
+		game:GetService("Players").LocalPlayer.Idled:connect(function()
+		   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		   wait(1)
+		   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
+
+local Sound = Instance.new("Sound")
+        Sound.Parent = game.SoundService
+        Sound.SoundId = "rbxassetid://4590662766"
+        Sound.Volume = 3
+        Sound.PlayOnRemove = true
+        Sound:Destroy()
+        
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
+
+local Window = WindUI:CreateWindow({
+        Title = "Z脚本|被遗弃",
+        Icon = "rbxassetid://1756353186865",
+        Author = "作者:Z某人",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        Resizable = true,
+        SideBarWidth = 200,
+        Background = "",
+        BackgroundImageTransparency = 0.42,
+        HideSearchBar = false,
+        ScrollBarEnabled = true,
+        User = {
+            Enabled = true,
+            Anonymous = false,
+            Callback = function()
+                print("clicked")
+            end,
+    },
+})  
+
+Window:EditOpenButton({
+    Title = "   打开Z脚本丨被遗弃   ",
+    Icon = "shield-check",
+    CornerRadiu = UDim.new(0,16),
+    StrokeThickness = 3,
+    Color = ColorSequence.new( 
+        Color3.fromHex("000000"), 
+        Color3.fromHex("FFFFFF"), 
+        Color3.fromHex("000000")   
+    ),
+    Draggable = true,
+})
+
+local Tab = Window:Tab({
+    Title = "透视",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local highlights = {} -- 用于存储所有创建的高亮效果
+
+local Toggle = Tab:Toggle({
+    Title = "透视杀手",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = killer
+                highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                highlights[killer] = highlight -- 存储高亮对象
+            end
+        else
+            -- 关闭高亮
+            for killer, highlight in pairs(highlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy() -- 移除高亮效果
+                end
+            end
+            highlights = {} -- 清空存储表
+        end      
+    end
+})
+
+local survivorHighlights = {} -- 用于存储所有创建的幸存者高亮效果
+
+local SurvivorToggle = Tab:Toggle({
+    Title = "透视幸存者",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = survivor
+                highlight.FillColor = Color3.fromRGB(0, 255, 0) -- 绿色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillTransparency = 0.3 -- 半透明效果
+                survivorHighlights[survivor] = highlight -- 存储高亮对象
+            end
+        else
+            -- 关闭高亮
+            for survivor, highlight in pairs(survivorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy() -- 移除高亮效果
+                end
+            end
+            survivorHighlights = {} -- 清空存储表
+        end      
+    end
+})
+
+local generatorHighlights = {} -- 用于存储所有创建的发电机高亮效果
+
+local GeneratorToggle = Tab:Toggle({
+    Title = "透视发电机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            local function highlightGenerators()
+                for _, generator in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+                    if generator.Name == "Generator" and not generatorHighlights[generator] then
+                        local highlight = Instance.new("Highlight")
+                        highlight.Parent = generator
+                        highlight.FillColor = Color3.fromRGB(0, 200, 255) -- 蓝色高亮
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                        highlight.FillTransparency = 0.5
+                        generatorHighlights[generator] = highlight -- 存储高亮对象
+                    end
+                end
+            end
+            
+            highlightGenerators()
+            
+            -- 监听新添加的Generator
+            if not generatorChildAddedConnection then
+                generatorChildAddedConnection = workspace.Map.Ingame.Map.ChildAdded:Connect(function(child)
+                    if child.Name == "Generator" then
+                        task.wait(0.5) -- 等待模型完全加载
+                        if GeneratorToggle.Value then -- 只在开启状态下添加高亮
+                            local highlight = Instance.new("Highlight")
+                            highlight.Parent = child
+                            highlight.FillColor = Color3.fromRGB(0, 200, 255)
+                            highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                            highlight.FillTransparency = 0.5
+                            generatorHighlights[child] = highlight
+                        end
+                    end
+                end)
+            end
+        else
+            -- 关闭高亮
+            for generator, highlight in pairs(generatorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy()
+                end
+            end
+            generatorHighlights = {} -- 清空存储表
+            
+            -- 断开连接
+            if generatorChildAddedConnection then
+                generatorChildAddedConnection:Disconnect()
+                generatorChildAddedConnection = nil
+            end
+        end      
+    end
+})
+
+-- 存储连接对象
+local generatorChildAddedConnection = nil
+
+local Tab = Window:Tab({
+    Title = "自动修发电机",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Toggle7 = Tab4:Toggle({
+        Title = "自动修机",
+        Desc = "",
+        Locked = false,
+        Callback = function(state)
+            _G.BTE = state
+            _G.REP = _G.REP or 1.80
+
+            local function RepairGenerators()
+                local map = workspace:FindFirstChild("Map")
+                local ingame = map and map:FindFirstChild("Ingame")
+                local currentMap = ingame and ingame:FindFirstChild("Map")
+
+                if currentMap then
+                    for _, obj in ipairs(currentMap:GetChildren()) do
+                        if obj.Name == "Generator" and obj:FindFirstChild("Progress") and obj.Progress.Value < 100 then
+                            local remote = obj:FindFirstChild("Remotes") and obj.Remotes:FindFirstChild("RE")
+                            if remote then
+                                remote:FireServer()
+                            end
+                        end
+                    end
+                end
+            end
+
+            if state then
+                task.spawn(function()
+                    while _G.BTE do
+                        RepairGenerators()
+                        task.wait(_G.REP)
+                    end
+                end)
+            end
+        end
+    })
