@@ -238,37 +238,25 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local toggleState = false
-local running = false
-
-local featureToggle = TabHandles.Elements:Toggle({
+local Toggle2 = Tab2:Toggle({
     Title = "透视杀手",
     Desc = "",
-    Value = false,
+    Locked = false,
     Callback = function(state)
-        toggleState = state
-        WindUI:Notify({
-            Title = "脚本",
-            Content = state and "功能已启用" or "功能已关闭",
-            Icon = state and "check" or "x",
-            Duration = 0
-        })
-
         if state then
-            if not running then
-                running = true
-                for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
-                    local highlight = Instance.new("Highlight")
-                    highlight.Parent = killer
-                    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
-                    highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-                end
+            -- Turn on highlights
+            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Name = "PlayerHighlight"  -- Adding a name so we can find it later
+                highlight.Parent = survivor
+                highlight.FillColor = Color3.fromRGB(0, 255, 0) -- 绿色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillTransparency = 0.3 -- 半透明效果
             end
         else
-            running = false
-            -- 这里可以添加关闭功能时移除高亮的逻辑，如果有需要
-            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
-                local highlight = killer:FindFirstChildOfClass("Highlight")
+            -- Turn off highlights
+            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
+                local highlight = survivor:FindFirstChild("PlayerHighlight")
                 if highlight then
                     highlight:Destroy()
                 end
@@ -276,4 +264,3 @@ local featureToggle = TabHandles.Elements:Toggle({
         end
     end
 })
-
