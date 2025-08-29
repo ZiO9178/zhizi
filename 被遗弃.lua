@@ -265,3 +265,32 @@ local Toggle = Tab:Toggle({
         end      
     end
 })
+
+local survivorHighlights = {} -- 用于存储所有创建的幸存者高亮效果
+
+local SurvivorToggle = Tab:Toggle({
+    Title = "透视幸存者",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = survivor
+                highlight.FillColor = Color3.fromRGB(0, 255, 0) -- 绿色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillTransparency = 0.3 -- 半透明效果
+                survivorHighlights[survivor] = highlight -- 存储高亮对象
+            end
+        else
+            -- 关闭高亮
+            for survivor, highlight in pairs(survivorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy() -- 移除高亮效果
+                end
+            end
+            survivorHighlights = {} -- 清空存储表
+        end      
+    end
+})
