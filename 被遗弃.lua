@@ -294,3 +294,64 @@ local SurvivorToggle = Tab:Toggle({
         end      
     end
 })
+
+local generatorHighlights = {} -- 用于存储所有创建的发电机高亮效果
+
+local GeneratorToggle = Tab:Toggle({
+    Title = "透视发电机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 开启高亮
+            local function highlightGenerators()
+                for _, generator in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+                    if generator.Name == "Generator" and not generatorHighlights[generator] then
+                        local highlight = Instance.new("Highlight")
+                        highlight.Parent = generator
+                        highlight.FillColor = Color3.fromRGB(0, 200, 255) -- 蓝色高亮
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                        highlight.FillTransparency = 0.5
+                        generatorHighlights[generator] = highlight -- 存储高亮对象
+                    end
+                end
+            end
+            
+            highlightGenerators()
+            
+            -- 监听新添加的Generator
+            if not generatorChildAddedConnection then
+                generatorChildAddedConnection = workspace.Map.Ingame.Map.ChildAdded:Connect(function(child)
+                    if child.Name == "Generator" then
+                        task.wait(0.5) -- 等待模型完全加载
+                        if GeneratorToggle.Value then -- 只在开启状态下添加高亮
+                            local highlight = Instance.new("Highlight")
+                            highlight.Parent = child
+                            highlight.FillColor = Color3.fromRGB(0, 200, 255)
+                            highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                            highlight.FillTransparency = 0.5
+                            generatorHighlights[child] = highlight
+                        end
+                    end
+                end)
+            end
+        else
+            -- 关闭高亮
+            for generator, highlight in pairs(generatorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy()
+                end
+            end
+            generatorHighlights = {} -- 清空存储表
+            
+            -- 断开连接
+            if generatorChildAddedConnection then
+                generatorChildAddedConnection:Disconnect()
+                generatorChildAddedConnection = nil
+            end
+        end      
+    end
+})
+
+-- 存储连接对象
+local generatorChildAddedConnection = nil
