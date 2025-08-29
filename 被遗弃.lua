@@ -239,28 +239,19 @@ local Tab = Window:Tab({
 })
 
 local Toggle2 = Tab2:Toggle({
-    Title = "透视杀手",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        if state then
-            -- Turn on highlights
-            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
-                local highlight = Instance.new("Highlight")
-                highlight.Name = "PlayerHighlight"  -- Adding a name so we can find it later
-                highlight.Parent = survivor
-                highlight.FillColor = Color3.fromRGB(0, 255, 0) -- 绿色高亮
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                highlight.FillTransparency = 0.3 -- 半透明效果
-            end
-        else
-            -- Turn off highlights
-            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
-                local highlight = survivor:FindFirstChild("PlayerHighlight")
-                if highlight then
-                    highlight:Destroy()
-                end
+        Title = "透视杀手",
+        Desc = "",
+        Locked = false,
+        Callback = function(state)
+        for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+local highlight = Instance.new("Highlight")
+highlight.Parent = killer
+highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
+highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+end
+if redOrbConnection then
+                redOrbConnection:Disconnect()
+                redOrbConnection = nil
             end
         end
     end
-})
