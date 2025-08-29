@@ -238,23 +238,38 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Toggle = Tab:Toggle({
-        Title = "显示局内聊天框",
-        Desc = "FIN",
-        Locked = false,
-        Callback = function(state)
-        for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
-local highlight = Instance.new("Highlight")
-highlight.Parent = killer
-highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
-highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-end
-        end
-    })
-    
-if redOrbConnection then
-                redOrbConnection:Disconnect()
-                redOrbConnection = nil
+local toggleState = false
+local featureToggle = TabHandles.Elements:Toggle({
+    Title = "透视杀手",
+    Desc = "",
+    Value = false,
+    Callback = function(state) 
+        toggleState = state
+        WindUI:Notify({
+            Title = "脚本",
+            Content = state and "功能已启用" or "功能已关闭",
+            Icon = state and "check" or "x",
+            Duration = 0
+        })
+        
+        -- Add or remove highlights based on toggle state
+        if state then
+            -- Enable highlighting
+            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Name = "WindUI_KillerHighlight" -- Give it a unique name
+                highlight.Parent = killer
+                highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+            end
+        else
+            -- Disable highlighting by removing all highlights we created
+            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+                local highlight = killer:FindFirstChild("WindUI_KillerHighlight")
+                if highlight then
+                    highlight:Destroy()
+                end
             end
         end
     end
+})
