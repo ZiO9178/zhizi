@@ -238,9 +238,9 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Toggle2 = Tab2:Toggle({
-        Title = "透视杀手",
-        Desc = "",
+local Toggle = Tab:Toggle({
+        Title = "显示局内聊天框",
+        Desc = "FIN",
         Locked = false,
         Callback = function(state)
         for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
@@ -249,8 +249,9 @@ highlight.Parent = killer
 highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
 highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
 end
-    end
-})
+        end
+    })
+    
 if redOrbConnection then
                 redOrbConnection:Disconnect()
                 redOrbConnection = nil
