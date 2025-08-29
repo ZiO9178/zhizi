@@ -249,6 +249,8 @@ highlight.Parent = killer
 highlight.FillColor = Color3.fromRGB(255, 0, 0) -- 红色高亮
 highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
 end
+    end
+})
 if redOrbConnection then
                 redOrbConnection:Disconnect()
                 redOrbConnection = nil
