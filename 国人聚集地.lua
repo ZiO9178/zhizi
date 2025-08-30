@@ -238,50 +238,40 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local autoCollecting = false
-local connection = nil
-
-local function StopAutoCollect()
-    autoCollecting = false
-    if connection then
-        connection:Disconnect()
-        connection = nil
-    end
-end
-
 local Toggle = Tab:Toggle({
     Title = "自动收集所有矿石",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        autoCollecting = state
+        local autoCollecting = false
+        local connection
         
         if state then
-            print("自动收集已开启")
+            print("")
+            autoCollecting = true
             
-            -- 先停止之前的循环（防止重复运行）
-            StopAutoCollect()
-            
-            -- 创建新的循环
             connection = game:GetService("RunService").Heartbeat:Connect(function()
-                if not autoCollecting then return end  -- 如果关闭，直接退出
-                
-                -- 自动点击矿物逻辑
-                for _, mineral in ipairs(workspace.NewMap.Mining:GetChildren()) do
-                    if mineral:FindFirstChild("ClickDetector") then
-                        fireclickdetector(mineral.ClickDetector)
-                        task.wait(0.1)  -- 防止卡顿
+                if autoCollecting then
+                    for _, mineral in ipairs(workspace.NewMap.Mining:GetChildren()) do
+                        if mineral:FindFirstChild("ClickDetector") then
+                            fireclickdetector(mineral.ClickDetector)
+                            wait(0.1) 
+                        end
                     end
                 end
             end)
         else
-            print("自动收集已关闭")
-            StopAutoCollect()  -- 确保完全停止
+            print("")
+            autoCollecting = false
+            
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
         end
     end
 })
 
--- 外部关闭函数（可选）
-function StopAutoCollectExternal()
-    Toggle:Set(false)  -- 触发 Callback 关闭
+function StopAutoCollect()
+    Toggle:Set(false) 
 end
