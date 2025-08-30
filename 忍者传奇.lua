@@ -240,8 +240,8 @@ local Tab = Window:Tab({
 
 local running = false
 local Toggle = Tab:Toggle({
-    Title = "显示局内聊天框",
-    Desc = "FIN",
+    Title = "自动挥舞",
+    Desc = "",
     Locked = false,
     Callback = function(state)
         running = state
@@ -251,6 +251,38 @@ local Toggle = Tab:Toggle({
             }
             game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(args))
             wait() -- Add a small delay to prevent crashing
+        end
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "传送功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "远古地狱岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        -- 获取本地玩家
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        -- 确保角色存在且有Humanoid
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            -- 获取传送点位置
+            local teleportPart = workspace.areaTeleportParts.groundToAncientInfernoIsland
+            if teleportPart then
+                -- 传送到目标位置（稍微高于传送点以防卡住）
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到远古地狱岛")
+            else
+                warn("找不到传送点！")
+            end
+        else
+            warn("无法找到玩家角色或HumanoidRootPart！")
         end
     end
 })
