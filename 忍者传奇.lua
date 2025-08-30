@@ -433,7 +433,7 @@ local Button = Tab:Button({
 
 local Button = Tab:Button({
     Title = "传送到赛博传奇岛",
-    Desc = "前往 Cybernetic Legends Island",
+    Desc = "",
     Locked = false,
     Callback = function()
         local player = game.Players.LocalPlayer
