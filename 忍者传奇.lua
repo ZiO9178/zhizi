@@ -277,6 +277,62 @@ local Toggle = Tab:Toggle({
     end
 })
 
+local collecting = false
+local connections = {}
+
+local Toggle = Tab:Toggle({
+    Title = "自动收集",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        collecting = state
+        
+        -- 清除之前的连接（如果存在）
+        for _, conn in pairs(connections) do
+            conn:Disconnect()
+        end
+        connections = {}
+        
+        if state then
+            -- 开启自动收集
+            local function collectCoins()
+                if not collecting then return end
+                
+                -- 获取所有硬币
+                local coins = workspace.spawnedCoins.Valley:GetChildren()
+                
+                for _, coin in pairs(coins) do
+                    if coin:FindFirstChild("TouchInterest") then
+                        -- 模拟玩家触碰硬币
+                        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                        if humanoid then
+                            firetouchinterest(coin, humanoid.RootPart, 0) -- 开始触碰
+                            firetouchinterest(coin, humanoid.RootPart, 1) -- 结束触碰
+                        end
+                    end
+                end
+                
+                -- 设置下次收集
+                table.insert(connections, game:GetService("RunService").Heartbeat:Connect(function()
+                    collectCoins()
+                end))
+            end
+            
+            -- 初始收集
+            collectCoins()
+        end
+    end
+})
+
+-- 当玩家离开时自动关闭
+game.Players.LocalPlayer.CharacterRemoving:Connect(function()
+    collecting = false
+    for _, conn in pairs(connections) do
+        conn:Disconnect()
+    end
+    connections = {}
+end)
+
 local Tab = Window:Tab({
     Title = "传送功能",
     Icon = "warehouse",
