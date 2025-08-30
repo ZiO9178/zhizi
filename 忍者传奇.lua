@@ -1,12 +1,708 @@
-repeat task.wait();until game:IsLoaded() local v0=game:GetService("Players");local v1=game:GetService("RunService");local v2=game:GetService("TweenService");local v3=v0.LocalPlayer;while  not v3 do task.wait();v3=v0.LocalPlayer;end pcall(function() if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop();end end);local function v4() local v22=0 + 0 ;local v23;local v24;local v25;while true do local v162=1288 -(993 + 295) ;while true do if (v162==1) then if (v22==(1 + 2)) then local v232=1171 -(418 + 753) ;while true do if (v232==(0 + 0)) then v25=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",5) ;if v25 then return v25;end v232=1 + 0 ;end if (v232==(1 + 0)) then v22=2 + 2 ;break;end end end if (v22==(529 -(406 + 123))) then v23,v24=pcall(function() return gethui and gethui() ;end);if (v23 and v24) then return v24;end v22=1;end v162=1771 -(1749 + 20) ;end if ((1 + 1)==v162) then if (v22==(1324 -(1249 + 73))) then v23,v24=pcall(function() return gethiddengui and gethiddengui() ;end);if (v23 and v24) then return v24;end v22=2 + 1 ;end break;end if (v162==0) then if (v22==1) then v23,v24=pcall(function() return get_hidden_gui and get_hidden_gui() ;end);if (v23 and v24) then return v24;end v22=1147 -(466 + 679) ;end if (v22==(9 -5)) then return game:GetService("CoreGui");end v162=2 -1 ;end end end end local v5=v4();local v6=Color3.fromRGB(64,2045 -(106 + 1794) ,255);local function v7(v26) v26=v26 or {} ;local v27=v26.size or (67 + 143) ;local v28=5 + 13 ;local v29=52 -34 ;local v30=v26.duration or (16 -10) ;local v31=204 -(4 + 110) ;local v32=0.9;local v33,v34=584.98 -(57 + 527) ,1428.02 -(41 + 1386) ;local v35=Instance.new("ScreenGui");v35.Name="ThunderIntro";v35.IgnoreGuiInset=true;v35.ResetOnSpawn=false;pcall(function() if (syn and syn.protect_gui) then syn.protect_gui(v35);end end);local v39=pcall(function() v35.Parent=v5;end);if  not v39 then local v169=103 -(17 + 86) ;local v170;while true do if (v169==0) then v170=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",5) ;if v170 then v35.Parent=v170;end break;end end end local v40=Instance.new("Frame");v40.Size=UDim2.fromOffset(v27,v27);v40.AnchorPoint=Vector2.new(0.5 + 0 ,0.5 -0 );v40.Position=UDim2.fromScale(0.5,0.5);v40.BackgroundTransparency=1;v40.Parent=v35;local v46=Instance.new("Frame");v46.Size=UDim2.fromScale(2 -1 ,167 -(122 + 44) );v46.BackgroundTransparency=1;v46.Parent=v40;local v50=Instance.new("UICorner");v50.CornerRadius=UDim.new(0 -0 ,v29);v50.Parent=v46;local v53=Instance.new("UIStroke");v53.Thickness=v28;v53.Color=v6;pcall(function() v53.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v53.Parent=v46;local v57=Instance.new("Frame");v57.Size=UDim2.fromScale(1,1);v57.BackgroundTransparency=1;v57.ZIndex=v46.ZIndex-(3 -2) ;v57.Parent=v40;local v62=Instance.new("UICorner");v62.CornerRadius=UDim.new(0 + 0 ,v29);v62.Parent=v57;local v65=Instance.new("UIStroke");v65.Thickness=30;v65.Color=v6;v65.Transparency=0.75 + 0 ;pcall(function() v65.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v65.Parent=v57;local v70=Instance.new("Frame");local v71=v27-(v28 * (3 -1)) ;v70.Size=UDim2.fromOffset(v71,v71);v70.AnchorPoint=Vector2.new(65.5 -(30 + 35) ,0.5);v70.Position=UDim2.fromScale(0.5,0.5 + 0 );v70.BackgroundTransparency=1258 -(1043 + 214) ;v70.ZIndex=18 -13 ;v70.Parent=v40;local v78=Instance.new("TextLabel");v78.Size=UDim2.fromScale(1212.7 -(323 + 889) ,0.7 -0 );v78.AnchorPoint=Vector2.new(0.5,580.5 -(361 + 219) );v78.Position=UDim2.fromScale(320.5 -(53 + 267) ,0.5 + 0 );v78.BackgroundTransparency=1;v78.Text="忍者传奇";v78.TextColor3=v6;v78.TextScaled=true;v78.Font=Enum.Font.GothamBlack;v78.Rotation= -8.56;v78.TextTransparency=413.1 -(15 + 398) ;v78.ZIndex=989 -(18 + 964) ;v78.Parent=v70;local v92=Instance.new("UIGradient");v92.Rotation=0 -0 ;v92.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(148 + 107 ,161 + 94 ,1105 -(20 + 830) )),ColorSequenceKeypoint.new(126.5 -(116 + 10) ,Color3.fromRGB(14 + 166 ,958 -(542 + 196) ,255)),ColorSequenceKeypoint.new(1 -0 ,Color3.fromRGB(75 + 180 ,130 + 125 ,92 + 163 ))});v92.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0 -0 ,1),NumberSequenceKeypoint.new(1551.5 -(1126 + 425) ,405.6 -(118 + 287) ),NumberSequenceKeypoint.new(1122 -(118 + 1003) ,2 -1 )});v92.Parent=v78;local v97=Instance.new("UIScale",v46);v97.Scale=1;local v99,v100=true,nil;_G.ThunderIntro_Stop=function() local v168=377 -(142 + 235) ;while true do if (v168==0) then if  not v99 then return;end v99=false;v168=1;end if (v168==(4 -3)) then if v100 then v100:Disconnect();end if (v35 and v35.Parent) then v35:Destroy();end break;end end end;task.spawn(function() while v99 do local v171=v2:Create(v46,TweenInfo.new(v32,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v46.Rotation + v31 });local v172=v2:Create(v57,TweenInfo.new(v32,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v57.Rotation + v31 });v171:Play();v172:Play();v171.Completed:Wait();end end);task.spawn(function() while v99 do local v173=0 + 0 ;while true do if (v173==(977 -(553 + 424))) then v2:Create(v97,TweenInfo.new(0.6,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v34}):Play();task.wait(0.6);v173=1;end if (v173==(1 -0)) then v2:Create(v97,TweenInfo.new(0.6,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v33}):Play();task.wait(0.6);break;end end end end);task.spawn(function() while v99 do for v174=0 + 0 ,360,10 + 0  do local v175=0;while true do if (v175==(0 + 0)) then v92.Rotation=v174;task.wait(0.03 + 0 );break;end end end end end);if (v30 and (v30>(0 + 0))) then task.delay(v30,function() local v176=0 -0 ;local v177;while true do if (v176==0) then if  not v99 then return;end v177=TweenInfo.new(0.4 -0 ,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut);v176=2 -1 ;end if (v176==(1 + 2)) then _G.ThunderIntro_Stop();break;end if (v176==(9 -7)) then v2:Create(v78,v177,{TextTransparency=754 -(239 + 514) }):Play();task.wait(0.45 + 0 );v176=1332 -(797 + 532) ;end if (v176==1) then v2:Create(v53,v177,{Transparency=1}):Play();v2:Create(v65,v177,{Transparency=1}):Play();v176=2 + 0 ;end end end);end return v35;end v7({duration=6});print("反挂机开启");local v8=game:GetService("VirtualUser");game:GetService("Players").LocalPlayer.Idled:connect(function() local v101=0 + 0 ;while true do if (v101==(2 -1)) then v8:Button2Up(Vector2.new(1202 -(373 + 829) ,731 -(476 + 255) ),workspace.CurrentCamera.CFrame);break;end if (v101==(1130 -(369 + 761))) then v8:Button2Down(Vector2.new(0 + 0 ,0 -0 ),workspace.CurrentCamera.CFrame);wait(1 -0 );v101=239 -(64 + 174) ;end end end);local v9=Instance.new("Sound");v9.Parent=game.SoundService;v9.SoundId="rbxassetid://4590662766";v9.Volume=1 + 2 ;v9.PlayOnRemove=true;v9:Destroy();local v15=loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))();local v16=v15:CreateWindow({Title="Z脚本|忍者传奇",Icon="shield-user",Author="作者:Z某人",Folder="CloudHub",Size=UDim2.fromOffset(858 -278 ,796 -(144 + 192) ),Transparent=true,Theme="Dark",Resizable=true,SideBarWidth=200,Background="",BackgroundImageTransparency=216.42 -(42 + 174) ,HideSearchBar=false,ScrollBarEnabled=true,User={Enabled=true,Anonymous=false,Callback=function() print("clicked");end}});v16:EditOpenButton({Title="   打开Z脚本丨忍者传奇   ",Icon="shield-check",CornerRadiu=UDim.new(0,13 + 3 ),StrokeThickness=3,Color=ColorSequence.new(Color3.fromHex("000000"),Color3.fromHex("FFFFFF"),Color3.fromHex("000000")),Draggable=true});local v17=v16:Tab({Title="自动功能",Icon="warehouse",Locked=false});local v18=false;local v19=v17:Toggle({Title="自动挥舞",Desc="",Locked=false,Callback=function(v102) local v103=0 + 0 ;while true do if (v103==0) then v18=v102;while v18 do local v196=0 + 0 ;local v197;while true do if (v196==(1504 -(363 + 1141))) then v197={[1581 -(1183 + 397) ]="swingKatana"};game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(v197));v196=2 -1 ;end if (v196==(1 + 0)) then wait();break;end end end break;end end end});local v17=v16:Tab({Title="传送功能",Icon="warehouse",Locked=false});local v20=v17:Button({Title="远古地狱岛",Desc="",Locked=false,Callback=function() local v104=0 + 0 ;local v105;local v106;while true do if (v104==0) then local v178=1975 -(1913 + 62) ;while true do if (v178==1) then v104=1 + 0 ;break;end if (v178==0) then v105=game.Players.LocalPlayer;v106=v105.Character or v105.CharacterAdded:Wait() ;v178=2 -1 ;end end end if (v104==(1934 -(565 + 1368))) then if (v106 and v106:FindFirstChild("HumanoidRootPart")) then local v198=0 -0 ;local v199;while true do if ((1661 -(1477 + 184))==v198) then v199=workspace.areaTeleportParts.groundToAncientInfernoIsland;if v199 then v106.HumanoidRootPart.CFrame=v199.CFrame + Vector3.new(0,3,0 -0 ) ;print("已传送到远古地狱岛");else warn("找不到传送点！");end break;end end else warn("无法找到玩家角色或HumanoidRootPart！");end break;end end end});local v20=v17:Button({Title="传送到星界岛",Desc="",Locked=false,Callback=function() local v107=0 + 0 ;local v108;local v109;while true do if (v107==(857 -(564 + 292))) then if (v109 and v109:FindFirstChild("HumanoidRootPart")) then local v200=workspace.areaTeleportParts.groundToAstralIsland;if v200 then local v243=0 -0 ;local v244;while true do if ((0 -0)==v243) then v244=304 -(244 + 60) ;while true do if (v244==0) then v109.HumanoidRootPart.CFrame=v200.CFrame + Vector3.new(0 + 0 ,479 -(41 + 435) ,0) ;print("已传送到星界岛");break;end end break;end end else warn("找不到星界岛传送点！");end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v107==(1001 -(938 + 63))) then v108=game.Players.LocalPlayer;v109=v108.Character or v108.CharacterAdded:Wait() ;v107=1 + 0 ;end end end});local v20=v17:Button({Title="炽热漩涡岛",Desc="",Locked=false,Callback=function() local v110=1125 -(936 + 189) ;local v111;local v112;while true do if ((1 + 0)==v110) then if (v112 and v112:FindFirstChild("HumanoidRootPart")) then local v201=0;local v202;while true do if (v201==(1613 -(1565 + 48))) then v202=workspace.areaTeleportParts.groundToBlazingVortexIsland;if v202 then local v265=0;local v266;while true do if (v265==(0 + 0)) then v266=1138 -(782 + 356) ;while true do if (v266==(267 -(176 + 91))) then v112.HumanoidRootPart.CFrame=v202.CFrame + Vector3.new(0 -0 ,4 -1 ,1092 -(975 + 117) ) ;print("已传送到炽热漩涡岛");break;end end break;end end else warn("找不到炽热漩涡岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v110==(1875 -(157 + 1718))) then v111=game.Players.LocalPlayer;v112=v111.Character or v111.CharacterAdded:Wait() ;v110=1 + 0 ;end end end});local v20=v17:Button({Title="混沌传奇岛",Desc="",Locked=false,Callback=function() local v113=0 -0 ;local v114;local v115;local v116;while true do if (v113==(3 -2)) then v116=nil;while true do if (v114==(1018 -(697 + 321))) then v115=game.Players.LocalPlayer;v116=v115.Character or v115.CharacterAdded:Wait() ;v114=2 -1 ;end if (1==v114) then if (v116 and v116:FindFirstChild("HumanoidRootPart")) then local v248=0 -0 ;local v249;while true do if (v248==0) then v249=workspace.areaTeleportParts.groundToChaosLegendsIsland;if v249 then local v289=0;local v290;while true do if ((0 -0)==v289) then v290=0 + 0 ;while true do if (v290==0) then v116.HumanoidRootPart.CFrame=v249.CFrame + Vector3.new(0 -0 ,3,0 -0 ) ;print("已传送到混沌传奇岛");break;end end break;end end else warn("找不到混沌传奇岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end break;end if (v113==0) then v114=1227 -(322 + 905) ;v115=nil;v113=1;end end end});local v20=v17:Button({Title="传送到赛博传奇岛",Desc="前往 Cybernetic Legends Island",Locked=false,Callback=function() local v117=0;local v118;local v119;while true do if (v117==(611 -(602 + 9))) then v118=game.Players.LocalPlayer;v119=v118.Character or v118.CharacterAdded:Wait() ;v117=1190 -(449 + 740) ;end if ((873 -(826 + 46))==v117) then if (v119 and v119:FindFirstChild("HumanoidRootPart")) then local v203=947 -(245 + 702) ;local v204;while true do if (v203==(0 -0)) then v204=workspace.areaTeleportParts.groundToCyberneticLegendsIsland;if v204 then local v267=0;local v268;while true do if (v267==(0 + 0)) then v268=1898 -(260 + 1638) ;while true do if (v268==(440 -(382 + 58))) then v119.HumanoidRootPart.CFrame=v204.CFrame + Vector3.new(0 -0 ,3 + 0 ,0 -0 ) ;print("已传送到赛博传奇岛");break;end end break;end end else warn("找不到赛博传奇岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="暗影元素岛",Desc="",Locked=false,Callback=function() local v120=0 -0 ;local v121;local v122;while true do if (v120==(1206 -(902 + 303))) then if (v122 and v122:FindFirstChild("HumanoidRootPart")) then local v205=0;local v206;while true do if (v205==(0 -0)) then v206=workspace.areaTeleportParts.groundToDarkElementsIsland;if v206 then local v269=0;while true do if (v269==(0 -0)) then v122.HumanoidRootPart.CFrame=v206.CFrame + Vector3.new(0 + 0 ,3,0) ;print("已传送到暗影元素岛");break;end end else warn("找不到暗影元素岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v120==0) then local v182=1690 -(1121 + 569) ;while true do if (v182==(215 -(22 + 192))) then v120=1;break;end if (v182==0) then v121=game.Players.LocalPlayer;v122=v121.Character or v121.CharacterAdded:Wait() ;v182=684 -(483 + 200) ;end end end end end});local v20=v17:Button({Title="龙之传说岛",Desc="",Locked=false,Callback=function() local v123=0;local v124;local v125;while true do if ((1463 -(1404 + 59))==v123) then local v183=0 -0 ;while true do if ((1 -0)==v183) then v123=766 -(468 + 297) ;break;end if (v183==0) then v124=game.Players.LocalPlayer;v125=v124.Character or v124.CharacterAdded:Wait() ;v183=563 -(334 + 228) ;end end end if (v123==(3 -2)) then if (v125 and v125:FindFirstChild("HumanoidRootPart")) then local v207=0;local v208;while true do if ((0 -0)==v207) then v208=workspace.areaTeleportParts.groundToDragonLegendIsland;if v208 then local v270=0 -0 ;while true do if (v270==0) then v125.HumanoidRootPart.CFrame=v208.CFrame + Vector3.new(0,1 + 2 ,0) ;print("已传送到龙之传说岛");break;end end else warn("找不到龙之传说岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="魔法秘境岛",Desc="",Locked=false,Callback=function() local v126=236 -(141 + 95) ;local v127;local v128;while true do if (v126==(0 + 0)) then v127=game.Players.LocalPlayer;v128=v127.Character or v127.CharacterAdded:Wait() ;v126=2 -1 ;end if ((2 -1)==v126) then if (v128 and v128:FindFirstChild("HumanoidRootPart")) then local v209=0 + 0 ;local v210;while true do if (v209==(0 -0)) then v210=workspace.areaTeleportParts.groundToEnchantedIsland;if v210 then local v271=0 + 0 ;local v272;while true do if ((0 + 0)==v271) then v272=0 -0 ;while true do if (v272==0) then v128.HumanoidRootPart.CFrame=v210.CFrame + Vector3.new(0,2 + 1 ,0) ;print("已传送到魔法秘境岛");break;end end break;end end else warn("找不到魔法秘境岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="永恒之岛",Desc="",Locked=false,Callback=function() local v129=163 -(92 + 71) ;local v130;local v131;while true do if (v129==0) then v130=game.Players.LocalPlayer;v131=v130.Character or v130.CharacterAdded:Wait() ;v129=1;end if (v129==1) then if (v131 and v131:FindFirstChild("HumanoidRootPart")) then local v211=0;local v212;while true do if (v211==0) then v212=workspace.areaTeleportParts.groundToEternalIsland;if v212 then local v273=0;local v274;while true do if (v273==(0 + 0)) then v274=0;while true do if (v274==(0 -0)) then v131.HumanoidRootPart.CFrame=v212.CFrame + Vector3.new(765 -(574 + 191) ,3,0) ;print("已传送到永恒之岛");break;end end break;end end else warn("找不到永恒之岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="冬日仙境岛",Desc="",Locked=false,Callback=function() local v132=0 + 0 ;local v133;local v134;while true do if (v132==(0 -0)) then v133=game.Players.LocalPlayer;v134=v133.Character or v133.CharacterAdded:Wait() ;v132=1 + 0 ;end if ((850 -(254 + 595))==v132) then if (v134 and v134:FindFirstChild("HumanoidRootPart")) then local v213=0;local v214;while true do if (v213==(126 -(55 + 71))) then v214=workspace.areaTeleportParts.groundToWinterWonderIsland;if v214 then local v275=0;while true do if (v275==(0 -0)) then v134.HumanoidRootPart.CFrame=v214.CFrame + Vector3.new(1790 -(573 + 1217) ,8 -5 ,0 + 0 ) ;print("已传送到冬日仙境岛");break;end end else warn("找不到冬日仙境岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="苔原岛",Desc="",Locked=false,Callback=function() local v135=0;local v136;local v137;while true do if (v135==(0 -0)) then local v187=939 -(714 + 225) ;while true do if (v187==1) then v135=2 -1 ;break;end if (v187==(0 -0)) then v136=game.Players.LocalPlayer;v137=v136.Character or v136.CharacterAdded:Wait() ;v187=1 + 0 ;end end end if (v135==1) then if (v137 and v137:FindFirstChild("HumanoidRootPart")) then local v215=workspace.areaTeleportParts.groundToTundraIsland;if v215 then local v245=0 -0 ;while true do if (v245==0) then v137.HumanoidRootPart.CFrame=v215.CFrame + Vector3.new(806 -(118 + 688) ,51 -(25 + 23) ,0 + 0 ) ;print("已传送到苔原岛");break;end end else warn("找不到苔原岛传送点！");end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="雷暴岛",Desc="",Locked=false,Callback=function() local v138=1886 -(927 + 959) ;local v139;local v140;while true do if (v138==0) then local v188=0 -0 ;while true do if (v188==1) then v138=733 -(16 + 716) ;break;end if ((0 -0)==v188) then v139=game.Players.LocalPlayer;v140=v139.Character or v139.CharacterAdded:Wait() ;v188=98 -(11 + 86) ;end end end if (v138==(2 -1)) then if (v140 and v140:FindFirstChild("HumanoidRootPart")) then local v216=285 -(175 + 110) ;local v217;while true do if (v216==0) then v217=workspace.areaTeleportParts.groundToThunderstormIsland;if v217 then local v277=0 -0 ;local v278;while true do if ((0 -0)==v277) then v278=1796 -(503 + 1293) ;while true do if ((0 -0)==v278) then v140.HumanoidRootPart.CFrame=v217.CFrame + Vector3.new(0 + 0 ,1066 -(810 + 251) ,0 + 0 ) ;print("已传送到雷暴岛");break;end end break;end end else warn("找不到雷暴岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="灵魂融合岛",Desc="",Locked=false,Callback=function() local v141=0 + 0 ;local v142;local v143;while true do if ((1 + 0)==v141) then if (v143 and v143:FindFirstChild("HumanoidRootPart")) then local v218=533 -(43 + 490) ;local v219;while true do if (0==v218) then v219=workspace.areaTeleportParts.groundToSoulFusionIsland;if v219 then local v279=733 -(711 + 22) ;while true do if (v279==(0 -0)) then v143.HumanoidRootPart.CFrame=v219.CFrame * CFrame.new(859 -(240 + 619) ,1 + 2 , -(2 -0)) ;print("已传送到灵魂融合岛");break;end end else warn("找不到灵魂融合岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v141==(0 + 0)) then v142=game.Players.LocalPlayer;v143=v142.Character or v142.CharacterAdded:Wait() ;v141=1745 -(1344 + 400) ;end end end});local v20=v17:Button({Title="天暴终极岛",Desc="",Locked=false,Callback=function() local v144=0;local v145;local v146;while true do if (v144==0) then v145=game.Players.LocalPlayer;v146=v145.Character or v145.CharacterAdded:Wait() ;v144=1;end if (v144==(406 -(255 + 150))) then if (v146 and v146:FindFirstChild("HumanoidRootPart")) then local v220=0;local v221;while true do if (v220==(0 + 0)) then v221=workspace.areaTeleportParts.groundToSkystormUltrausIsland;if v221 then local v280=0;local v281;while true do if ((0 + 0)==v280) then v281=0;while true do if (0==v281) then v146.HumanoidRootPart.CFrame=v221.CFrame + Vector3.new(0 -0 ,9 -6 ,0) ;print("已传送到天暴终极岛");break;end end break;end end else warn("找不到天暴终极岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="沙暴岛",Desc="",Locked=false,Callback=function() local v147=1739 -(404 + 1335) ;local v148;local v149;while true do if ((406 -(183 + 223))==v147) then v148=game.Players.LocalPlayer;v149=v148.Character or v148.CharacterAdded:Wait() ;v147=1 -0 ;end if (v147==(1 + 0)) then if (v149 and v149:FindFirstChild("HumanoidRootPart")) then local v222=0 + 0 ;local v223;while true do if (v222==(337 -(10 + 327))) then v223=workspace.areaTeleportParts.groundToSandstormIsland;if v223 then local v282=0 + 0 ;while true do if (v282==(338 -(118 + 220))) then v149.HumanoidRootPart.CFrame=v223.CFrame + Vector3.new(0,1 + 2 ,449 -(108 + 341) ) ;print("已传送到沙暴岛");break;end end else warn("找不到沙暴岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="神话灵魂岛",Desc="",Locked=false,Callback=function() local v150=0 + 0 ;local v151;local v152;while true do if (v150==(4 -3)) then if (v152 and v152:FindFirstChild("HumanoidRootPart")) then local v224=1493 -(711 + 782) ;local v225;while true do if (0==v224) then v225=workspace.areaTeleportParts.groundToMythicalSoulsIsland;if v225 then v152.HumanoidRootPart.CFrame=v225.CFrame + Vector3.new(0 -0 ,472 -(270 + 199) ,0 + 0 ) ;print("已传送到神话灵魂岛");else warn("找不到神话灵魂岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v150==(1819 -(580 + 1239))) then local v192=0 -0 ;while true do if (v192==(0 + 0)) then v151=game.Players.LocalPlayer;v152=v151.Character or v151.CharacterAdded:Wait() ;v192=1 + 0 ;end if (v192==(1 + 0)) then v150=2 -1 ;break;end end end end end});local v20=v17:Button({Title="神秘岛",Desc="",Locked=false,Callback=function() local v153=0 + 0 ;local v154;local v155;while true do if (v153==(1167 -(645 + 522))) then v154=game.Players.LocalPlayer;v155=v154.Character or v154.CharacterAdded:Wait() ;v153=1791 -(1010 + 780) ;end if (v153==1) then if (v155 and v155:FindFirstChild("HumanoidRootPart")) then local v226=0 + 0 ;local v227;while true do if (v226==0) then v227=workspace.areaTeleportParts.groundToMysticalIsland;if v227 then local v284=0;while true do if (v284==(0 -0)) then v155.HumanoidRootPart.CFrame=v227.CFrame + Vector3.new(0 -0 ,1839 -(1045 + 791) ,0) ;print("已传送到神秘岛");break;end end else warn("找不到神秘岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end end end});local v20=v17:Button({Title="午夜岛",Desc="",Locked=false,Callback=function() local v156=0 -0 ;local v157;local v158;while true do if (v156==(1 -0)) then if (v158 and v158:FindFirstChild("HumanoidRootPart")) then local v228=0;local v229;while true do if (v228==(505 -(351 + 154))) then v229=workspace.areaTeleportParts.groundToMidnightIsland;if v229 then local v285=1574 -(1281 + 293) ;while true do if (v285==(266 -(28 + 238))) then v158.HumanoidRootPart.CFrame=v229.CFrame + Vector3.new(0 -0 ,1562 -(1381 + 178) ,0 + 0 ) ;print("已传送到午夜岛");break;end end else warn("找不到午夜岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v156==0) then v157=game.Players.LocalPlayer;v158=v157.Character or v157.CharacterAdded:Wait() ;v156=1 + 0 ;end end end});local v20=v17:Button({Title="心灵宁静岛",Desc="",Locked=false,Callback=function() local v159=0;local v160;local v161;while true do if ((1 + 0)==v159) then if (v161 and v161:FindFirstChild("HumanoidRootPart")) then local v230=0;local v231;while true do if (v230==(0 -0)) then v231=workspace.areaTeleportParts.groundToInnerPeaceIsland;if v231 then local v286=0 + 0 ;while true do if (v286==(470 -(381 + 89))) then v161.HumanoidRootPart.CFrame=v231.CFrame + Vector3.new(0 + 0 ,3 + 0 ,0 -0 ) ;print("已传送到心灵宁静岛");break;end end else warn("找不到心灵宁静岛传送点！");end break;end end else warn("角色或 HumanoidRootPart 不存在！");end break;end if (v159==0) then local v195=1156 -(1074 + 82) ;while true do if (0==v195) then v160=game.Players.LocalPlayer;v161=v160.Character or v160.CharacterAdded:Wait() ;v195=1 -0 ;end if (v195==1) then v159=1785 -(214 + 1570) ;break;end end end end end});
--- ⚠️ WARNING: integrity protected!
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+repeat task.wait() until game:IsLoaded()
 
-]]--
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local LocalPlayer = Players.LocalPlayer
+while not LocalPlayer do
+	task.wait()
+	LocalPlayer = Players.LocalPlayer
+end
+
+pcall(function()
+	if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop() end
+end)
+
+local function resolveGuiParent()
+	local ok, res = pcall(function() return (gethui and gethui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (get_hidden_gui and get_hidden_gui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (gethiddengui and gethiddengui()) end)
+	if ok and res then return res end
+	local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+	if pg then return pg end
+	return game:GetService("CoreGui")
+end
+
+local guiParent = resolveGuiParent()
+
+local BLUE  = Color3.fromRGB(64, 145, 255)
+
+local function Start(opts)
+	opts = opts or {}
+	local SIZE            = opts.size or 210
+	local STROKE_THICK    = 18
+	local CORNER          = 18
+	local DURATION        = opts.duration or 6 
+	local SPIN_STEP_DEG   = 90
+	local SPIN_STEP_TIME  = 0.90
+	local BREATH_MIN, BREATH_MAX = 0.98, 1.02
+
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "ThunderIntro"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	pcall(function() if syn and syn.protect_gui then syn.protect_gui(gui) end end)
+	local ok = pcall(function() gui.Parent = guiParent end)
+	if not ok then
+		local fallback = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+		if fallback then gui.Parent = fallback end
+	end
+
+	local root = Instance.new("Frame")
+	root.Size = UDim2.fromOffset(SIZE, SIZE)
+	root.AnchorPoint = Vector2.new(0.5, 0.5)
+	root.Position = UDim2.fromScale(0.5, 0.5)
+	root.BackgroundTransparency = 1
+	root.Parent = gui
+
+	local ring = Instance.new("Frame")
+	ring.Size = UDim2.fromScale(1, 1)
+	ring.BackgroundTransparency = 1
+	ring.Parent = root
+	local cornerRing = Instance.new("UICorner") cornerRing.CornerRadius = UDim.new(0, CORNER) cornerRing.Parent = ring
+	local ringStroke = Instance.new("UIStroke")
+	ringStroke.Thickness = STROKE_THICK
+	ringStroke.Color = BLUE
+	pcall(function() ringStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	ringStroke.Parent = ring
+
+	local glow = Instance.new("Frame")
+	glow.Size = UDim2.fromScale(1, 1)
+	glow.BackgroundTransparency = 1
+	glow.ZIndex = ring.ZIndex - 1
+	glow.Parent = root
+	local cornerGlow = Instance.new("UICorner") cornerGlow.CornerRadius = UDim.new(0, CORNER) cornerGlow.Parent = glow
+	local glowStroke = Instance.new("UIStroke")
+	glowStroke.Thickness = 30
+	glowStroke.Color = BLUE
+	glowStroke.Transparency = 0.75
+	pcall(function() glowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	glowStroke.Parent = glow
+
+	local inner = Instance.new("Frame")
+	local innerSize = SIZE - STROKE_THICK * 2
+	inner.Size = UDim2.fromOffset(innerSize, innerSize)
+	inner.AnchorPoint = Vector2.new(0.5, 0.5)
+	inner.Position = UDim2.fromScale(0.5, 0.5)
+	inner.BackgroundTransparency = 1
+	inner.ZIndex = 5
+	inner.Parent = root
+
+	
+	local thunderText = Instance.new("TextLabel")
+	thunderText.Size = UDim2.fromScale(0.7, 0.7)
+	thunderText.AnchorPoint = Vector2.new(0.5, 0.5)
+	thunderText.Position = UDim2.fromScale(0.5, 0.5)
+	thunderText.BackgroundTransparency = 1
+	thunderText.Text = "忍者传奇"
+	thunderText.TextColor3 = BLUE
+	thunderText.TextScaled = true
+	thunderText.Font = Enum.Font.GothamBlack
+	thunderText.Rotation = -8.56
+	thunderText.TextTransparency = 0.10
+	thunderText.ZIndex = 7
+	thunderText.Parent = inner
+
+	
+	local gradient = Instance.new("UIGradient")
+	gradient.Rotation = 0
+	gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,220,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255))
+	}
+	gradient.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 1),
+		NumberSequenceKeypoint.new(0.5, 0.6),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	gradient.Parent = thunderText
+
+	local ringScale = Instance.new("UIScale", ring) ringScale.Scale = 1
+
+	local alive, hbConn = true, nil
+	_G.ThunderIntro_Stop = function()
+		if not alive then return end
+		alive = false
+		if hbConn then hbConn:Disconnect() end
+		if gui and gui.Parent then gui:Destroy() end
+	end
+	
+	-- Spin
+	task.spawn(function()
+		while alive do
+			local tw1 = TweenService:Create(ring, TweenInfo.new(SPIN_STEP_TIME, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = ring.Rotation + SPIN_STEP_DEG})
+			local tw2 = TweenService:Create(glow, TweenInfo.new(SPIN_STEP_TIME,   Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = glow.Rotation + SPIN_STEP_DEG})
+			tw1:Play() tw2:Play()
+			tw1.Completed:Wait()
+		end
+	end)
+	
+	-- Breathe
+	task.spawn(function()
+		while alive do
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MAX}):Play()
+			task.wait(0.6)
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MIN}):Play()
+			task.wait(0.6)
+		end
+	end)
+
+	-- Gradient sheen animation
+	task.spawn(function()
+		while alive do
+			for i = 0,360,10 do
+				gradient.Rotation = i
+				task.wait(0.03)
+			end
+		end
+	end)
+
+	-- Auto fade + destroy
+	if DURATION and DURATION > 0 then
+		task.delay(DURATION, function()
+			if not alive then return end
+			local ti = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+			TweenService:Create(ringStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(glowStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(thunderText, ti, {TextTransparency = 1}):Play()
+			task.wait(0.45)
+			_G.ThunderIntro_Stop()
+		end)
+	end
+
+	return gui
+end
+
+Start({duration = 6}) -- lasts longer
+
+print("反挂机开启")
+		local vu = game:GetService("VirtualUser")
+		game:GetService("Players").LocalPlayer.Idled:connect(function()
+		   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		   wait(1)
+		   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
+
+local Sound = Instance.new("Sound")
+        Sound.Parent = game.SoundService
+        Sound.SoundId = "rbxassetid://4590662766"
+        Sound.Volume = 3
+        Sound.PlayOnRemove = true
+        Sound:Destroy()
+        
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
+
+local Window = WindUI:CreateWindow({
+        Title = "Z脚本|忍者传奇",
+        Icon = "shield-user",
+        Author = "作者:Z某人",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        Resizable = true,
+        SideBarWidth = 200,
+        Background = "",
+        BackgroundImageTransparency = 0.42,
+        HideSearchBar = false,
+        ScrollBarEnabled = true,
+        User = {
+            Enabled = true,
+            Anonymous = false,
+            Callback = function()
+                print("clicked")
+            end,
+    },
+})
+
+Window:EditOpenButton({
+    Title = "   打开Z脚本丨忍者传奇   ",
+    Icon = "shield-check",
+    CornerRadiu = UDim.new(0,16),
+    StrokeThickness = 3,
+    Color = ColorSequence.new( 
+        Color3.fromHex("000000"), 
+        Color3.fromHex("FFFFFF"), 
+        Color3.fromHex("000000")   
+    ),
+    Draggable = true,
+})
+
+local Tab = Window:Tab({
+    Title = "自动功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local running = false
+local Toggle = Tab:Toggle({
+    Title = "自动挥舞",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        running = state
+        while running do
+            local args = {
+                [1] = "swingKatana"
+            }
+            game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(args))
+            wait() -- Add a small delay to prevent crashing
+        end
+    end
+})
+
+local Toggle = Tab:Toggle({
+    Title = "无限跳跃",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 启用无限跳跃
+            local player = game:GetService("Players").LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            
+            -- 连接跳跃检测
+            game:GetService("UserInputService").JumpRequest:Connect(function()
+                if state then  -- 确保开关仍然开启
+                    character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+                end
+            end)
+        else
+            -- 禁用无限跳跃 - 不需要特别操作，连接会自动处理
+        end
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "传送功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "远古地狱岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        -- 获取本地玩家
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        -- 确保角色存在且有Humanoid
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            -- 获取传送点位置
+            local teleportPart = workspace.areaTeleportParts.groundToAncientInfernoIsland
+            if teleportPart then
+                -- 传送到目标位置（稍微高于传送点以防卡住）
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到远古地狱岛")
+            else
+                warn("找不到传送点！")
+            end
+        else
+            warn("无法找到玩家角色或HumanoidRootPart！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "传送到星界岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToAstralIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到星界岛")
+            else
+                warn("找不到星界岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "炽热漩涡岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToBlazingVortexIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到炽热漩涡岛")
+            else
+                warn("找不到炽热漩涡岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "混沌传奇岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToChaosLegendsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到混沌传奇岛")
+            else
+                warn("找不到混沌传奇岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "传送到赛博传奇岛",
+    Desc = "前往 Cybernetic Legends Island",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToCyberneticLegendsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到赛博传奇岛")
+            else
+                warn("找不到赛博传奇岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "暗影元素岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToDarkElementsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到暗影元素岛")
+            else
+                warn("找不到暗影元素岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "龙之传说岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToDragonLegendIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到龙之传说岛")
+            else
+                warn("找不到龙之传说岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "魔法秘境岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToEnchantedIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到魔法秘境岛")
+            else
+                warn("找不到魔法秘境岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "永恒之岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToEternalIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到永恒之岛")
+            else
+                warn("找不到永恒之岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "冬日仙境岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToWinterWonderIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到冬日仙境岛")
+            else
+                warn("找不到冬日仙境岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "苔原岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToTundraIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到苔原岛")
+            else
+                warn("找不到苔原岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "雷暴岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToThunderstormIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 5, 0)  -- 高度提升到5防雷击陷地
+                print("已传送到雷暴岛")
+            else
+                warn("找不到雷暴岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "灵魂融合岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSoulFusionIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame * CFrame.new(0, 3, -2)  -- 后退2单位防止灵魂屏障碰撞
+                print("已传送到灵魂融合岛")
+            else
+                warn("找不到灵魂融合岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "天暴终极岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSkystormUltrausIsland
+            if teleportPart then
+                -- 基础传送（保持Y轴+3单位）
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到天暴终极岛")
+            else
+                warn("找不到天暴终极岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "沙暴岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSandstormIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到沙暴岛")
+            else
+                warn("找不到沙暴岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "神话灵魂岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMythicalSoulsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到神话灵魂岛")
+            else
+                warn("找不到神话灵魂岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "神秘岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMysticalIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到神秘岛")
+            else
+                warn("找不到神秘岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "午夜岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMidnightIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到午夜岛")
+            else
+                warn("找不到午夜岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "心灵宁静岛",
+    Desc = "", 
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToInnerPeaceIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到心灵宁静岛")
+            else
+                warn("找不到心灵宁静岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
