@@ -238,50 +238,50 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local autoCollecting = false
+local connection = nil
+
+local function StopAutoCollect()
+    autoCollecting = false
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+end
+
 local Toggle = Tab:Toggle({
-    Title = "自动收集",
+    Title = "自动收集所有矿石",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        -- 定义一个变量来跟踪自动收集状态
-        local autoCollecting = false
-        local connection
+        autoCollecting = state
         
         if state then
-            -- Toggle开启时的逻辑
             print("自动收集已开启")
-            autoCollecting = true
             
-            -- 创建自动收集循环
+            -- 先停止之前的循环（防止重复运行）
+            StopAutoCollect()
+            
+            -- 创建新的循环
             connection = game:GetService("RunService").Heartbeat:Connect(function()
-                if autoCollecting then
-                    -- 这里替换为您实际的收集逻辑
-                    -- 示例：自动点击矿物
-                    for _, mineral in ipairs(workspace.NewMap.Mining:GetChildren()) do
-                        if mineral:FindFirstChild("ClickDetector") then
-                            -- 模拟点击
-                            fireclickdetector(mineral.ClickDetector)
-                            -- 可以添加适当的延迟
-                            wait(0.1) -- 防止太快导致问题
-                        end
+                if not autoCollecting then return end  -- 如果关闭，直接退出
+                
+                -- 自动点击矿物逻辑
+                for _, mineral in ipairs(workspace.NewMap.Mining:GetChildren()) do
+                    if mineral:FindFirstChild("ClickDetector") then
+                        fireclickdetector(mineral.ClickDetector)
+                        task.wait(0.1)  -- 防止卡顿
                     end
                 end
             end)
         else
-            -- Toggle关闭时的逻辑
             print("自动收集已关闭")
-            autoCollecting = false
-            
-            -- 断开连接，停止自动收集
-            if connection then
-                connection:Disconnect()
-                connection = nil
-            end
+            StopAutoCollect()  -- 确保完全停止
         end
     end
 })
 
--- 如果需要从外部控制Toggle状态，可以添加：
-function StopAutoCollect()
-    Toggle:Set(false) -- 这将触发Callback中的关闭逻辑
+-- 外部关闭函数（可选）
+function StopAutoCollectExternal()
+    Toggle:Set(false)  -- 触发 Callback 关闭
 end
