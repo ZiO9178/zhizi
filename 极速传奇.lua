@@ -239,24 +239,41 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动收集圈",
+    Title = "自动收集",
     Desc = "",
     Locked = false,
     Callback = function(state)
         if state then
-            -- Collect and show all chat frames
-            for _, Hoop in pairs(workspace.Hoops:GetChildren()) do
-                -- Assuming you want to make them visible or enable them
-                Hoop.Enabled = true  -- or whatever property controls visibility
-                -- Alternatively, if it's about transparency:
-                -- Hoop.Transparency = 0
+            -- 开启自动收集
+            if not _G.AutoCollectHoops then
+                _G.AutoCollectHoops = true
+                
+                -- 创建收集循环
+                _G.HoopsCollectionLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                    if not _G.AutoCollectHoops then return end
+                    
+                    -- 获取所有篮球
+                    for _, hoop in ipairs(workspace.Hoops:GetChildren()) do
+                        if hoop:IsA("BasePart") then
+                            -- 将篮球传送到玩家位置（模拟收集）
+                            hoop.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                        end
+                    end
+                end)
+                
+                print("自动收集已开启")
             end
         else
-            -- Hide or disable all chat frames
-            for _, Hoop in pairs(workspace.Hoops:GetChildren()) do
-                Hoop.Enabled = false  -- or whatever property controls visibility
-                -- Alternatively, if it's about transparency:
-                -- Hoop.Transparency = 1
+            -- 关闭自动收集
+            if _G.AutoCollectHoops then
+                _G.AutoCollectHoops = false
+                
+                if _G.HoopsCollectionLoop then
+                    _G.HoopsCollectionLoop:Disconnect()
+                    _G.HoopsCollectionLoop = nil
+                end
+                
+                print("自动收集已关闭")
             end
         end
     end
