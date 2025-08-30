@@ -264,15 +264,21 @@ local Toggle = Tab:Toggle({
             -- 启用无限跳跃
             local player = game:GetService("Players").LocalPlayer
             local character = player.Character or player.CharacterAdded:Wait()
+            local humanoid = character:WaitForChild("Humanoid")
             
-            -- 连接跳跃检测
-            game:GetService("UserInputService").JumpRequest:Connect(function()
-                if state then  -- 确保开关仍然开启
-                    character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+            -- 存储连接，以便后续关闭
+            local jumpConnection
+            
+            jumpConnection = game:GetService("UserInputService").JumpRequest:Connect(function()
+                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+            end)
+            
+            -- 当开关关闭时，自动断开连接（关键关闭逻辑）
+            Toggle.Changed:Connect(function(newState)
+                if not newState and jumpConnection then
+                    jumpConnection:Disconnect()
                 end
             end)
-        else
-            -- 禁用无限跳跃 - 不需要特别操作，连接会自动处理
         end
     end
 })
