@@ -1,12 +1,400 @@
-repeat task.wait();until game:IsLoaded() local v0=game:GetService("Players");local v1=game:GetService("RunService");local v2=game:GetService("TweenService");local v3=v0.LocalPlayer;while  not v3 do local v29=0 + 0 ;while true do if (v29==(438 -(145 + 293))) then task.wait();v3=v0.LocalPlayer;break;end end end pcall(function() if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop();end end);local function v4() local v30=430 -(44 + 386) ;local v31;local v32;local v33;while true do if (v30==(1488 -(998 + 488))) then v31,v32=pcall(function() return gethiddengui and gethiddengui() ;end);if (v31 and v32) then return v32;end v30=293 -(60 + 230) ;end if (v30==0) then local v132=572 -(426 + 146) ;while true do if ((1 + 0)==v132) then v30=1 + 0 ;break;end if (v132==(772 -(201 + 571))) then v31,v32=pcall(function() return gethui and gethui() ;end);if (v31 and v32) then return v32;end v132=812 -(569 + 242) ;end end end if (v30==(1141 -(116 + 1022))) then local v133=0 -0 ;while true do if ((1 + 0)==v133) then v30=1028 -(706 + 318) ;break;end if (v133==(0 -0)) then v33=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",17 -12 ) ;if v33 then return v33;end v133=2 -1 ;end end end if (v30==(863 -(814 + 45))) then return game:GetService("CoreGui");end if (v30==(2 -1)) then v31,v32=pcall(function() return get_hidden_gui and get_hidden_gui() ;end);if (v31 and v32) then return v32;end v30=1 + 1 ;end end end local v5=v4();local v6=Color3.fromRGB(23 + 41 ,1231 -(461 + 625) ,1140 -(261 + 624) );local function v7(v34) v34=v34 or {} ;local v35=v34.size or (373 -163) ;local v36=1098 -(1020 + 60) ;local v37=1441 -(630 + 793) ;local v38=v34.duration or (19 -13) ;local v39=90;local v40=1171.9 -(418 + 753) ;local v41,v42=0.98 -0 ,1.02 + 0 ;local v43=Instance.new("ScreenGui");v43.Name="ThunderIntro";v43.IgnoreGuiInset=true;v43.ResetOnSpawn=false;pcall(function() if (syn and syn.protect_gui) then syn.protect_gui(v43);end end);local v47=pcall(function() v43.Parent=v5;end);if  not v47 then local v127=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",2 + 3 ) ;if v127 then v43.Parent=v127;end end local v48=Instance.new("Frame");v48.Size=UDim2.fromOffset(v35,v35);v48.AnchorPoint=Vector2.new(0.5,0.5 -0 );v48.Position=UDim2.fromScale(1747.5 -(760 + 987) ,0.5 + 0 );v48.BackgroundTransparency=1914 -(1789 + 124) ;v48.Parent=v43;local v54=Instance.new("Frame");v54.Size=UDim2.fromScale(767 -(745 + 21) ,1 + 0 );v54.BackgroundTransparency=1 + 0 ;v54.Parent=v48;local v58=Instance.new("UICorner");v58.CornerRadius=UDim.new(0 -0 ,v37);v58.Parent=v54;local v61=Instance.new("UIStroke");v61.Thickness=v36;v61.Color=v6;pcall(function() v61.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v61.Parent=v54;local v65=Instance.new("Frame");v65.Size=UDim2.fromScale(3 -2 ,1);v65.BackgroundTransparency=1 + 0 ;v65.ZIndex=v54.ZIndex-1 ;v65.Parent=v48;local v70=Instance.new("UICorner");v70.CornerRadius=UDim.new(0 + 0 ,v37);v70.Parent=v65;local v73=Instance.new("UIStroke");v73.Thickness=30;v73.Color=v6;v73.Transparency=1055.75 -(87 + 968) ;pcall(function() v73.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v73.Parent=v65;local v78=Instance.new("Frame");local v79=v35-(v36 * (1 + 1)) ;v78.Size=UDim2.fromOffset(v79,v79);v78.AnchorPoint=Vector2.new(0.5 -0 ,0.5 + 0 );v78.Position=UDim2.fromScale(0.5 -0 ,1413.5 -(447 + 966) );v78.BackgroundTransparency=2 -1 ;v78.ZIndex=1822 -(1703 + 114) ;v78.Parent=v48;local v86=Instance.new("TextLabel");v86.Size=UDim2.fromScale(0.7 + 0 ,701.7 -(376 + 325) );v86.AnchorPoint=Vector2.new(0.5 -0 ,0.5 -0 );v86.Position=UDim2.fromScale(0.5 + 0 ,0.5 -0 );v86.BackgroundTransparency=15 -(9 + 5) ;v86.Text="极速传奇";v86.TextColor3=v6;v86.TextScaled=true;v86.Font=Enum.Font.GothamBlack;v86.Rotation= -(592.56 -(57 + 527));v86.TextTransparency=376.1 -(85 + 291) ;v86.ZIndex=1272 -(243 + 1022) ;v86.Parent=v78;local v100=Instance.new("UIGradient");v100.Rotation=0 -0 ;v100.Color=ColorSequence.new({ColorSequenceKeypoint.new(1180 -(1123 + 57) ,Color3.fromRGB(208 + 47 ,509 -(163 + 91) ,2185 -(1869 + 61) )),ColorSequenceKeypoint.new(0.5 -0 ,Color3.fromRGB(310 -130 ,337 -117 ,208 + 47 )),ColorSequenceKeypoint.new(1 + 0 ,Color3.fromRGB(349 -94 ,255,255))});v100.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(1474 -(1329 + 145) ,1258 -(1043 + 214) ),NumberSequenceKeypoint.new(1212.5 -(323 + 889) ,971.6 -(140 + 831) ),NumberSequenceKeypoint.new(581 -(361 + 219) ,1851 -(1409 + 441) )});v100.Parent=v86;local v105=Instance.new("UIScale",v54);v105.Scale=1;local v107,v108=true,nil;_G.ThunderIntro_Stop=function() local v124=718 -(15 + 703) ;while true do if (1==v124) then if v108 then v108:Disconnect();end if (v43 and v43.Parent) then v43:Destroy();end break;end if (v124==(0 + 0)) then if  not v107 then return;end v107=false;v124=439 -(262 + 176) ;end end end;task.spawn(function() while v107 do local v128=v2:Create(v54,TweenInfo.new(v40,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v54.Rotation + v39 });local v129=v2:Create(v65,TweenInfo.new(v40,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v65.Rotation + v39 });v128:Play();v129:Play();v128.Completed:Wait();end end);task.spawn(function() while v107 do local v130=1721 -(345 + 1376) ;while true do if (v130==(689 -(198 + 490))) then v2:Create(v105,TweenInfo.new(0.6 -0 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v41}):Play();task.wait(0.6 -0 );break;end if (v130==(1206 -(696 + 510))) then v2:Create(v105,TweenInfo.new(0.6 + 0 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v42}):Play();task.wait(0.6);v130=1 -0 ;end end end end);task.spawn(function() while v107 do for v134=850 -(20 + 830) ,1622 -(1091 + 171) ,2 + 8  do v100.Rotation=v134;task.wait(0.03 + 0 );end end end);if (v38 and (v38>(0 -0))) then task.delay(v38,function() local v136=0 -0 ;local v137;while true do if (v136==1) then v2:Create(v61,v137,{Transparency=375 -(123 + 251) }):Play();v2:Create(v73,v137,{Transparency=4 -3 }):Play();v136=700 -(208 + 490) ;end if ((0 + 0)==v136) then if  not v107 then return;end v137=TweenInfo.new(0.4 + 0 ,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut);v136=1 + 0 ;end if (v136==(838 -(660 + 176))) then v2:Create(v86,v137,{TextTransparency=1 + 0 }):Play();task.wait(202.45 -(14 + 188) );v136=678 -(534 + 141) ;end if (v136==(2 + 1)) then _G.ThunderIntro_Stop();break;end end end);end return v43;end v7({duration=6 + 0 });print("反挂机开启");local v8=game:GetService("VirtualUser");game:GetService("Players").LocalPlayer.Idled:connect(function() local v109=0 + 0 ;while true do if (v109==(0 -0)) then v8:Button2Down(Vector2.new(0 -0 ,0 -0 ),workspace.CurrentCamera.CFrame);wait(2 -1 );v109=978 -(553 + 424) ;end if ((1 + 0)==v109) then v8:Button2Up(Vector2.new(0 + 0 ,0 + 0 ),workspace.CurrentCamera.CFrame);break;end end end);local v9=Instance.new("Sound");v9.Parent=game.SoundService;v9.SoundId="rbxassetid://4590662766";v9.Volume=399 -(115 + 281) ;v9.PlayOnRemove=true;v9:Destroy();local v15=loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))();local v16=v15:CreateWindow({Title="Z脚本|极速传奇",Icon="shield-user",Author="作者:Z某人",Folder="CloudHub",Size=UDim2.fromOffset(1349 -769 ,381 + 79 ),Transparent=true,Theme="Dark",Resizable=true,SideBarWidth=483 -283 ,Background="",BackgroundImageTransparency=0.42 -0 ,HideSearchBar=false,ScrollBarEnabled=true,User={Enabled=true,Anonymous=false,Callback=function() print("clicked");end}});v16:EditOpenButton({Title="   打开Z脚本丨极速传奇   ",Icon="shield-check",CornerRadiu=UDim.new(0 -0 ,883 -(550 + 317) ),StrokeThickness=3 -0 ,Color=ColorSequence.new(Color3.fromHex("000000"),Color3.fromHex("FFFFFF"),Color3.fromHex("000000")),Draggable=true});local v17=v16:Tab({Title="自动收集",Icon="warehouse",Locked=false});local v18=false;local v19=0 -0 ;local v20=v17:Toggle({Title="宝石💎",Desc="",Locked=false,Callback=function(v110) v18=v110;while v18 do local v125=0 -0 ;local v126;while true do if (v125==(0 + 0)) then v126={[286 -(134 + 151) ]="collectOrb",[2]="Gem",[3]="City"};game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(v126));v125=1666 -(970 + 695) ;end if (v125==(1 -0)) then wait(v19);break;end end end end});local v21=false;local v19=1990 -(582 + 1408) ;local v22=v17:Toggle({Title="蓝球",Desc="",Locked=false,Callback=function(v111) local v112=0 + 0 ;while true do if (v112==(0 -0)) then v21=v111;while v21 do local v139=0 -0 ;local v140;while true do if (v139==(0 -0)) then v140={[2 -1 ]="collectOrb",[1826 -(1195 + 629) ]="Blue Orb",[3]="City"};game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(v140));v139=1 -0 ;end if (v139==(732 -(476 + 255))) then wait(v19);break;end end end break;end end end});local v23=false;local v19=241 -(187 + 54) ;local v24=v17:Toggle({Title="橙色球",Desc="",Locked=false,Callback=function(v113) local v114=0 + 0 ;while true do if (v114==(0 -0)) then v23=v113;while v23 do local v141=0 -0 ;local v142;while true do if (v141==(781 -(162 + 618))) then wait(v19);break;end if (v141==(0 + 0)) then local v147=0 + 0 ;while true do if (v147==1) then v141=1 -0 ;break;end if (v147==(0 + 0)) then v142={[1 -0 ]="collectOrb",[2 + 0 ]="Orange Orb",[3]="City"};game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(v142));v147=1 -0 ;end end end end end break;end end end});local v25=false;local v19=0 + 0 ;local v26=v17:Toggle({Title="黄球",Desc="",Locked=false,Callback=function(v115) local v116=0;while true do if (v116==0) then v25=v115;while v25 do local v143=1636 -(1373 + 263) ;local v144;while true do if (v143==(1000 -(451 + 549))) then v144={[1 + 0 ]="collectOrb",[2 -0 ]="Yellow Orb",[8 -5 ]="City"};game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(v144));v143=1 -0 ;end if (v143==(1385 -(746 + 638))) then wait(v19);break;end end end break;end end end});local v27=false;local v19=0 + 0 ;local v28=v17:Toggle({Title="红球",Desc="",Locked=false,Callback=function(v117) local v118=0 -0 ;while true do if ((341 -(218 + 123))==v118) then v27=v117;while v27 do local v145=1581 -(1535 + 46) ;local v146;while true do if (v145==(0 + 0)) then local v148=0 + 0 ;while true do if (v148==(1933 -(565 + 1368))) then v146={[561 -(306 + 254) ]="collectOrb",[2]="Red Orb",[1 + 2 ]="City"};game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(v146));v148=1 -0 ;end if (v148==(1 -0)) then v145=1468 -(899 + 568) ;break;end end end if (v145==1) then wait(v19);break;end end end break;end end end});
--- ⚠️ WARNING: integrity protected!
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+repeat task.wait() until game:IsLoaded()
 
-]]--
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local LocalPlayer = Players.LocalPlayer
+while not LocalPlayer do
+	task.wait()
+	LocalPlayer = Players.LocalPlayer
+end
+
+pcall(function()
+	if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop() end
+end)
+
+local function resolveGuiParent()
+	local ok, res = pcall(function() return (gethui and gethui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (get_hidden_gui and get_hidden_gui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (gethiddengui and gethiddengui()) end)
+	if ok and res then return res end
+	local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+	if pg then return pg end
+	return game:GetService("CoreGui")
+end
+
+local guiParent = resolveGuiParent()
+
+local BLUE  = Color3.fromRGB(64, 145, 255)
+
+local function Start(opts)
+	opts = opts or {}
+	local SIZE            = opts.size or 210
+	local STROKE_THICK    = 18
+	local CORNER          = 18
+	local DURATION        = opts.duration or 6 
+	local SPIN_STEP_DEG   = 90
+	local SPIN_STEP_TIME  = 0.90
+	local BREATH_MIN, BREATH_MAX = 0.98, 1.02
+
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "ThunderIntro"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	pcall(function() if syn and syn.protect_gui then syn.protect_gui(gui) end end)
+	local ok = pcall(function() gui.Parent = guiParent end)
+	if not ok then
+		local fallback = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+		if fallback then gui.Parent = fallback end
+	end
+
+	local root = Instance.new("Frame")
+	root.Size = UDim2.fromOffset(SIZE, SIZE)
+	root.AnchorPoint = Vector2.new(0.5, 0.5)
+	root.Position = UDim2.fromScale(0.5, 0.5)
+	root.BackgroundTransparency = 1
+	root.Parent = gui
+
+	local ring = Instance.new("Frame")
+	ring.Size = UDim2.fromScale(1, 1)
+	ring.BackgroundTransparency = 1
+	ring.Parent = root
+	local cornerRing = Instance.new("UICorner") cornerRing.CornerRadius = UDim.new(0, CORNER) cornerRing.Parent = ring
+	local ringStroke = Instance.new("UIStroke")
+	ringStroke.Thickness = STROKE_THICK
+	ringStroke.Color = BLUE
+	pcall(function() ringStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	ringStroke.Parent = ring
+
+	local glow = Instance.new("Frame")
+	glow.Size = UDim2.fromScale(1, 1)
+	glow.BackgroundTransparency = 1
+	glow.ZIndex = ring.ZIndex - 1
+	glow.Parent = root
+	local cornerGlow = Instance.new("UICorner") cornerGlow.CornerRadius = UDim.new(0, CORNER) cornerGlow.Parent = glow
+	local glowStroke = Instance.new("UIStroke")
+	glowStroke.Thickness = 30
+	glowStroke.Color = BLUE
+	glowStroke.Transparency = 0.75
+	pcall(function() glowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	glowStroke.Parent = glow
+
+	local inner = Instance.new("Frame")
+	local innerSize = SIZE - STROKE_THICK * 2
+	inner.Size = UDim2.fromOffset(innerSize, innerSize)
+	inner.AnchorPoint = Vector2.new(0.5, 0.5)
+	inner.Position = UDim2.fromScale(0.5, 0.5)
+	inner.BackgroundTransparency = 1
+	inner.ZIndex = 5
+	inner.Parent = root
+
+	
+	local thunderText = Instance.new("TextLabel")
+	thunderText.Size = UDim2.fromScale(0.7, 0.7)
+	thunderText.AnchorPoint = Vector2.new(0.5, 0.5)
+	thunderText.Position = UDim2.fromScale(0.5, 0.5)
+	thunderText.BackgroundTransparency = 1
+	thunderText.Text = "极速传奇"
+	thunderText.TextColor3 = BLUE
+	thunderText.TextScaled = true
+	thunderText.Font = Enum.Font.GothamBlack
+	thunderText.Rotation = -8.56
+	thunderText.TextTransparency = 0.10
+	thunderText.ZIndex = 7
+	thunderText.Parent = inner
+
+	
+	local gradient = Instance.new("UIGradient")
+	gradient.Rotation = 0
+	gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,220,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255))
+	}
+	gradient.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 1),
+		NumberSequenceKeypoint.new(0.5, 0.6),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	gradient.Parent = thunderText
+
+	local ringScale = Instance.new("UIScale", ring) ringScale.Scale = 1
+
+	local alive, hbConn = true, nil
+	_G.ThunderIntro_Stop = function()
+		if not alive then return end
+		alive = false
+		if hbConn then hbConn:Disconnect() end
+		if gui and gui.Parent then gui:Destroy() end
+	end
+	
+	-- Spin
+	task.spawn(function()
+		while alive do
+			local tw1 = TweenService:Create(ring, TweenInfo.new(SPIN_STEP_TIME, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = ring.Rotation + SPIN_STEP_DEG})
+			local tw2 = TweenService:Create(glow, TweenInfo.new(SPIN_STEP_TIME,   Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = glow.Rotation + SPIN_STEP_DEG})
+			tw1:Play() tw2:Play()
+			tw1.Completed:Wait()
+		end
+	end)
+	
+	-- Breathe
+	task.spawn(function()
+		while alive do
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MAX}):Play()
+			task.wait(0.6)
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MIN}):Play()
+			task.wait(0.6)
+		end
+	end)
+
+	-- Gradient sheen animation
+	task.spawn(function()
+		while alive do
+			for i = 0,360,10 do
+				gradient.Rotation = i
+				task.wait(0.03)
+			end
+		end
+	end)
+
+	-- Auto fade + destroy
+	if DURATION and DURATION > 0 then
+		task.delay(DURATION, function()
+			if not alive then return end
+			local ti = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+			TweenService:Create(ringStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(glowStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(thunderText, ti, {TextTransparency = 1}):Play()
+			task.wait(0.45)
+			_G.ThunderIntro_Stop()
+		end)
+	end
+
+	return gui
+end
+
+Start({duration = 6}) -- lasts longer
+
+print("反挂机开启")
+		local vu = game:GetService("VirtualUser")
+		game:GetService("Players").LocalPlayer.Idled:connect(function()
+		   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		   wait(1)
+		   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
+
+local Sound = Instance.new("Sound")
+        Sound.Parent = game.SoundService
+        Sound.SoundId = "rbxassetid://4590662766"
+        Sound.Volume = 3
+        Sound.PlayOnRemove = true
+        Sound:Destroy()
+        
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
+
+local Window = WindUI:CreateWindow({
+        Title = "Z脚本|极速传奇",
+        Icon = "shield-user",
+        Author = "作者:Z某人",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        Resizable = true,
+        SideBarWidth = 200,
+        Background = "",
+        BackgroundImageTransparency = 0.42,
+        HideSearchBar = false,
+        ScrollBarEnabled = true,
+        User = {
+            Enabled = true,
+            Anonymous = false,
+            Callback = function()
+                print("clicked")
+            end,
+    },
+})
+
+Window:EditOpenButton({
+    Title = "   打开Z脚本丨极速传奇   ",
+    Icon = "shield-check",
+    CornerRadiu = UDim.new(0,16),
+    StrokeThickness = 3,
+    Color = ColorSequence.new( 
+        Color3.fromHex("000000"), 
+        Color3.fromHex("FFFFFF"), 
+        Color3.fromHex("000000")   
+    ),
+    Draggable = true,
+})
+
+local Tab = Window:Tab({
+    Title = "自动收集",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local gemRunning = false  
+local loopDelay = 0
+
+local Tab = -- reference to your tab here
+
+local HoopCollector = {
+    Enabled = false,
+    Connection = nil
+}
+
+local function collectHoops()
+    for _, hoop in ipairs(workspace.Hoops:GetChildren()) do
+        if hoop:IsA("BasePart") then
+            -- Adjust these coordinates based on your character's position
+            hoop.CFrame = CFrame.new(0, 0, 0) -- Move hoop to your character
+            -- Alternatively, you could fire a remote event here if needed
+        end
+    end
+end
+
+local Toggle = Tab:Toggle({
+    Title = "自动收集圈",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        HoopCollector.Enabled = state
+        
+        if state then
+            -- Start collecting hoops every second
+            HoopCollector.Connection = game:GetService("RunService").Heartbeat:Connect(function()
+                if HoopCollector.Enabled then
+                    collectHoops()
+                end
+            end)
+        else
+            -- Stop collecting
+            if HoopCollector.Connection then
+                HoopCollector.Connection:Disconnect()
+                HoopCollector.Connection = nil
+            end
+        end
+    end
+})
+
+local GemToggle = Tab:Toggle({
+    Title = "宝石💎",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        gemRunning = state  
+        
+        while gemRunning do
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Gem",  
+                [3] = "City"
+            }
+            
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            
+            wait(loopDelay)  
+        end
+    end
+})
+
+local running = false  
+local loopDelay = 0
+
+local Toggle = Tab:Toggle({
+    Title = "蓝球",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        running = state  
+        
+        while running do
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Blue Orb",
+                [3] = "City"
+            }
+            
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            
+            wait(loopDelay)  
+        end
+    end
+})
+
+local orangeRunning = false  
+local loopDelay = 0
+
+local OrangeToggle = Tab:Toggle({
+    Title = "橙色球",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        orangeRunning = state  
+        
+        while orangeRunning do
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Orange Orb",
+                [3] = "City"
+            }
+            
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            
+            wait(loopDelay)  
+        end
+    end
+})
+
+local yellowRunning = false  
+local loopDelay = 0
+
+local YellowToggle = Tab:Toggle({
+    Title = "黄球",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        yellowRunning = state  
+        
+        while yellowRunning do
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Yellow Orb",
+                [3] = "City"
+            }
+            
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            
+            wait(loopDelay)  
+        end
+    end
+})
+
+local redRunning = false  
+local loopDelay = 0
+
+local RedToggle = Tab:Toggle({
+    Title = "红球",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        redRunning = state  
+        
+        while redRunning do
+            local args = {
+                [1] = "collectOrb",
+                [2] = "Red Orb",
+                [3] = "City"
+            }
+            
+            game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+            
+            wait(loopDelay)  
+        end
+    end
+})
