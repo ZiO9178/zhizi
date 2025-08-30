@@ -286,3 +286,400 @@ local Button = Tab:Button({
         end
     end
 })
+
+local Button = Tab:Button({
+    Title = "传送到星界岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToAstralIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到星界岛")
+            else
+                warn("找不到星界岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "炽热漩涡岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToBlazingVortexIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到炽热漩涡岛")
+            else
+                warn("找不到炽热漩涡岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "混沌传奇岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToChaosLegendsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到混沌传奇岛")
+            else
+                warn("找不到混沌传奇岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "传送到赛博传奇岛",
+    Desc = "前往 Cybernetic Legends Island",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToCyberneticLegendsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到赛博传奇岛")
+            else
+                warn("找不到赛博传奇岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "暗影元素岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToDarkElementsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到暗影元素岛")
+            else
+                warn("找不到暗影元素岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "龙之传说岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToDragonLegendIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到龙之传说岛")
+            else
+                warn("找不到龙之传说岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "魔法秘境岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToEnchantedIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到魔法秘境岛")
+            else
+                warn("找不到魔法秘境岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "永恒之岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToEternalIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到永恒之岛")
+            else
+                warn("找不到永恒之岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "冬日仙境岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToWinterWonderIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到冬日仙境岛")
+            else
+                warn("找不到冬日仙境岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "苔原岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToTundraIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到苔原岛")
+            else
+                warn("找不到苔原岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "雷暴岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToThunderstormIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 5, 0)  -- 高度提升到5防雷击陷地
+                print("已传送到雷暴岛")
+            else
+                warn("找不到雷暴岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "灵魂融合岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSoulFusionIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame * CFrame.new(0, 3, -2)  -- 后退2单位防止灵魂屏障碰撞
+                print("已传送到灵魂融合岛")
+            else
+                warn("找不到灵魂融合岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "天暴终极岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSkystormUltrausIsland
+            if teleportPart then
+                -- 基础传送（保持Y轴+3单位）
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到天暴终极岛")
+            else
+                warn("找不到天暴终极岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "沙暴岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToSandstormIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到沙暴岛")
+            else
+                warn("找不到沙暴岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "神话灵魂岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMythicalSoulsIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到神话灵魂岛")
+            else
+                warn("找不到神话灵魂岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "神秘岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMysticalIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到神秘岛")
+            else
+                warn("找不到神秘岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "午夜岛",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToMidnightIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到午夜岛")
+            else
+                warn("找不到午夜岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
+
+local Button = Tab:Button({
+    Title = "心灵宁静岛",
+    Desc = "", 
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local teleportPart = workspace.areaTeleportParts.groundToInnerPeaceIsland
+            if teleportPart then
+                character.HumanoidRootPart.CFrame = teleportPart.CFrame + Vector3.new(0, 3, 0)
+                print("已传送到心灵宁静岛")
+            else
+                warn("找不到心灵宁静岛传送点！")
+            end
+        else
+            warn("角色或 HumanoidRootPart 不存在！")
+        end
+    end
+})
