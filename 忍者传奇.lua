@@ -255,6 +255,52 @@ local Toggle = Tab:Toggle({
     end
 })
 
+local Toggle = Tab:Toggle({
+    Title = "自动收集金币",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 自动收集功能
+            local function autoCollect()
+                -- 获取玩家角色
+                local player = game:GetService("Players").LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+                
+                -- 遍历所有金币
+                for _, coin in ipairs(workspace.spawnedCoins.Valley:GetChildren()) do
+                    if coin:IsA("BasePart") then
+                        -- 检测距离并收集
+                        if (humanoidRootPart.Position - coin.Position).Magnitude < 20 then
+                            -- 这里应该是你的收集逻辑，例如触发远程事件或直接销毁金币
+                            -- 示例（根据你的游戏实际机制可能需要调整）:
+                            game:GetService("ReplicatedStorage").CoinCollectionEvent:FireServer(coin)
+                            -- 或者直接销毁（如果允许）:
+                            coin:Destroy()
+                        end
+                    end
+                end
+            end
+            
+            -- 创建循环收集
+            local connection
+            connection = game:GetService("RunService").Heartbeat:Connect(function()
+                autoCollect()
+            end)
+            
+            -- 保存连接以便关闭
+            Toggle._autoCollectConnection = connection
+        else
+            -- 关闭时断开连接
+            if Toggle._autoCollectConnection then
+                Toggle._autoCollectConnection:Disconnect()
+                Toggle._autoCollectConnection = nil
+            end
+        end
+    end
+})
+
 local Tab = Window:Tab({
     Title = "传送功能",
     Icon = "warehouse",
@@ -683,3 +729,4 @@ local Button = Tab:Button({
         end
     end
 })
+
