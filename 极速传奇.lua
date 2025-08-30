@@ -238,45 +238,25 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local gemRunning = false  
-local loopDelay = 0
-
-local Tab = -- reference to your tab here
-
-local HoopCollector = {
-    Enabled = false,
-    Connection = nil
-}
-
-local function collectHoops()
-    for _, hoop in ipairs(workspace.Hoops:GetChildren()) do
-        if hoop:IsA("BasePart") then
-            -- Adjust these coordinates based on your character's position
-            hoop.CFrame = CFrame.new(0, 0, 0) -- Move hoop to your character
-            -- Alternatively, you could fire a remote event here if needed
-        end
-    end
-end
-
 local Toggle = Tab:Toggle({
     Title = "自动收集圈",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        HoopCollector.Enabled = state
-        
         if state then
-            -- Start collecting hoops every second
-            HoopCollector.Connection = game:GetService("RunService").Heartbeat:Connect(function()
-                if HoopCollector.Enabled then
-                    collectHoops()
-                end
-            end)
+            -- Collect and show all chat frames
+            for _, Hoop in pairs(workspace.Hoops:GetChildren()) do
+                -- Assuming you want to make them visible or enable them
+                Hoop.Enabled = true  -- or whatever property controls visibility
+                -- Alternatively, if it's about transparency:
+                -- Hoop.Transparency = 0
+            end
         else
-            -- Stop collecting
-            if HoopCollector.Connection then
-                HoopCollector.Connection:Disconnect()
-                HoopCollector.Connection = nil
+            -- Hide or disable all chat frames
+            for _, Hoop in pairs(workspace.Hoops:GetChildren()) do
+                Hoop.Enabled = false  -- or whatever property controls visibility
+                -- Alternatively, if it's about transparency:
+                -- Hoop.Transparency = 1
             end
         end
     end
