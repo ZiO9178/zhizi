@@ -276,53 +276,39 @@ function StopAutoCollect()
     Toggle:Set(false)
 end
 
-local Tab = -- 这里应该是你之前定义的选项卡引用
-local FishingActive = false -- 控制是否自动钓鱼的开关
-
-local function AutoFish()
-    while FishingActive do
-        -- 检查是否还在钓鱼区域
-        if not workspace:FindFirstChild("NewMap") or not workspace.NewMap:FindFirstChild("渔场") then
-            warn("找不到钓鱼区域！")
-            FishingActive = false
-            break
-        end
-        
-        -- 获取鱼竿（根据你的游戏调整）
-        local rod = game:GetService("Players").LocalPlayer.Character:FindFirstChild("FishingRod")
-        if not rod then
-            warn("没有装备鱼竿！")
-            FishingActive = false
-            break
-        end
-        
-        -- 抛竿
-        rod.RemoteEvent:FireServer("Cast")
-        
-        -- 等待鱼上钩（根据需要调整时间）
-        wait(5)
-        
-        -- 如果还在自动钓鱼状态就收竿
-        if FishingActive then
-            rod.RemoteEvent:FireServer("Reel")
-        end
-        
-        -- 下次抛竿前的短暂延迟
-        wait(1)
-    end
-end
-
 local Toggle = Tab:Toggle({
     Title = "自动钓鱼",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        FishingActive = state -- 更新开关状态
         if state then
-            -- 开启自动钓鱼
-            coroutine.wrap(AutoFish)() -- 使用协程避免阻塞主线程
+            -- Start auto-fishing
+            autoFishingEnabled = true
+            spawn(function()
+                while autoFishingEnabled do
+                    -- Cast fishing rod
+                    game:GetService("ReplicatedStorage").Events.FishingRodCast:FireServer(true)
+                    wait(1)
+                    
+                    -- Wait for fish to bite (adjust timing as needed)
+                    wait(5)
+                    
+                    -- Reel in fish
+                    game:GetService("ReplicatedStorage").Events.FishingRodCast:FireServer(false)
+                    wait(1)
+                    
+                    -- Collect fish (replace with your collection path)
+                    for _,v in pairs(workspace.NewMap["渔场"]:GetDescendants()) do
+                        if v.Name == "Fish" and v:FindFirstChild("ClickDetector") then
+                            fireclickdetector(v.ClickDetector)
+                        end
+                    end
+                    wait(1)
+                end
+            end)
         else
-            -- 关闭自动钓鱼（只需将FishingActive设为false即可停止循环）
+            -- Stop auto-fishing
+            autoFishingEnabled = false
         end
     end
 })
