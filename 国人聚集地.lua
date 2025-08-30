@@ -238,17 +238,18 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local autoCollecting = false
+local connection = nil
+
 local Toggle = Tab:Toggle({
     Title = "自动收集所有矿石",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        local autoCollecting = false
-        local connection
+        autoCollecting = state
         
         if state then
-            print("")
-            autoCollecting = true
+            print("自动收集已开启")
             
             connection = game:GetService("RunService").Heartbeat:Connect(function()
                 if autoCollecting then
@@ -261,8 +262,7 @@ local Toggle = Tab:Toggle({
                 end
             end)
         else
-            print("")
-            autoCollecting = false
+            print("自动收集已关闭")
             
             if connection then
                 connection:Disconnect()
@@ -273,5 +273,5 @@ local Toggle = Tab:Toggle({
 })
 
 function StopAutoCollect()
-    Toggle:Set(false) 
+    Toggle:Set(false)
 end
