@@ -238,55 +238,55 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local RunService = game:GetService("RunService")
-local collectionActive = false
-local connection = nil
-
 local Toggle = Tab:Toggle({
-    Title = "自动收集金币",
-    Desc = "",
-    Locked = false,
+    Title = "自动收集", 
+    Desc = "", 
+    Locked = false, 
     Callback = function(state)
+        -- 保存自动收集状态
+        autoCollectEnabled = state
+        
+        -- 如果开启自动收集，则启动循环
         if state then
-            -- 开启自动收集
-            autoCollectEnabled = true
-            autoCollectCoins()
-        else
-            -- 关闭自动收集
-            autoCollectEnabled = false
+            -- 检查金币容器是否存在
+            if workspace:FindFirstChild("spawnedCoins") and workspace.spawnedCoins:FindFirstChild("Valley") then
+                -- 启动自动收集协程
+                coroutine.wrap(function()
+                    while autoCollectEnabled do
+                        -- 获取所有金币
+                        local coins = workspace.spawnedCoins.Valley:GetChildren()
+                        
+                        -- 收集每个金币
+                        for _, coin in ipairs(coins) do
+                            if coin:IsA("BasePart") then
+                                -- 这里应该是收集金币的逻辑
+                                -- 根据不同游戏可能需要触发远程事件或调用函数
+                                -- 例如: game:GetService("ReplicatedStorage").Events.CollectCoin:FireServer(coin)
+                                
+                                -- 简单示例：直接移动角色到金币位置
+                                game.Players.LocalPlayer.Character:MoveTo(coin.Position)
+                                
+                                -- 添加短暂延迟避免卡顿
+                                wait(0.1)
+                                
+                                -- 如果开关被关闭则退出循环
+                                if not autoCollectEnabled then
+                                    break
+                                end
+                            end
+                        end
+                        
+                        -- 短暂等待后再次检查
+                        wait(0.5)
+                    end
+                end)()
+            else
+                warn("未找到金币容器 spawnedCoins.Valley")
+                Toggle:SetState(false) -- 自动关闭开关
+            end
         end
     end
 })
-
--- 自动收集函数
-function autoCollectCoins()
-    spawn(function()
-        while autoCollectEnabled and wait(0.1) do
-            local valleyCoins = workspace.spawnedCoins.Valley:GetChildren()
-            
-            for _, coin in pairs(valleyCoins) do
-                if not autoCollectEnabled then break end -- 检查是否已禁用
-                
-                -- 检查是否是硬币对象
-                if coin:IsA("Part") or coin:IsA("MeshPart") then
-                    -- 这里需要根据你的游戏实际机制来收集硬币
-                    -- 通常需要将硬币移动到玩家角色或者触发收集事件
-                    
-                    -- 示例：直接将硬币移动到玩家（可能需要调整）
-                    local player = game.Players.LocalPlayer
-                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        coin.CFrame = player.Character.HumanoidRootPart.CFrame
-                    end
-                    
-                    -- 或者触发收集事件（如果有的话）
-                    -- coin:FireServer("Collect")
-                    
-                    wait(0.05) -- 短暂延迟，避免游戏卡顿
-                end
-            end
-        end
-    end)
-end
 
 local running = false
 local Toggle = Tab:Toggle({
