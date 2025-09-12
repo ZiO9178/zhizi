@@ -220,7 +220,7 @@ local Window = WindUI:CreateWindow({
 })
 
 Window:EditOpenButton({
-    Title = "   打开Z脚本丨国人聚集地   ",
+    Title = "   打开Z脚本丨国人聚集地",
     Icon = "shield-check",
     CornerRadiu = UDim.new(0,16),
     StrokeThickness = 3,
@@ -240,44 +240,30 @@ local Tab = Window:Tab({
 
 local miningFolder = workspace.Eco.Mining
 local autoMiningEnabled = false
-local miningInterval = 1 -- 采集间隔时间(秒)
+local miningInterval = 1 
 
 local Toggle = Tab:Toggle({
-    Title = "自动采矿",
+    Title = "自动收集所有矿石",
     Desc = "",
     Locked = false,
     Callback = function(state)
         autoMiningEnabled = state
         if state then
-            -- 开启自动采矿
             spawn(function()
                 while autoMiningEnabled do
-                    -- 遍历Mining文件夹下的所有矿石
                     for _, ore in pairs(miningFolder:GetChildren()) do
-                        if not autoMiningEnabled then break end -- 如果已关闭则停止
+                        if not autoMiningEnabled then break end 
                         
-                        -- 检查是否是矿石(可以根据实际游戏调整条件)
                         if ore:FindFirstChild("ClickDetector") then
-                            -- 模拟点击矿石
                             fireclickdetector(ore.ClickDetector)
                         end
                         
-                        wait(0) -- 每个矿石之间的点击间隔
+                        wait(0) 
                     end
                     
-                    wait(miningInterval) -- 等待下一次循环
+                    wait(miningInterval) 
                 end
             end)
         end
-    end
-})
-
--- 可以添加一个按钮来手动关闭所有采矿
-local CloseButton = Tab:Button({
-    Title = "关闭所有采矿",
-    Desc = "立即停止所有采矿活动",
-    Callback = function()
-        autoMiningEnabled = false
-        print("已关闭所有采矿活动")
     end
 })
