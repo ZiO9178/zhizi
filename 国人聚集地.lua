@@ -267,3 +267,45 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local Toggle = Tab:Toggle({
+    Title = "自动做蜜雪冰城",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        local function automateWorkflow()
+            local order = workspace["接单"]:FindFirstChildOfClass("Model")
+            if order then
+                fireclickdetector(order:FindFirstChildOfClass("ClickDetector"))
+                wait(1) 
+                
+                local workstation = workspace["制作"]:FindFirstChildOfClass("Model")
+                if workstation then
+                    fireclickdetector(workstation:FindFirstChildOfClass("ClickDetector"))
+                    wait(3) 
+                    
+                    local submitStation = workspace["提交"]:FindFirstChildOfClass("Model")
+                    if submitStation then
+                        fireclickdetector(submitStation:FindFirstChildOfClass("ClickDetector"))
+                        wait(1) 
+                        
+                        local closeButton = workspace:FindFirstChild("关闭订单按钮")
+                        if closeButton then
+                            fireclickdetector(closeButton:FindFirstChildOfClass("ClickDetector"))
+                        end
+                    end
+                end
+            end
+        end
+        
+        if state then
+            automationLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                automateWorkflow()
+            end)
+        else
+            if automationLoop then
+                automationLoop:Disconnect()
+            end
+        end
+    end
+})
