@@ -232,6 +232,12 @@ Window:EditOpenButton({
     Draggable = true,
 })
 
+local Tab = Window:Tab({
+    Title = "透视",
+    Icon = "warehouse",
+    Locked = false,
+})
+
 local Toggle = Tab:Toggle({
     Title = "矿石高亮",
     Desc = "显示附近矿石的高亮和标签",
