@@ -233,6 +233,39 @@ Window:EditOpenButton({
 })
 
 local Tab = Window:Tab({
+    Title = "耐力",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "铲子无限耐力",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    local remote = game:GetService("ReplicatedStorage").ReplicaRemoteEvents.Replica_ReplicaSignal
+
+local mt = getrawmetatable(remote) or {}
+local old = mt.__namecall
+
+setreadonly(mt, false)
+
+mt.__namecall = newcclosure(function(self, ...)
+    if self == remote and getnamecallmethod() == "FireServer" then
+        local args = {...}
+        if args[1] == 1345 and args[2] == "PromptMine" then
+            print("阻止了 PromptMine 远程事件")
+            return nil
+        end
+    end
+    return old(self, ...)
+end)
+
+setreadonly(mt, true)
+    end
+})
+
+local Tab = Window:Tab({
     Title = "出售",
     Icon = "warehouse",
     Locked = false,
@@ -255,6 +288,48 @@ local Tab = Window:Tab({
     Title = "升级",
     Icon = "warehouse",
     Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "铲子",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    local args = {
+    [1] = "BuyUpgrade",
+    [2] = "Shovel"
+}
+
+game:GetService("ReplicatedStorage").Framework.Features.MiningSystem.UpgradeUtil.RemoteEvent:FireServer(unpack(args))
+    end
+})
+
+local Button = Tab:Button({
+    Title = "背包",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    local args = {
+    [1] = "BuyUpgrade",
+    [2] = "Backpack"
+}
+
+game:GetService("ReplicatedStorage").Framework.Features.MiningSystem.UpgradeUtil.RemoteEvent:FireServer(unpack(args))
+    end
+})
+
+local Button = Tab:Button({
+    Title = "能量",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    local args = {
+    [1] = "BuyUpgrade",
+    [2] = "Energy"
+}
+
+game:GetService("ReplicatedStorage").Framework.Features.MiningSystem.UpgradeUtil.RemoteEvent:FireServer(unpack(args))
+    end
 })
 
 local Button = Tab:Button({
