@@ -239,31 +239,40 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动收集所有螺丝",
+    Title = "自动收集金币",
     Desc = "",
     Locked = false,
     Callback = function(state)
         if state then
-            -- Start auto-collecting
-            autoCollectEnabled = true
-            spawn(function()
-                while autoCollectEnabled do
-                    -- Collect gold studs
-                    workspace["LEGO%"].GoldStuds:FindFirstChildOfClass("BasePart"):FireServer("Collect")
-                    wait(0.1) -- Adjust delay as needed
-                end
-            end)
+            -- 开启自动收集
+            if not _G.AutoCollectCoins then
+                _G.AutoCollectCoins = true
+                
+                -- 创建自动收集循环
+                _G.AutoCollectConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                    if not _G.AutoCollectCoins then
+                        _G.AutoCollectConnection:Disconnect()
+                        return
+                    end
+                    
+                    -- 收集金币逻辑
+                    pcall(function()
+                        if workspace:FindFirstChild("LEGO%") and workspace["LEGO%"]:FindFirstChild("GoldStuds") then
+                            -- 这里需要根据你的游戏具体逻辑来实现收集功能
+                            -- 可能是触发某种事件或调用函数
+                            workspace["LEGO%"].GoldStuds:Collect()
+                        end
+                    end)
+                end)
+            end
         else
-            -- Stop auto-collecting
-            autoCollectEnabled = false
+            -- 关闭自动收集
+            if _G.AutoCollectCoins then
+                _G.AutoCollectCoins = false
+                if _G.AutoCollectConnection then
+                    _G.AutoCollectConnection:Disconnect()
+                end
+            end
         end
-    end
-})
-
--- Optional: Add a way to manually trigger collection
-local Button = Tab:Button({
-    Name = "Collect Now",
-    Callback = function()
-        workspace["LEGO%"].GoldStuds:FindFirstChildOfClass("BasePart"):FireServer("Collect")
     end
 })
