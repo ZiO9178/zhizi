@@ -238,111 +238,105 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local player = Players.LocalPlayer
-local oreFolder = workspace.Map.Houses["\231\159\191\230\180\158"].Ores -- 您提供的矿石路径 (即 "矿山")
-local mineEvent = ReplicatedStorage:WaitForChild("MineEvent") -- 【重要】请将 "MineEvent" 替换为游戏中真正负责挖矿的RemoteEvent名称
-
--- 控制变量
-local isAutoMining = false -- 主开关状态
-local isFastMode = false   -- 快速模式开关状态
-local miningLoopConnection = nil -- 用于控制循环任务
-
--- 将挖矿逻辑封装成一个函数
-local function startMiningLoop()
-    -- 创建一个新的线程来运行循环，防止游戏卡死
-    miningLoopConnection = coroutine.wrap(function()
-        while isAutoMining do
-            -- 确保玩家角色和模型都存在
-            if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
-                RunService.Heartbeat:Wait()
-                continue
-            end
-
-            local playerPos = player.Character.HumanoidRootPart.Position
-            local nearestOre = nil
-            local shortestDist = math.huge
-
-            -- 遍历所有矿石，找到最近的一个
-            for _, ore in pairs(oreFolder:GetChildren()) do
-                -- 简单的检查，确保目标是一个有效的部件
-                if ore:IsA("BasePart") and ore:FindFirstChild("Position") then
-                    local distance = (playerPos - ore.Position).Magnitude
-                    if distance < shortestDist then
-                        shortestDist = distance
-                        nearestOre = ore
-                    end
-                end
-            end
-
-            -- 如果找到了最近的矿石
-            if nearestOre then
-                print("找到最近的矿石: " .. nearestOre.Name .. ", 距离: " .. math.floor(shortestDist))
-
-                -- 移动到矿石旁边 (如果距离太远)
-                if shortestDist > 15 then
-                     player.Character.Humanoid:MoveTo(nearestOre.Position)
-                     -- 等待角色靠近矿石
-                     repeat RunService.Heartbeat:Wait() until not isAutoMining or (player.Character.HumanoidRootPart.Position - nearestOre.Position).Magnitude < 15
-                end
-                
-                -- 如果在移动过程中关闭了开关，则退出
-                if not isAutoMining then break end
-
-                -- 根据是否开启快速模式来决定如何挖矿
-                if isFastMode then
-                    -- === 快速模式 ===
-                    print("快速模式挖掘中...")
-                    for i = 1, 10 do
-                        if not isAutoMining then break end -- 如果中途关闭，立即停止
-                        mineEvent:FireServer(nearestOre)
-                    end
-                    wait(0.1) -- 快速模式下的短暂间隔
-                else
-                    -- === 普通模式 ===
-                    print("普通模式挖掘中...")
-                    mineEvent:FireServer(nearestOre)
-                    wait(1) -- 普通模式下的标准间隔
-                end
-
-            else
-                print("未找到任何矿石，5秒后重试...")
-                wait(5)
-            end
-             -- 每次循环都短暂等待，给游戏处理时间，防止崩溃
-            RunService.Heartbeat:Wait()
-        end
-    end)()
-end
-
--- 创建UI元素 (这里使用你提供的 Tab:Toggle 格式)
--- 主开关
-local MainToggle = Tab:Toggle({
-    Title = "自动挖矿 (Auto Mining)",
-    Desc = "启动或停止自动寻找并挖掘矿石。",
+local Toggle = Tab:Toggle({
+    Title = "自动挖矿",
+    Desc = "自动寻找并挖掘附近的矿石",
     Locked = false,
     Callback = function(state)
-        isAutoMining = state
-        if isAutoMining then
-            -- 如果开启，则启动挖矿循环
-            startMiningLoop()
-        else
-            -- 如果关闭，miningLoopConnection 会因为 isAutoMining = false 而自然停止
-            print("自动挖矿已停止。")
+        if state then
+            -- 自动挖矿功能
+            local autoMining = true
+            
+            -- 获取玩家工具
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local tool = character:FindFirstChildOfClass("Tool")
+            
+            if not tool then
+                warn("没有找到挖矿工具！")
+                return
+            end
+            
+            -- 自动挖矿协程
+            coroutine.wrap(function()
+                while autoMining and wait(0.1) do
+                    -- 寻找最近的矿石
+                    local closestOre = nil
+                    local closestDistance = math.huge
+                    
+                    for _, ore in pairs(workspace.Map.Houses["家"].Ores:GetChildren()) do
+                        if ore:IsA("BasePart") and ore.Name:find("Ore") then
+                            local distance = (character.HumanoidRootPart.Position - ore.Position).Magnitude
+                            if distance < closestDistance then
+                                closestDistance = distance
+                                closestOre = ore
+                            end
+                        end
+                    end
+                    
+                    -- 如果找到矿石且距离合适
+                    if closestOre and closestDistance < 20 then
+                        -- 移动到矿石位置
+                        character.Humanoid:MoveTo(closestOre.Position)
+                        
+                        -- 面向矿石
+                        character.HumanoidRootPart.CFrame = CFrame.lookAt(
+                            character.HumanoidRootPart.Position,
+                            closestOre.Position
+                        )
+                        
+                        -- 使用工具挖矿
+                        tool:Activate()
+                    end
+                end
+            end)()
+            
+            -- 当Toggle关闭时停止自动挖矿
+            return function()
+                autoMining = false
+            end
         end
     end
 })
 
--- 快速模式的子开关
-local FastModeToggle = Tab:Toggle({
-    Title = "  ㄴ 启用快速模式 (Enable Fast Mode)", -- 使用特殊字符让它看起来像子选项
-    Desc = "开启后，自动挖矿会以极快速度进行。风险更高！",
+local FastMiningToggle = Tab:Toggle({
+    Title = "快速挖矿",
+    Desc = "提高挖矿速度",
     Locked = false,
     Callback = function(state)
-        isFastMode = state
-        if isFastMode then
-            print("快速模式已启用！")
-        else
-            print("快速模式已关闭。")
+        if state then
+            -- 保存原始值以便恢复
+            local originalWalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+            local originalSwingDelay = 0.5 -- 假设原始挥动延迟为0.5秒
+            
+            -- 提高移动速度和挖矿速度
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 32 -- 提高移动速度
+            
+            -- 快速挖矿逻辑（可能需要根据具体游戏调整）
+            local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+            if tool then
+                -- 减少工具冷却时间（如果游戏允许）
+                if tool:FindFirstChild("Cooldown") then
+                    tool.Cooldown.Value = 0.1
+                end
+                
+                -- 快速挥动工具
+                local lastSwing = 0
+                game:GetService("RunService").Heartbeat:Connect(function()
+                    if os.clock() - lastSwing > 0.1 then -- 每0.1秒挥动一次
+                        tool:Activate()
+                        lastSwing = os.clock()
+                    end
+                end)
+            end
+            
+            -- 当Toggle关闭时恢复原始设置
+            return function()
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = originalWalkSpeed
+                if tool and tool:FindFirstChild("Cooldown") then
+                    tool.Cooldown.Value = originalSwingDelay
+                end
+            end
         end
     end
 })
