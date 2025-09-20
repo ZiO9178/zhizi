@@ -269,43 +269,94 @@ local Toggle = Tab:Toggle({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动做蜜雪冰城",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        local function automateWorkflow()
-            local order = workspace["接单"]:FindFirstChildOfClass("Model")
-            if order then
-                fireclickdetector(order:FindFirstChildOfClass("ClickDetector"))
-                wait(1) 
-                
-                local workstation = workspace["制作"]:FindFirstChildOfClass("Model")
-                if workstation then
-                    fireclickdetector(workstation:FindFirstChildOfClass("ClickDetector"))
-                    wait(3) 
-                    
-                    local submitStation = workspace["提交"]:FindFirstChildOfClass("Model")
-                    if submitStation then
-                        fireclickdetector(submitStation:FindFirstChildOfClass("ClickDetector"))
-                        wait(1) 
-                        
-                        local closeButton = workspace:FindFirstChild("关闭订单按钮")
-                        if closeButton then
-                            fireclickdetector(closeButton:FindFirstChildOfClass("ClickDetector"))
-                        end
-                    end
-                end
-            end
-        end
-        
-        if state then
-            automationLoop = game:GetService("RunService").Heartbeat:Connect(function()
-                automateWorkflow()
-            end)
-        else
-            if automationLoop then
-                automationLoop:Disconnect()
-            end
-        end
-    end
-})
+     Title = "自动钓鱼",
+     Desc = "",
+     Locked = false,
+     Callback = function(state)
+         if state then 
+ -- 启用自动钓鱼 
+             autoFishingEnabled = true 
+             startAutoFishing()
+         else 
+ -- 禁用自动钓鱼 
+             autoFishingEnabled = false 
+         end 
+     end 
+ })
+  
+ local autoFishingEnabled = false 
+ local fishingCooldown = 5 -- 钓鱼冷却时间(秒)
+  
+ function startAutoFishing()
+     spawn(function()
+         while autoFishingEnabled do 
+ -- 检查是否有鱼竿装备 
+             if not checkFishingRodEquipped() then 
+                 warn("请先装备鱼竿!")
+                 Toggle:SetState(false)
+                 return 
+             end 
+             
+ -- 抛出鱼线 
+             castFishingLine()
+             
+ -- 等待鱼上钩 
+             waitForFishBite()
+             
+ -- 收杆 
+             reelInFish()
+             
+ -- 冷却时间 
+             wait(fishingCooldown)
+         end 
+     end)
+ end 
+  
+ -- 检查是否装备鱼竿 
+ function checkFishingRodEquipped()
+ -- 这里需要根据具体游戏API实现 
+ -- 示例伪代码:
+     local equippedItem = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+     return equippedItem and equippedItem.Name == "FishingRod"
+ end 
+  
+ -- 抛出鱼线 
+ function castFishingLine()
+ -- 模拟按下钓鱼键 
+     game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.E, false, nil)
+     wait(0.5)
+     game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.E, false, nil)
+     print("鱼线已抛出...")
+ end 
+  
+ -- 等待鱼上钩 
+ function waitForFishBite()
+ -- 这里需要检测鱼上钩的信号 
+ -- 可能是检测粒子效果、声音或UI变化 
+     local biteDetected = false 
+     local maxWaitTime = 30 -- 最大等待时间(秒)
+     local startTime = tick()
+     
+     while not biteDetected and (tick() - startTime) < maxWaitTime and autoFishingEnabled do 
+ -- 检测鱼上钩的逻辑 
+ -- 示例: 检查水面特效或UI提示 
+         if workspace:FindFirstChild("FishBiteEffect") then 
+             biteDetected = true 
+         end 
+         wait(0.1)
+     end 
+     
+     if not biteDetected then 
+         print("没有鱼上钩，重新尝试...")
+     end 
+ end 
+  
+ -- 收杆 
+ function reelInFish()
+ -- 模拟按下收杆键 
+     game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.F, false, nil)
+     wait(0.5)
+     game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.F, false, nil)
+     print("收杆完成!")
+ end
+以上内容由AI搜集并生成，仅供参考
