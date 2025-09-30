@@ -251,17 +251,31 @@ local Toggle = Tab:Toggle({
             [1] = true
         }
         
-        local autoClickConnection
+        Toggle._autoClickConnection = Toggle._autoClickConnection or nil
         
         if state then
-            autoClickConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            if Toggle._autoClickConnection then
+                Toggle._autoClickConnection:Disconnect()
+            end
+            
+            Toggle._autoClickConnection = game:GetService("RunService").Heartbeat:Connect(function()
                 MinigameEvent:FireServer(unpack(args))
-            end)           
+            end)
         else
-            if autoClickConnection then
-                autoClickConnection:Disconnect()
-                autoClickConnection = nil
+            if Toggle._autoClickConnection then
+                Toggle._autoClickConnection:Disconnect()
+                Toggle._autoClickConnection = nil
             end
         end
     end
 })
+
+function Toggle:Close()
+    if self._autoClickConnection then
+        self._autoClickConnection:Disconnect()
+        self._autoClickConnection = nil
+    end
+    if self.SetState then
+        self:SetState(false)
+    end
+end
