@@ -240,42 +240,28 @@ local Tab = Window:Tab({
 
 local Toggle = Tab:Toggle({
     Title = "自动刷钱",
-    Desc = "要先求捐赠",
+    Desc = "先求捐赠",
     Locked = false,
     Callback = function(state)
-        local Players = game:GetService("Players")
-        local ReplicatedStorage = game:GetService("ReplicatedStorage")
-        local MinigameEvent = ReplicatedStorage.Remotes.MinigameEvent
-        
-        local args = {
-            [1] = true
-        }
-        
-        Toggle._autoClickConnection = Toggle._autoClickConnection or nil
-        
         if state then
-            if Toggle._autoClickConnection then
-                Toggle._autoClickConnection:Disconnect()
-            end
+            getgenv().autoClick = true
             
-            Toggle._autoClickConnection = game:GetService("RunService").Heartbeat:Connect(function()
-                MinigameEvent:FireServer(unpack(args))
+            spawn(function()
+                while getgenv().autoClick do
+                    local args = {[1] = true}
+                    game:GetService("ReplicatedStorage").Remotes.MinigameEvent:FireServer(unpack(args))
+                    wait(0) 
+                end
             end)
         else
-            if Toggle._autoClickConnection then
-                Toggle._autoClickConnection:Disconnect()
-                Toggle._autoClickConnection = nil
-            end
+            getgenv().autoClick = false
         end
     end
 })
 
-function Toggle:Close()
-    if self._autoClickConnection then
-        self._autoClickConnection:Disconnect()
-        self._autoClickConnection = nil
-    end
-    if self.SetState then
-        self:SetState(false)
+function stopAutoClick()
+    if getgenv().autoClick then
+        getgenv().autoClick = false
+        Toggle:SetState(false) 
     end
 end
