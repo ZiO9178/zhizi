@@ -256,8 +256,7 @@ local Toggle = Tab:Toggle({
         if state then
             autoClickConnection = game:GetService("RunService").Heartbeat:Connect(function()
                 MinigameEvent:FireServer(unpack(args))
-            end)
-            
+            end)           
         else
             if autoClickConnection then
                 autoClickConnection:Disconnect()
