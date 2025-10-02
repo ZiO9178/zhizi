@@ -264,3 +264,16 @@ local autoClickEnabled = false
          end
      end 
  })
+  
+ -- 可选：添加间隔时间调整功能 
+ local Slider = Tab:Slider({
+     Title = "点击间隔(秒)",
+     Desc = "设置自动点击频率",
+     Default = clickInterval,
+     Min = 0.1,
+     Max = 5,
+     Callback = function(value)
+         clickInterval = value 
+         Toggle:UpdateDesc("启用后每"..clickInterval.."秒自动触发事件")
+     end
+ })
