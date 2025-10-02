@@ -238,42 +238,28 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local autoClickEnabled = false 
- local clickInterval = 0
- local clickLoop 
-  
- local Toggle = Tab:Toggle({
-     Title = "自动点击开关",
-     Desc = ""
-     Locked = false,
-     Callback = function(state)
-         autoClickEnabled = state 
-         
-         if state then 
-             clickLoop = coroutine.create(function()
-                 while autoClickEnabled and wait(clickInterval) do 
-                     local args = {[1] = true}
-                     game:GetService("ReplicatedStorage").Remotes.MinigameEvent:FireServer(unpack(args))
-                 end 
-             end)
-             coroutine.resume(clickLoop)
-         else
-             if clickLoop then
-                 coroutine.close(clickLoop)
-             end 
-         end
-     end 
- })
-  
- -- 可选：添加间隔时间调整功能 
- local Slider = Tab:Slider({
-     Title = "点击间隔(秒)",
-     Desc = "设置自动点击频率",
-     Default = clickInterval,
-     Min = 0.1,
-     Max = 5,
-     Callback = function(value)
-         clickInterval = value 
-         Toggle:UpdateDesc("启用后每"..clickInterval.."秒自动触发事件")
-     end
- })
+local Toggle = Tab:Toggle({
+    Title = "自动点击",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            print("自动点击已开启")
+            
+            local autoClickConnection
+            autoClickConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                local args = {[1] = true}
+                game:GetService("ReplicatedStorage").Remotes.MinigameEvent:FireServer(unpack(args))
+            end)
+            
+            Toggle.AutoClickConnection = autoClickConnection
+        else
+            print("自动点击已关闭")
+            
+            if Toggle.AutoClickConnection then
+                Toggle.AutoClickConnection:Disconnect()
+                Toggle.AutoClickConnection = nil
+            end
+        end
+    end
+})
