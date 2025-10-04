@@ -242,27 +242,30 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local AutoMine = false
+local autoMine = false
+local mineLoop
 
 local Toggle = Tab:Toggle({
     Title = "自动刷钱",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        AutoMine = state
-        if AutoMine then
-            task.spawn(function()
-                while AutoMine do
+        autoMine = state
+        if autoMine then
+            mineLoop = task.spawn(function()
+                while autoMine do
                     local args = {
                         [1] = 1,
-                        [2] = 14,
-                        [3] = 3,
-                        [4] = 4
+                        [2] = 17,
+                        [3] = 2,
+                        [4] = 3
                     }
                     game:GetService("ReplicatedStorage").Packages.Knit.Services.MiningService.RF.BlockMined:InvokeServer(unpack(args))
-                    task.wait(0)
+                    task.wait(0.01)
                 end
             end)
+        else
+            autoMine = false
         end
     end
 })
