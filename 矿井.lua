@@ -336,39 +336,3 @@ local Button = Tab:Button({
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1084.0081787109375, 244.92471313476562, -469.2533874511719)
     end
 })
-
-local Tab = Window:Tab({
-    Title = "挖矿功能",
-    Icon = "warehouse",
-    Locked = false,
-})
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Tool = LocalPlayer.Backpack:FindFirstChild("Iron Pickaxe") or LocalPlayer.Character:FindFirstChild("Iron Pickaxe")
-
-local Toggle = Tab:Toggle({
-    Title = "最大力量",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        if state then
-            _G.MiningMaxPower = true
-            task.spawn(function()
-                while _G.MiningMaxPower do
-                    pcall(function()
-                        if Tool and Tool:FindFirstChild("Power") then
-                            Tool.Power.Value = math.huge 
-                        end
-                        if LocalPlayer:FindFirstChild("Power") then
-                            LocalPlayer.Power.Value = math.huge
-                        end
-                    end)
-                    task.wait(0.2) 
-                end
-            end)
-        else
-            _G.MiningMaxPower = false
-        end
-    end
-})
