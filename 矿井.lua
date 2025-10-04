@@ -247,7 +247,7 @@ local collectConnection
 
 local Toggle = Tab:Toggle({
     Title = "自动收集矿石",
-    Desc = "",
+    Desc = "收集你附近的矿石",
     Locked = false,
     Callback = function(state)
         collecting = state
@@ -265,5 +265,20 @@ local Toggle = Tab:Toggle({
                 collectConnection = nil
             end
         end
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "传送功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "传送到交易员汤姆",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1017.7772827148438, 244.99996948242188, -64.45948028564453)
     end
 })
