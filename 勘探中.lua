@@ -292,3 +292,37 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local RunService = game:GetService("RunService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local root = character:WaitForChild("HumanoidRootPart")
+
+local collecting = false
+local connection
+
+local Toggle = Tab:Toggle({
+    Title = "自动收集水晶",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        collecting = state
+        if collecting then
+            print("开始自动收集水晶...")
+            connection = RunService.Heartbeat:Connect(function()
+                for _, geode in pairs(workspace.Geode:GetChildren()) do
+                    if geode:IsA("BasePart") or geode:FindFirstChild("TouchInterest") then
+                        root.CFrame = geode.CFrame + Vector3.new(0, 3, 0)
+                        task.wait(0.2)
+                    end
+                end
+            end)
+        else
+            print("停止自动收集水晶。")
+            if connection then
+                connection:Disconnect()
+                connection = nil
+            end
+        end
+    end
+})
