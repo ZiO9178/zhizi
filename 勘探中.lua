@@ -293,36 +293,26 @@ local Toggle = Tab:Toggle({
     end
 })
 
-local RunService = game:GetService("RunService")
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
-
-local collecting = false
-local connection
+local Teleporting = false
 
 local Toggle = Tab:Toggle({
-    Title = "自动收集水晶",
+    Title = "自动传送全部水晶",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        collecting = state
-        if collecting then
-            print("开始自动收集水晶...")
-            connection = RunService.Heartbeat:Connect(function()
-                for _, geode in pairs(workspace.Geode:GetChildren()) do
-                    if geode:IsA("BasePart") or geode:FindFirstChild("TouchInterest") then
-                        root.CFrame = geode.CFrame + Vector3.new(0, 3, 0)
-                        task.wait(0.2)
+        Teleporting = state
+        if state then
+            task.spawn(function()
+                while Teleporting do
+                    for _, crystal in pairs(workspace.Geode:GetChildren()) do
+                        if crystal:IsA("BasePart") then
+                            game.Players.LocalPlayer.Character:MoveTo(crystal.Position)
+                            task.wait(0.5) 
+                        end
                     end
+                    task.wait(1) 
                 end
             end)
-        else
-            print("停止自动收集水晶。")
-            if connection then
-                connection:Disconnect()
-                connection = nil
-            end
         end
     end
 })
