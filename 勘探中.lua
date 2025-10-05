@@ -269,3 +269,26 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local shaking = false
+local shakeThread
+
+local Toggle = Tab:Toggle({
+    Title = "自动摇动",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        shaking = state
+        if shaking then
+            shakeThread = task.spawn(function()
+                while shaking do
+                    local pan = game.Players.LocalPlayer.Character:FindFirstChild("Plastic Pan")
+                    if pan and pan:FindFirstChild("Scripts") and pan.Scripts:FindFirstChild("Shake") then
+                        pan.Scripts.Shake:FireServer()
+                    end
+                    task.wait(0.1) 
+                end
+            end)
+        end
+    end
+})
