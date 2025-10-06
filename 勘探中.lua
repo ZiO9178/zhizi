@@ -247,48 +247,27 @@ local Toggle = Tab:Toggle({
     Desc = "",
     Locked = false,
     Callback = function(state)
-        local player = game:GetService("Players").LocalPlayer
-        local char = player.Character or player.CharacterAdded:Wait()
-        local backpack = player:WaitForChild("Backpack")
-
-        local active = state
-        local toolCheckConn
-
-        if active then
-            print("自动挖掘已开启")
-            toolCheckConn = char.ChildAdded:Connect(function(tool)
-                if tool:IsA("Tool") and tool.Name == "平底锅" then
-                    print("检测到平底锅，开始自动挖掘")
-                    while tool.Parent == char and active do
-                        task.wait(0.3)
-                        pcall(function()
-                            tool:Activate()
-                        end)
+        if state then
+            _G.AutoMine = true
+            task.spawn(function()
+                while _G.AutoMine do
+                    local pans = {"Rusty Pan", "Plastic Pan", "Metal Pan", "Silver Pan"}
+                    for _, panName in ipairs(pans) do
+                        local player = game:GetService("Players").LocalPlayer
+                        local char = player.Character
+                        if char and char:FindFirstChild(panName) then
+                            local args = {[1] = 1}
+                            local pan = char:FindFirstChild(panName)
+                            if pan:FindFirstChild("Scripts") and pan.Scripts:FindFirstChild("Collect") then
+                                pan.Scripts.Collect:InvokeServer(unpack(args))
+                            end
+                        end
                     end
-                    print("平底锅不在手里，停止挖掘")
+                    task.wait(0.1)
                 end
             end)
-
-            local currentTool = char:FindFirstChildOfClass("Tool")
-            if currentTool and currentTool.Name == "平底锅" then
-                task.spawn(function()
-                    print("检测到平底锅，开始自动挖掘")
-                    while currentTool.Parent == char and active do
-                        task.wait(0.3)
-                        pcall(function()
-                            currentTool:Activate()
-                        end)
-                    end
-                    print("平底锅不在手里，停止挖掘")
-                end)
-            end
         else
-            print("自动挖掘已关闭")
-            active = false
-            if toolCheckConn then
-                toolCheckConn:Disconnect()
-                toolCheckConn = nil
-            end
+            _G.AutoMine = false
         end
     end
 })
