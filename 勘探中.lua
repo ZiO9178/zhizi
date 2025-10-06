@@ -273,19 +273,58 @@ local Toggle = Tab:Toggle({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动摇动",
+    Title = "自动摇锅",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        shaking = state
-        if shaking then
-            shakeThread = task.spawn(function()
-                while shaking do
-                    local pan = game.Players.LocalPlayer.Character:FindFirstChild("Plastic Pan")
-                    if pan and pan:FindFirstChild("Scripts") and pan.Scripts:FindFirstChild("Shake") then
-                        pan.Scripts.Shake:FireServer()
+        if state then
+            _G.AutoShake = true
+            task.spawn(function()
+                while _G.AutoShake do
+                    local char = game:GetService("Players").LocalPlayer.Character
+                    if char then
+                        local pans = {"Silver Pan", "Metal Pan", "Plastic Pan", "Rusty Pan"}
+                        for _, panName in ipairs(pans) do
+                            local pan = char:FindFirstChild(panName)
+                            if pan and pan:FindFirstChild("Scripts") and pan.Scripts:FindFirstChild("Shake") then
+                                pan.Scripts.Shake:FireServer()
+                            end
+                        end
                     end
-                    task.wait(0.1) 
+                    task.wait(0.1)
+                end
+            end)
+        else
+            _G.AutoShake = false
+        end
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "出售功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local sellRemote = game:GetService("ReplicatedStorage"):WaitForChild("SellItem") 
+local autoSell = false
+
+local Toggle = Tab:Toggle({
+    Title = "自动出售",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        autoSell = state
+        if autoSell then
+            task.spawn(function()
+                while autoSell do
+                    pcall(function()
+                        for _, item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                            sellRemote:FireServer(item.Name)
+                            task.wait(0.1)
+                        end
+                    end)
+                    task.wait(1)
                 end
             end)
         end
