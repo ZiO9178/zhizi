@@ -243,55 +243,55 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动挖",
+    Title = "自动挖掘",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        if state then
-            getgenv().AutoMine = true
-            task.spawn(function()
-                while getgenv().AutoMine do
-                    local player = game:GetService("Players").LocalPlayer
-                    local char = player.Character
-                    local backpack = player:FindFirstChild("Backpack")
+        local player = game:GetService("Players").LocalPlayer
+        local char = player.Character or player.CharacterAdded:Wait()
+        local backpack = player:WaitForChild("Backpack")
 
-                    local pans = {}
+        local active = state
+        local toolCheckConn
 
-                    if char then
-                        for _, v in pairs(char:GetChildren()) do
-                            if v:IsA("Tool") and v.Name == "Plastic Pan" then
-                                table.insert(pans, v)
-                            end
-                        end
+        if active then
+            print("自动挖掘已开启")
+            toolCheckConn = char.ChildAdded:Connect(function(tool)
+                if tool:IsA("Tool") and tool.Name == "平底锅" then
+                    print("检测到平底锅，开始自动挖掘")
+                    while tool.Parent == char and active do
+                        task.wait(0.3)
+                        pcall(function()
+                            tool:Activate()
+                        end)
                     end
-
-                    if backpack then
-                        for _, v in pairs(backpack:GetChildren()) do
-                            if v:IsA("Tool") and v.Name == "Plastic Pan" then
-                                table.insert(pans, v)
-                            end
-                        end
-                    end
-
-                    for _, tool in pairs(pans) do
-                        local collect = tool:FindFirstChild("Scripts") and tool.Scripts:FindFirstChild("Collect")
-                        if collect then
-                            pcall(function()
-                                collect:InvokeServer(1)
-                            end)
-                        end
-                    end
-
-                    task.wait(0.1)
+                    print("平底锅不在手里，停止挖掘")
                 end
             end)
+
+            local currentTool = char:FindFirstChildOfClass("Tool")
+            if currentTool and currentTool.Name == "平底锅" then
+                task.spawn(function()
+                    print("检测到平底锅，开始自动挖掘")
+                    while currentTool.Parent == char and active do
+                        task.wait(0.3)
+                        pcall(function()
+                            currentTool:Activate()
+                        end)
+                    end
+                    print("平底锅不在手里，停止挖掘")
+                end)
+            end
         else
-            getgenv().AutoMine = false
+            print("自动挖掘已关闭")
+            active = false
+            if toolCheckConn then
+                toolCheckConn:Disconnect()
+                toolCheckConn = nil
+            end
         end
     end
 })
-local shaking = false
-local shakeThread
 
 local Toggle = Tab:Toggle({
     Title = "自动摇动",
