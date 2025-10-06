@@ -317,11 +317,51 @@ local Toggle = Tab:Toggle({
                 while getgenv().AutoSell do
                     game:GetService("ReplicatedStorage").Remotes.Shop.GetInventorySellPrice:InvokeServer()
                     game:GetService("ReplicatedStorage").Remotes.Shop.SellAll:InvokeServer()
-                    task.wait(1)
+                    task.wait(0)
                 end
             end)
         else
             getgenv().AutoSell = false
+        end
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "水晶功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动传送到所有水晶",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            print("开始自动传送到所有水晶...")
+
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local hrp = character:WaitForChild("HumanoidRootPart")
+
+            local geodes = {}
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj.Name == "Geode" and obj:IsA("BasePart") then
+                    table.insert(geodes, obj)
+                end
+            end
+
+            print("找到 " .. #geodes .. " 个水晶")
+
+            for _, geode in ipairs(geodes) do
+                if not state then break end
+                hrp.CFrame = geode.CFrame + Vector3.new(0, 3, 0)
+                task.wait(0.5)
+            end
+
+            print("传送完成。")
+        else
+            print("自动传送已关闭。")
         end
     end
 })
