@@ -253,14 +253,35 @@ local Toggle = Tab:Toggle({
                 while getgenv().AutoMine do
                     local player = game:GetService("Players").LocalPlayer
                     local char = player.Character
-                    if char and char:FindFirstChild("Plastic Pan") then
-                        local tool = char:FindFirstChild("Plastic Pan")
-                        local collect = tool:FindFirstChild("Scripts") and tool.Scripts:FindFirstChild("Collect")
-                        if collect then
-                            local args = { [1] = 1 }
-                            collect:InvokeServer(unpack(args))
+                    local backpack = player:FindFirstChild("Backpack")
+
+                    local pans = {}
+
+                    if char then
+                        for _, v in pairs(char:GetChildren()) do
+                            if v:IsA("Tool") and v.Name == "Plastic Pan" then
+                                table.insert(pans, v)
+                            end
                         end
                     end
+
+                    if backpack then
+                        for _, v in pairs(backpack:GetChildren()) do
+                            if v:IsA("Tool") and v.Name == "Plastic Pan" then
+                                table.insert(pans, v)
+                            end
+                        end
+                    end
+
+                    for _, tool in pairs(pans) do
+                        local collect = tool:FindFirstChild("Scripts") and tool.Scripts:FindFirstChild("Collect")
+                        if collect then
+                            pcall(function()
+                                collect:InvokeServer(1)
+                            end)
+                        end
+                    end
+
                     task.wait(0.1)
                 end
             end)
@@ -269,7 +290,6 @@ local Toggle = Tab:Toggle({
         end
     end
 })
-
 local shaking = false
 local shakeThread
 
@@ -287,30 +307,6 @@ local Toggle = Tab:Toggle({
                         pan.Scripts.Shake:FireServer()
                     end
                     task.wait(0.1) 
-                end
-            end)
-        end
-    end
-})
-
-local Teleporting = false
-
-local Toggle = Tab:Toggle({
-    Title = "自动传送全部水晶",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        Teleporting = state
-        if state then
-            task.spawn(function()
-                while Teleporting do
-                    for _, crystal in pairs(workspace.Geode:GetChildren()) do
-                        if crystal:IsA("BasePart") then
-                            game.Players.LocalPlayer.Character:MoveTo(crystal.Position)
-                            task.wait(0.5) 
-                        end
-                    end
-                    task.wait(1) 
                 end
             end)
         end
