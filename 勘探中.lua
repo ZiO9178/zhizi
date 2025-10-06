@@ -306,27 +306,22 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local sellRemote = game:GetService("ReplicatedStorage"):WaitForChild("SellItem") 
-local autoSell = false
-
 local Toggle = Tab:Toggle({
     Title = "自动出售",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        autoSell = state
-        if autoSell then
+        if state then
+            getgenv().AutoSell = true
             task.spawn(function()
-                while autoSell do
-                    pcall(function()
-                        for _, item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                            sellRemote:FireServer(item.Name)
-                            task.wait(0.1)
-                        end
-                    end)
+                while getgenv().AutoSell do
+                    game:GetService("ReplicatedStorage").Remotes.Shop.GetInventorySellPrice:InvokeServer()
+                    game:GetService("ReplicatedStorage").Remotes.Shop.SellAll:InvokeServer()
                     task.wait(1)
                 end
             end)
+        else
+            getgenv().AutoSell = false
         end
     end
 })
