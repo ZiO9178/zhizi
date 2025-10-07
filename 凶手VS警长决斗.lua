@@ -242,42 +242,88 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local localPlayer = Players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local shooting = false
+local target = nil
+
 local Toggle = Tab:Toggle({
     Title = "自动射击",
     Desc = "",
     Locked = false,
     Callback = function(state)
+        shooting = state
         if state then
-            _G.AutoShoot = true
-            
-            coroutine.wrap(function()
-                while _G.AutoShoot and wait(0.1) do
-                    local closestEnemy = nil
-                    local closestDistance = math.huge
-                    local player = game.Players.LocalPlayer
-                    local character = player.Character or player.CharacterAdded:Wait()
-                    local rootPart = character:WaitForChild("HumanoidRootPart")
-                    
-                    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
-                        if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                            local distance = (otherPlayer.Character.HumanoidRootPart.Position - rootPart.Position).Magnitude
-                            if distance < closestDistance then
-                                closestDistance = distance
-                                closestEnemy = otherPlayer.Character
-                            end
-                        end
-                    end
-                    
-                    if closestEnemy and closestDistance < 50 then
-                        game:GetService("ReplicatedStorage").Remotes.ShootGun:FireServer({
-                            Target = closestEnemy.HumanoidRootPart.Position,
-                            Direction = (closestEnemy.HumanoidRootPart.Position - rootPart.Position).Unit
-                        })
-                    end
+            spawn(function()
+                while shooting do
+                    findAndShootNearestEnemy()
+                    wait(0.1)
                 end
-            end)()
-        else
-            _G.AutoShoot = false
+            end)
         end
     end
 })
+
+function findNearestEnemy()
+    local closestDistance = math.huge
+    local closestPlayer = nil
+    local localCharacter = localPlayer.Character
+    
+    if not localCharacter then return nil end
+    local localRoot = localCharacter:FindFirstChild("HumanoidRootPart")
+    if not localRoot then return nil end
+    
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            local enemyCharacter = player.Character
+            local enemyRoot = enemyCharacter:FindFirstChild("HumanoidRootPart")
+            
+            if enemyRoot then
+                local distance = (localRoot.Position - enemyRoot.Position).Magnitude
+                if distance < closestDistance then
+                    closestDistance = distance
+                    closestPlayer = player
+                end
+            end
+        end
+    end
+    
+    return closestPlayer
+end
+
+function shootEnemy(enemy)
+    if not enemy or not enemy.Character then return end
+    
+    local enemyRoot = enemy.Character:FindFirstChild("HumanoidRootPart")
+    if not enemyRoot then return end
+    
+    local localCharacter = localPlayer.Character
+    if not localCharacter then return end
+    
+    local leftFoot = localCharacter:FindFirstChild("LeftFoot")
+    if not leftFoot then return end
+    
+    local args = {
+        [1] = enemyRoot.Position,
+        [2] = enemyRoot.Position,
+        [3] = leftFoot.Part,
+        [4] = enemyRoot.Position
+    }
+    
+    ReplicatedStorage.Remotes.ShootGun:FireServer(unpack(args))
+end
+
+function findAndShootNearestEnemy()
+    local enemy = findNearestEnemy()
+    if enemy then
+        shootEnemy(enemy)
+    end
+end
+
+localPlayer.CharacterAdded:Connect(function(newChar)
+    character = newChar
+end)
