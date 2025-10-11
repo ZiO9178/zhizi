@@ -243,25 +243,27 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动点击全部矿石",
+    Title = "自动挖矿",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        getgenv().AutoMine = state
         if state then
-            print("自动挖矿已启动")
-            task.spawn(function()
-                while getgenv().AutoMine do
-                    for _, v in pairs(workspace:GetDescendants()) do
-                        if v:IsA("Model") and v:FindFirstChild("ClickDetector") and v.Name:find("矿") then
-                            fireclickdetector(v.ClickDetector)
+            autoMineToggle = true
+            spawn(function()
+                while autoMineToggle do
+                    local mines = workspace["主世界地图"].Mining:GetChildren()
+                    
+                    for _, mine in ipairs(mines) do
+                        if mine:FindFirstChild("ClickDetector") then
+                            fireclickdetector(mine.ClickDetector)
                         end
                     end
-                    task.wait(0)
+                    
+                    wait(0)
                 end
             end)
         else
-            print("自动挖矿已停止")
+            autoMineToggle = false
         end
     end
 })
