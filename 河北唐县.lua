@@ -242,21 +242,28 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+-- We create a variable to keep track of whether the loop should be running.
 local isLooping = false
 
 Local Toggle = Tab:Toggle({
-    Title = "制作冰淇淋",
-    Desc = "",
+    Title = "循环制作冰淇淋", -- I changed the title slightly
+    Desc = "开启后将自动循环制作并服务冰淇淋。", -- Added a description
     Locked = false,
     Callback = function(state)
+        -- 'state' will be true if the toggle is ON, and false if it is OFF.
         isLooping = state
 
+        -- We only start a new loop if state is true.
         if isLooping then
+            -- task.spawn runs the loop in a new thread so it doesn't freeze your game.
             task.spawn(function()
+                -- This loop will continue as long as isLooping is true.
                 while isLooping do
+                    -- Your ice cream making process
                     game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
                     task.wait(0.1)
-
+                    
+                    -- It's a good practice to check again in case the toggle was turned off during the wait.
                     if not isLooping then break end
 
                     game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
@@ -266,7 +273,8 @@ Local Toggle = Tab:Toggle({
 
                     game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
 
-                    task.wait(0.1) 
+                    -- Add a small delay at the end of the cycle before starting the next one.
+                    task.wait(1) 
                 end
             end)
         end
