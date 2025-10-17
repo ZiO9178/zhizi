@@ -242,43 +242,21 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local running = false
-
 local Toggle = Tab:Toggle({
-    Title = "自动冰淇淋",
+    Title = "制作冰淇淋",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        running = state
+        if state then
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
+            
+            task.wait(0.5)
+            
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
+            
+            task.wait(0.5)
 
-        if running then
-            task.spawn(function()
-                while running do
-                    local args = {
-                        [1] = "GrabCone"
-                    }
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
-
-                    task.wait(0.1)
-
-                    local args = {
-                        [1] = "FillCone"
-                    }
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
-
-                    task.wait(0.1)
-
-                    local args = {
-                        [1] = "ServeCustomer",
-                        [2] = workspace.Customer3
-                    }
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
-
-                    task.wait(0.1)
-                end
-            end)
-        else
-            print("自动送冰淇淋已关闭")
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
         end
     end
 })
