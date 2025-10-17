@@ -242,21 +242,33 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Toggle = Tab:Toggle({
+local isLooping = false
+
+Local Toggle = Tab:Toggle({
     Title = "制作冰淇淋",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        if state then
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
-            
-            task.wait(0.5)
-            
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
-            
-            task.wait(0.5)
+        isLooping = state
 
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
+        if isLooping then
+            task.spawn(function()
+                while isLooping do
+                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
+                    task.wait(0.1)
+
+                    if not isLooping then break end
+
+                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
+                    task.wait(0.1)
+
+                    if not isLooping then break end
+
+                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
+
+                    task.wait(0.1) 
+                end
+            end)
         end
     end
 })
