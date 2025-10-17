@@ -243,29 +243,21 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动完成冰淇淋任务",
-    Desc = "自动执行拿蛋筒、装冰淇淋和服务顾客的流程",
+    Title = "自动任务",
+    Desc = "",
     Locked = false,
     Callback = function(state)
         if state then
-            -- 拿蛋筒
-            local grabArgs = {
-                [1] = "GrabCone"
-            }
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(grabArgs))
-            
-            -- 装冰淇淋
-            local fillArgs = {
-                [1] = "FillCone"
-            }
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(fillArgs))
-            
-            -- 服务顾客
-            local serveArgs = {
-                [1] = "ServeCustomer",
-                [2] = workspace.Customer3
-            }
-            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(serveArgs))
+            _G.AutoJob = true
+            task.spawn(function()
+                while _G.AutoJob do
+                    game:GetService("ReplicatedStorage"):WaitForChild("JobDataEvent"):FireServer()
+
+                    task.wait(0.1)
+                end
+            end)
+        else
+            _G.AutoJob = false
         end
     end
 })
