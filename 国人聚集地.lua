@@ -243,27 +243,29 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动挖矿",
+    Title = "自动搬砖",
     Desc = "",
     Locked = false,
     Callback = function(state)
+        _G.AutoTaskActive = state
+
         if state then
-            autoMineToggle = true
-            spawn(function()
-                while autoMineToggle do
-                    local mines = workspace["主世界地图"].Mining:GetChildren()
-                    
-                    for _, mine in ipairs(mines) do
-                        if mine:FindFirstChild("ClickDetector") then
-                            fireclickdetector(mine.ClickDetector)
-                        end
-                    end
-                    
-                    wait(0)
+            task.spawn(function()
+                while _G.AutoTaskActive do
+
+                    print("正在尝试自动取货...")
+                    game.ReplicatedStorage.RemoteEventForPickup:FireServer(workspace["工作区"]["货物"])
+
+                    task.wait(2)
+
+                    if not _G.AutoTaskActive then break end
+
+                    print("正在尝试自动提交...")
+                    game.ReplicatedStorage.RemoteEventForSubmit:FireServer(Workspace["工作区"]["任务"])
+
+                    task.wait(2)
                 end
             end)
-        else
-            autoMineToggle = false
         end
     end
 })
