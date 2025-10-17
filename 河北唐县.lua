@@ -243,21 +243,37 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动任务",
-    Desc = "",
+    Title = "自动服务顾客",
+    Desc = "依次执行 GrabCup、FillCup、ServeCustomer",
     Locked = false,
     Callback = function(state)
         if state then
-            _G.AutoJob = true
+            -- 开启时执行
             task.spawn(function()
-                while _G.AutoJob do
-                    game:GetService("ReplicatedStorage"):WaitForChild("JobDataEvent"):FireServer()
+                -- 1. 拿杯子
+                local args = {
+                    [1] = "GrabCup"
+                }
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
+                task.wait(1) -- 等待1秒（可根据游戏节奏调整）
 
-                    task.wait(0.1)
-                end
+                -- 2. 装满杯子
+                args = {
+                    [1] = "FillCup"
+                }
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
+                task.wait(1)
+
+                -- 3. 服务顾客（此处顾客是 Customer5，可以改成变量）
+                args = {
+                    [1] = "ServeCustomer",
+                    [2] = workspace.Customer5
+                }
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(args))
             end)
         else
-            _G.AutoJob = false
+            -- 关闭时执行的内容（如需要）
+            print("自动服务已关闭")
         end
     end
 })
