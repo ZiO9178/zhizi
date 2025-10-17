@@ -242,41 +242,30 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
--- 创建一个变量来控制循环是否继续
-local autoServeEnabled = false
-
--- 使用 task.spawn 创建一个新线程来运行循环，这样不会卡住你的游戏
-task.spawn(function()
-    -- 使用 while task.wait() do 创建一个高效的无限循环
-    while task.wait() do
-        -- 检查开关是否为开启状态
-        if autoServeEnabled then
-            -- 按顺序执行所有操作
-            pcall(function() -- 使用 pcall 防止其中一步出错导致整个脚本停止
-                -- 1. 拿取甜筒
-                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
-                task.wait(0.5) -- 等待游戏反应，可以根据网络情况调整
-                
-                -- 2. 填充甜筒
-                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
-                task.wait(0.5)
-                
-                -- 3. 服务顾客 (这里的 Customer3 仍然是固定的)
-                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
-                task.wait(1) -- 完成一轮后等待一小会
-            end)
-        end
-    end
-end)
-
--- 创建你的UI开关
 local Toggle = Tab:Toggle({
-    Title = "自动服务",
-    Desc = "开启后将自动循环服务顾客",
+    Title = "自动完成冰淇淋任务",
+    Desc = "自动执行拿蛋筒、装冰淇淋和服务顾客的流程",
     Locked = false,
     Callback = function(state)
-        -- 当你点击开关时，这个回调函数会更新 autoServeEnabled 的值
-        -- true 表示开启循环，false 表示停止循环
-        autoServeEnabled = state
+        if state then
+            -- 拿蛋筒
+            local grabArgs = {
+                [1] = "GrabCone"
+            }
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(grabArgs))
+            
+            -- 装冰淇淋
+            local fillArgs = {
+                [1] = "FillCone"
+            }
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(fillArgs))
+            
+            -- 服务顾客
+            local serveArgs = {
+                [1] = "ServeCustomer",
+                [2] = workspace.Customer3
+            }
+            game:GetService("ReplicatedStorage").JobDataEvent:FireServer(unpack(serveArgs))
+        end
     end
 })
