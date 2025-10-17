@@ -242,41 +242,41 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
--- We create a variable to keep track of whether the loop should be running.
-local isLooping = false
+-- 创建一个变量来控制循环是否继续
+local autoServeEnabled = false
 
-Local Toggle = Tab:Toggle({
-    Title = "循环制作冰淇淋", -- I changed the title slightly
-    Desc = "开启后将自动循环制作并服务冰淇淋。", -- Added a description
-    Locked = false,
-    Callback = function(state)
-        -- 'state' will be true if the toggle is ON, and false if it is OFF.
-        isLooping = state
-
-        -- We only start a new loop if state is true.
-        if isLooping then
-            -- task.spawn runs the loop in a new thread so it doesn't freeze your game.
-            task.spawn(function()
-                -- This loop will continue as long as isLooping is true.
-                while isLooping do
-                    -- Your ice cream making process
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
-                    task.wait(0.1)
-                    
-                    -- It's a good practice to check again in case the toggle was turned off during the wait.
-                    if not isLooping then break end
-
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
-                    task.wait(0.1)
-
-                    if not isLooping then break end
-
-                    game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
-
-                    -- Add a small delay at the end of the cycle before starting the next one.
-                    task.wait(1) 
-                end
+-- 使用 task.spawn 创建一个新线程来运行循环，这样不会卡住你的游戏
+task.spawn(function()
+    -- 使用 while task.wait() do 创建一个高效的无限循环
+    while task.wait() do
+        -- 检查开关是否为开启状态
+        if autoServeEnabled then
+            -- 按顺序执行所有操作
+            pcall(function() -- 使用 pcall 防止其中一步出错导致整个脚本停止
+                -- 1. 拿取甜筒
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("GrabCone")
+                task.wait(0.5) -- 等待游戏反应，可以根据网络情况调整
+                
+                -- 2. 填充甜筒
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("FillCone")
+                task.wait(0.5)
+                
+                -- 3. 服务顾客 (这里的 Customer3 仍然是固定的)
+                game:GetService("ReplicatedStorage").JobDataEvent:FireServer("ServeCustomer", workspace.Customer3)
+                task.wait(1) -- 完成一轮后等待一小会
             end)
         end
+    end
+end)
+
+-- 创建你的UI开关
+local Toggle = Tab:Toggle({
+    Title = "自动服务",
+    Desc = "开启后将自动循环服务顾客",
+    Locked = false,
+    Callback = function(state)
+        -- 当你点击开关时，这个回调函数会更新 autoServeEnabled 的值
+        -- true 表示开启循环，false 表示停止循环
+        autoServeEnabled = state
     end
 })
