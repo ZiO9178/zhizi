@@ -295,7 +295,7 @@ local Toggle = Tab:Toggle({
     Callback = function(state)
         AutoCollect = state
         if AutoCollect then
-            print("自动收集启动 ✅")
+            print("自动收集启动")
 
             task.spawn(function()
                 while AutoCollect do
@@ -310,7 +310,7 @@ local Toggle = Tab:Toggle({
                 end
             end)
         else
-            print("自动收集已关闭 ❌")
+            print("自动收集已关闭")
         end
     end
 })
