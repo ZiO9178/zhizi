@@ -242,49 +242,40 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remote = ReplicatedStorage:WaitForChild("Signal"):WaitForChild("Tree")
+
+local Workspace = game:GetService("Workspace")
+local running = false
+
 local Toggle = Tab:Toggle({
     Title = "自动砍树",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        if state then
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local remote = ReplicatedStorage:WaitForChild("Signal"):WaitForChild("Tree")
-            
-            local trees = {}
-            
-            for _, obj in pairs(game:GetService("Workspace"):GetDescendants()) do
-                if obj.Name:match("^World 1_%d+$") then
-                    table.insert(trees, obj.Name)
-                end
-            end
-            
-            local running = true
-            
-            Toggle._loop = coroutine.create(function()
+        running = state
+        if running then
+            task.spawn(function()
                 while running do
+                    local trees = {}
+                    for _, obj in pairs(Workspace:GetDescendants()) do
+                        if obj.Name:match("^World 1_%d+$") then
+                            table.insert(trees, obj.Name)
+                        end
+                    end
+
                     for _, treeName in ipairs(trees) do
                         if not running then break end
                         local args = { "damage", treeName }
                         remote:FireServer(unpack(args))
-                        wait(0)
+                        task.wait(0)
                     end
-                    wait()
+
+                    task.wait(0)
                 end
             end)
-          
-            coroutine.resume(Toggle._loop)
-           
-            Toggle.Stop = function()
-                running = false
-                if Toggle._loop then
-                    coroutine.close(Toggle._loop)
-                end
-            end
         else
-            if Toggle.Stop then
-                Toggle.Stop()
-            end
+            print("自动砍树已关闭")
         end
     end
 })
