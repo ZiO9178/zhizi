@@ -286,84 +286,32 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local AutoCollect = false
+
 local Toggle = Tab:Toggle({
     Title = "自动收集箱子",
-    Desc  = "",
+    Desc = "",
     Locked = false,
     Callback = function(state)
-        -- 用闭包变量保存循环开关
-        local running = state
-        local connection   -- 用来存心跳连接，方便随时断开
+        AutoCollect = state
+        if AutoCollect then
+            print("自动收集启动 ✅")
 
-        -- 根据你游戏实际远程事件名字改这里
-        local openEvent
-        local success, err = pcall(function()
-            -- 常见名字，优先试
-            openEvent = workspace.ChestFolder:FindFirstChild("OpenChest") 
-                     or game.ReplicatedStorage:FindFirstChild("OpenChest")
-                     or game.ReplicatedStorage:FindFirstChild("Hit")
-        end)
-        if not openEvent then
-            warn("没找到开箱远程事件，请 RemoteSpy 后把正确事件填进来！")
-            return
-        end
-
-        -- 主逻辑
-        local function doTeleport()
-            local root = game.Players.LocalPlayer.Character
-                          and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-            if not root then return end
-
-            local chests = {}
-            for _, c in ipairs(workspace.ChestFolder:GetChildren()) do
-                if c:IsA("Model") and c:FindFirstChild("HumanoidRootPart") then
-                    table.insert(chests, c)
+            task.spawn(function()
+                while AutoCollect do
+                    for _, chest in pairs(workspace.ChestFolder:GetChildren()) do
+                        if chest:IsA("Model") or chest:IsA("Part") then
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, chest, 0)
+                            task.wait(0.1)
+                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, chest, 1)
+                        end
+                    end
+                    task.wait(2)
                 end
-            end
-            if #chests == 0 then return end
-
-            -- 按距离排序
-            table.sort(chests, function(a, b)
-                return (a.PrimaryPart.Position - root.Position).Magnitude
-                     < (b.PrimaryPart.Position - root.Position).Magnitude
-            end)
-
-            local target = chests[1]
-            local dist   = (target.PrimaryPart.Position - root.Position).Magnitude
-
-            -- 已在身边就直接开
-            if dist <= 5 then
-                openEvent:FireServer(target)
-                return
-            end
-
-            -- 否则 Tween 过去
-            local ts = game:GetService("TweenService")
-            local ti = TweenInfo.new(dist / 30, Enum.EasingStyle.Linear)
-            ts:Create(root, ti, {CFrame = target.PrimaryPart.CFrame}):Play()
-            root.Anchored = true   -- 防止被推开
-            wait(dist / 30 + .2)
-            root.Anchored = false
-            openEvent:FireServer(target)
-        end
-
-        -- 循环
-        if running then
-            connection = game:GetService("RunService").Heartbeat:Connect(function()
-                if not running then return end
-                local ok, e = pcall(doTeleport)
-                if not ok then warn("AutoChest error:", e) end
-                wait(.5)   -- 每 0.5 秒检查一次
             end)
         else
-            if connection then connection:Disconnect() end
+            print("自动收集已关闭 ❌")
         end
-
-        -- 当 Toggle 再次点击时把 running 置 false
-        while running do
-            wait()
-            running = state
-        end
-        if connection then connection:Disconnect() end
     end
+})
 })
