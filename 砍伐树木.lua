@@ -286,31 +286,29 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local AutoCollect = false
-
 local Toggle = Tab:Toggle({
-    Title = "自动收集箱子",
-    Desc = "",
+    Title = "自动点击箱子",
+    Desc = "自动点击 workspace.ChestFolder 里的所有箱子",
     Locked = false,
     Callback = function(state)
-        AutoCollect = state
-        if AutoCollect then
-            print("自动收集启动")
+        getgenv().AutoClickChest = state -- 保存开关状态
 
-            task.spawn(function()
-                while AutoCollect do
-                    for _, chest in pairs(workspace.ChestFolder:GetChildren()) do
-                        if chest:IsA("Model") or chest:IsA("Part") then
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, chest, 0)
-                            task.wait(0.1)
-                            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, chest, 1)
+        -- 启动协程以防止阻塞
+        task.spawn(function()
+            while getgenv().AutoClickChest do
+                -- 确保 ChestFolder 存在
+                local folder = workspace:FindFirstChild("ChestFolder")
+                if folder then
+                    for _, chest in pairs(folder:GetChildren()) do
+                        -- 判断 chest 是否可点击（例如有 ClickDetector）
+                        local clickDetector = chest:FindFirstChildOfClass("ClickDetector")
+                        if clickDetector then
+                            fireclickdetector(clickDetector)
                         end
                     end
-                    task.wait(2)
                 end
-            end)
-        else
-            print("自动收集已关闭")
-        end
+                task.wait(1) -- 每秒执行一次，可自行调整
+            end
+        end)
     end
 })
