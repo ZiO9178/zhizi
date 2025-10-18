@@ -314,4 +314,3 @@ local Toggle = Tab:Toggle({
         end
     end
 })
-})
