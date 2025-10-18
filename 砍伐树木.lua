@@ -287,28 +287,33 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动点击箱子",
-    Desc = "自动点击 workspace.ChestFolder 里的所有箱子",
+    Title = "自动传送到箱子",
+    Desc = "点击后自动传送到ChestFolder中的箱子位置",
     Locked = false,
     Callback = function(state)
-        getgenv().AutoClickChest = state -- 保存开关状态
+        if state then
+            -- 获取玩家
+            local player = game.Players.LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-        -- 启动协程以防止阻塞
-        task.spawn(function()
-            while getgenv().AutoClickChest do
-                -- 确保 ChestFolder 存在
-                local folder = workspace:FindFirstChild("ChestFolder")
-                if folder then
-                    for _, chest in pairs(folder:GetChildren()) do
-                        -- 判断 chest 是否可点击（例如有 ClickDetector）
-                        local clickDetector = chest:FindFirstChildOfClass("ClickDetector")
-                        if clickDetector then
-                            fireclickdetector(clickDetector)
-                        end
+            -- 获取 ChestFolder
+            local chestFolder = workspace:FindFirstChild("ChestFolder")
+            if chestFolder then
+                -- 遍历所有箱子
+                for _, chest in pairs(chestFolder:GetChildren()) do
+                    if chest:IsA("Model") and chest:FindFirstChild("PrimaryPart") then
+                        -- 传送玩家到箱子位置
+                        humanoidRootPart.CFrame = chest.PrimaryPart.CFrame + Vector3.new(0, 3, 0)
+                        wait(0.5) -- 传送间隔（避免太快）
+                    elseif chest:IsA("BasePart") then
+                        humanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 3, 0)
+                        wait(0.5)
                     end
                 end
-                task.wait(1) -- 每秒执行一次，可自行调整
+            else
+                warn("未找到 ChestFolder")
             end
-        end)
+        end
     end
 })
