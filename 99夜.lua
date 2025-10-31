@@ -379,3 +379,60 @@ local Button = Tab:Button({
         print("成功传送了 " .. boltsTeleported .. " 个Bolt到玩家位置")
     end
 })
+
+local Button = Tab:Button({
+    Title = "传送浆果",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if not player or not player.Character then
+            return
+        end
+        
+        local character = player.Character
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            return
+        end
+        
+        local targetPosition = humanoidRootPart.Position
+        
+        local itemsFolder = workspace:FindFirstChild("Items")
+        if not itemsFolder then
+            warn("未找到 Items 文件夹")
+            return
+        end
+        
+        local berriesTeleported = 0
+        
+        for _, item in ipairs(itemsFolder:GetChildren()) do
+            if string.lower(item.Name) == "berry" then
+                if item:IsA("Model") and item.PrimaryPart then
+                    item:SetPrimaryPartCFrame(CFrame.new(
+                        targetPosition + 
+                        Vector3.new(
+                            math.random(-2, 2), 
+                            3, 
+                            math.random(-2, 2)
+                        )
+                    ))
+                    berriesTeleported += 1
+                elseif item:IsA("BasePart") then
+                    item.Position = targetPosition + Vector3.new(
+                        math.random(-2, 2), 
+                        3, 
+                        math.random(-2, 2)
+                    )
+                    berriesTeleported += 1
+                end
+            end
+        end
+        
+        if berriesTeleported > 0 then
+            print("成功传送了 " .. berriesTeleported .. " 个Berry到玩家位置")
+        else
+            warn("未找到任何Berry")
+        end
+    end
+})
