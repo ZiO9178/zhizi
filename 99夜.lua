@@ -346,3 +346,103 @@ local Button = Tab:Button({
         end
     end
 })
+
+local Tab = Window:Tab({
+    Title = "透视功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Toggle = Tab:Toggle({
+    Title = "透视兔子",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        local bunny = workspace:FindFirstChild("Characters"):FindFirstChild("Bunny")
+        
+        if bunny then
+            bunny.Transparency = state and 0.5 or 1
+            bunny.CanCollide = not state
+            
+            local head = bunny:FindFirstChild("Head")
+            if head then
+                local billboardGui = head:FindFirstChildOfClass("BillboardGui")
+                local textLabel = billboardGui and billboardGui:FindFirstChildOfClass("TextLabel")
+                
+                if state then
+                    if not billboardGui then
+                        billboardGui = Instance.new("BillboardGui")
+                        billboardGui.Name = "NameTag"
+                        billboardGui.Adornee = head
+                        billboardGui.Size = UDim2.new(0, 200, 0, 50)
+                        billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+                        billboardGui.Parent = head
+                        
+                        textLabel = Instance.new("TextLabel")
+                        textLabel.Size = UDim2.new(1, 0, 1, 0)
+                        textLabel.BackgroundTransparency = 1
+                        textLabel.Text = "兔子"
+                        textLabel.TextColor3 = Color3.new(1, 1, 1)
+                        textLabel.TextScaled = true
+                        textLabel.Font = Enum.Font.GothamBold
+                        textLabel.Parent = billboardGui
+                    end
+                    billboardGui.Enabled = true
+                else 
+                    if billboardGui then
+                        billboardGui.Enabled = false
+                    end
+                end
+            end
+        else
+            warn("未找到Bunny角色")
+        end
+    end
+})
+
+local Toggle = Tab:Toggle({
+    Title = "透视狼",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        local wolf = workspace:FindFirstChild("Characters"):FindFirstChild("Wolf")
+        
+        if wolf then
+            wolf.Transparency = state and 0.5 or 1
+            wolf.CanCollide = not state
+            
+            local head = wolf:FindFirstChild("Head")
+            if head then
+                local billboardGui = head:FindFirstChildOfClass("BillboardGui")
+                local textLabel = billboardGui and billboardGui:FindFirstChildOfClass("TextLabel")
+                
+                if state then
+                    if not billboardGui then
+                        billboardGui = Instance.new("BillboardGui")
+                        billboardGui.Name = "NameTag"
+                        billboardGui.Adornee = head
+                        billboardGui.Size = UDim2.new(0, 200, 0, 50)
+                        billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+                        billboardGui.Parent = head
+                        
+                        textLabel = Instance.new("TextLabel")
+                        textLabel.Size = UDim2.new(1, 0, 1, 0)
+                        textLabel.BackgroundTransparency = 1
+                        textLabel.Text = "狼"
+                        textLabel.TextColor3 = Color3.new(1, 0.3, 0.3)  -- 红色调
+                        textLabel.TextScaled = true
+                        textLabel.Font = Enum.Font.GothamBold
+                        textLabel.Parent = billboardGui
+                    end
+                    billboardGui.Enabled = true
+                else
+                    if billboardGui then
+                        billboardGui.Enabled = false
+                    end
+                end
+            end
+        else
+            warn("未找到Wolf角色")
+        end
+    end
+})
