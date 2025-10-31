@@ -283,3 +283,33 @@ local Button = Tab:Button({
         print("[Log] 所有物品传送完成")
     end
 })
+
+local Button = Tab:Button({
+    Title = "传送木头",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local itemsFolder = workspace:FindFirstChild("Items")
+        
+        if itemsFolder then
+            local logItem = itemsFolder:FindFirstChild("Log")
+            
+            if logItem then
+                local player = game.Players.LocalPlayer
+                if player and player.Character then
+                    local character = player.Character
+                    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                    
+                    if humanoidRootPart then
+                        humanoidRootPart.CFrame = logItem.CFrame + Vector3.new(0, 3, 0)
+                        print("已传送到Log物品")
+                    end
+                end
+            else
+                print("未找到名为'Log'的物品")
+            end
+        else
+            print("未找到Items文件夹")
+        end
+    end
+})
