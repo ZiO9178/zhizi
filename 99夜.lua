@@ -285,31 +285,59 @@ local Button = Tab:Button({
 })
 
 local Button = Tab:Button({
-    Title = "传送木头",
-    Desc = "",
+    Title = "传送所有Log",
+    Desc = "将工作空间中的所有Log传送到玩家位置",
     Locked = false,
     Callback = function()
-        local itemsFolder = workspace:FindFirstChild("Items")
+        -- 获取本地玩家
+        local player = game.Players.LocalPlayer
+        if not player or not player.Character then
+            return
+        end
         
-        if itemsFolder then
-            local logItem = itemsFolder:FindFirstChild("Log")
-            
-            if logItem then
-                local player = game.Players.LocalPlayer
-                if player and player.Character then
-                    local character = player.Character
-                    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-                    
-                    if humanoidRootPart then
-                        humanoidRootPart.CFrame = logItem.CFrame + Vector3.new(0, 3, 0)
-                        print("已传送到Log物品")
+        -- 获取玩家角色位置
+        local character = player.Character
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            return
+        end
+        
+        local targetPosition = humanoidRootPart.Position
+        
+        -- 在工作空间中查找所有Log对象
+        local itemsFolder = workspace:FindFirstChild("Items")
+        if not itemsFolder then
+            warn("未找到 Items 文件夹")
+            return
+        end
+        
+        local logsTeleported = 0
+        
+        -- 递归查找所有包含"Log"的对象
+        local function findAndTeleportLogs(parent)
+            for _, child in ipairs(parent:GetChildren()) do
+                -- 如果对象名称包含"Log"
+                if string.find(child.Name:lower(), "log") then
+                    -- 确保对象有主要部件（如PrimaryPart）
+                    if child:IsA("Model") and child.PrimaryPart then
+                        -- 将Log传送到玩家位置
+                        child:SetPrimaryPartCFrame(CFrame.new(targetPosition + Vector3.new(0, 3, 0)))
+                        logsTeleported += 1
+                    elseif child:IsA("BasePart") then
+                        -- 如果是单个部件，直接设置位置
+                        child.Position = targetPosition + Vector3.new(0, 3, 0)
+                        logsTeleported += 1
                     end
                 end
-            else
-                print("未找到名为'Log'的物品")
+                
+                -- 递归搜索子对象
+                findAndTeleportLogs(child)
             end
-        else
-            print("未找到Items文件夹")
         end
+        
+        -- 开始搜索
+        findAndTeleportLogs(itemsFolder)
+        
+        print("成功传送了 " .. logsTeleported .. " 个Log到玩家位置")
     end
 })
