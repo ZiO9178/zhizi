@@ -285,17 +285,15 @@ local Button = Tab:Button({
 })
 
 local Button = Tab:Button({
-    Title = "传送所有Log",
-    Desc = "将工作空间中的所有Log传送到玩家位置",
+    Title = "传送木头",
+    Desc = "",
     Locked = false,
     Callback = function()
-        -- 获取本地玩家
         local player = game.Players.LocalPlayer
         if not player or not player.Character then
             return
         end
         
-        -- 获取玩家角色位置
         local character = player.Character
         local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
         if not humanoidRootPart then
@@ -304,7 +302,6 @@ local Button = Tab:Button({
         
         local targetPosition = humanoidRootPart.Position
         
-        -- 在工作空间中查找所有Log对象
         local itemsFolder = workspace:FindFirstChild("Items")
         if not itemsFolder then
             warn("未找到 Items 文件夹")
@@ -313,31 +310,72 @@ local Button = Tab:Button({
         
         local logsTeleported = 0
         
-        -- 递归查找所有包含"Log"的对象
         local function findAndTeleportLogs(parent)
             for _, child in ipairs(parent:GetChildren()) do
-                -- 如果对象名称包含"Log"
                 if string.find(child.Name:lower(), "log") then
-                    -- 确保对象有主要部件（如PrimaryPart）
                     if child:IsA("Model") and child.PrimaryPart then
-                        -- 将Log传送到玩家位置
                         child:SetPrimaryPartCFrame(CFrame.new(targetPosition + Vector3.new(0, 3, 0)))
                         logsTeleported += 1
                     elseif child:IsA("BasePart") then
-                        -- 如果是单个部件，直接设置位置
                         child.Position = targetPosition + Vector3.new(0, 3, 0)
                         logsTeleported += 1
                     end
                 end
                 
-                -- 递归搜索子对象
                 findAndTeleportLogs(child)
             end
         end
         
-        -- 开始搜索
         findAndTeleportLogs(itemsFolder)
         
         print("成功传送了 " .. logsTeleported .. " 个Log到玩家位置")
+    end
+})
+
+local Button = Tab:Button({
+    Title = "传送螺丝",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if not player or not player.Character then
+            warn("玩家或角色不存在")
+            return
+        end
+        
+        local character = player.Character
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then
+            warn("未找到HumanoidRootPart")
+            return
+        end
+        
+        local targetPosition = humanoidRootPart.Position
+        
+        local itemsFolder = workspace:FindFirstChild("Items")
+        if not itemsFolder then
+            warn("未找到 Items 文件夹")
+            return
+        end
+        
+        local boltFolder = itemsFolder:FindFirstChild("Bolt")
+        if not boltFolder then
+            warn("未找到 Bolt 文件夹")
+            return
+        end
+        
+        local boltsTeleported = 0
+        
+        for _, boltItem in ipairs(boltFolder:GetChildren()) do
+            if boltItem:IsA("Model") and boltItem.PrimaryPart then
+                boltItem:SetPrimaryPartCFrame(CFrame.new(targetPosition + Vector3.new(math.random(-3, 3), 3, math.random(-3, 3))))
+                boltsTeleported += 1
+            elseif boltItem:IsA("BasePart") then
+                boltItem.Position = targetPosition + Vector3.new(math.random(-3, 3), 3, math.random(-3, 3))
+                boltsTeleported += 1
+            end
+        end
+        
+        print("成功传送了 " .. boltsTeleported .. " 个Bolt到玩家位置")
     end
 })
