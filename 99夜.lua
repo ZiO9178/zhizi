@@ -312,3 +312,37 @@ local Button = Tab:Button({
         end
     end
 })
+
+local Button = Tab:Button({
+    Title = "传送废料",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        
+        local itemsToCollect = {
+            "Berry",
+            "Cake", 
+            "Pumpkin",
+            "Carrot",
+            "Tyre",
+            "Sheet Metal",
+            "Broken Microwave",
+            "Broken Fan",
+            "Bolt"
+        }
+        
+        for _, itemName in ipairs(itemsToCollect) do
+            local itemsFolder = workspace.Items[itemName]
+            if itemsFolder then
+                for _, item in ipairs(itemsFolder:GetChildren()) do
+                    if item:IsA("Part") or item:IsA("MeshPart") then
+                        item.Position = humanoidRootPart.Position + Vector3.new(0, 3, 0)
+                    end
+                end
+            end
+        end
+    end
+})
