@@ -285,154 +285,30 @@ local Button = Tab:Button({
 })
 
 local Button = Tab:Button({
-    Title = "传送木头",
+    Title = "传送食物",
     Desc = "",
     Locked = false,
     Callback = function()
         local player = game.Players.LocalPlayer
-        if not player or not player.Character then
-            return
-        end
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
         
-        local character = player.Character
-        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-        if not humanoidRootPart then
-            return
-        end
+        local itemsToCollect = {
+            "Berry",
+            "Cake", 
+            "Pumpkin",
+            "Carrot"
+        }
         
-        local targetPosition = humanoidRootPart.Position
-        
-        local itemsFolder = workspace:FindFirstChild("Items")
-        if not itemsFolder then
-            warn("未找到 Items 文件夹")
-            return
-        end
-        
-        local logsTeleported = 0
-        
-        local function findAndTeleportLogs(parent)
-            for _, child in ipairs(parent:GetChildren()) do
-                if string.find(child.Name:lower(), "log") then
-                    if child:IsA("Model") and child.PrimaryPart then
-                        child:SetPrimaryPartCFrame(CFrame.new(targetPosition + Vector3.new(0, 3, 0)))
-                        logsTeleported += 1
-                    elseif child:IsA("BasePart") then
-                        child.Position = targetPosition + Vector3.new(0, 3, 0)
-                        logsTeleported += 1
+        for _, itemName in ipairs(itemsToCollect) do
+            local itemsFolder = workspace.Items[itemName]
+            if itemsFolder then
+                for _, item in ipairs(itemsFolder:GetChildren()) do
+                    if item:IsA("Part") or item:IsA("MeshPart") then
+                        item.Position = humanoidRootPart.Position + Vector3.new(0, 3, 0)
                     end
                 end
-                
-                findAndTeleportLogs(child)
             end
-        end
-        
-        findAndTeleportLogs(itemsFolder)
-        
-        print("成功传送了 " .. logsTeleported .. " 个Log到玩家位置")
-    end
-})
-
-local Button = Tab:Button({
-    Title = "传送螺丝",
-    Desc = "",
-    Locked = false,
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if not player or not player.Character then
-            warn("玩家或角色不存在")
-            return
-        end
-        
-        local character = player.Character
-        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-        if not humanoidRootPart then
-            warn("未找到HumanoidRootPart")
-            return
-        end
-        
-        local targetPosition = humanoidRootPart.Position
-        
-        local itemsFolder = workspace:FindFirstChild("Items")
-        if not itemsFolder then
-            warn("未找到 Items 文件夹")
-            return
-        end
-        
-        local boltFolder = itemsFolder:FindFirstChild("Bolt")
-        if not boltFolder then
-            warn("未找到 Bolt 文件夹")
-            return
-        end
-        
-        local boltsTeleported = 0
-        
-        for _, boltItem in ipairs(boltFolder:GetChildren()) do
-            if boltItem:IsA("Model") and boltItem.PrimaryPart then
-                boltItem:SetPrimaryPartCFrame(CFrame.new(targetPosition + Vector3.new(math.random(-3, 3), 3, math.random(-3, 3))))
-                boltsTeleported += 1
-            elseif boltItem:IsA("BasePart") then
-                boltItem.Position = targetPosition + Vector3.new(math.random(-3, 3), 3, math.random(-3, 3))
-                boltsTeleported += 1
-            end
-        end
-        
-        print("成功传送了 " .. boltsTeleported .. " 个Bolt到玩家位置")
-    end
-})
-
-local Button = Tab:Button({
-    Title = "传送浆果",
-    Desc = "",
-    Locked = false,
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if not player or not player.Character then
-            return
-        end
-        
-        local character = player.Character
-        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-        if not humanoidRootPart then
-            return
-        end
-        
-        local targetPosition = humanoidRootPart.Position
-        
-        local itemsFolder = workspace:FindFirstChild("Items")
-        if not itemsFolder then
-            warn("未找到 Items 文件夹")
-            return
-        end
-        
-        local berriesTeleported = 0
-        
-        for _, item in ipairs(itemsFolder:GetChildren()) do
-            if string.lower(item.Name) == "berry" then
-                if item:IsA("Model") and item.PrimaryPart then
-                    item:SetPrimaryPartCFrame(CFrame.new(
-                        targetPosition + 
-                        Vector3.new(
-                            math.random(-2, 2), 
-                            3, 
-                            math.random(-2, 2)
-                        )
-                    ))
-                    berriesTeleported += 1
-                elseif item:IsA("BasePart") then
-                    item.Position = targetPosition + Vector3.new(
-                        math.random(-2, 2), 
-                        3, 
-                        math.random(-2, 2)
-                    )
-                    berriesTeleported += 1
-                end
-            end
-        end
-        
-        if berriesTeleported > 0 then
-            print("成功传送了 " .. berriesTeleported .. " 个Berry到玩家位置")
-        else
-            warn("未找到任何Berry")
         end
     end
 })
