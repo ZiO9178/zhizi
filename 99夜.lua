@@ -401,6 +401,7 @@ local Toggle = Tab:Toggle({
         if state then
             -- 开启自动进食
             task.spawn(function()
+                -- 先检查是否有选择的食物
                 local foodCount = countFoodItems(AutoFeed.FoodItem)
                 if foodCount == 0 then
                     WindUI:Notify({
@@ -421,7 +422,8 @@ local Toggle = Tab:Toggle({
                 })
                 startAutoFeed()
             end)
-        els
+        else
+            -- 关闭自动进食
             WindUI:Notify({
                 Title = "自动进食",
                 Content = "已关闭",
