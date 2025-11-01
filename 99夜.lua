@@ -284,130 +284,53 @@ local Button = Tab:Button({
     end
 })
 
-local Tab = Window:Tab({
-    Title = "食物功能",
-    Icon = "server",
-    Locked = false,
+Tabs.Main:Section({ Title = "自动吃食物", Icon = "utensils" })
+Tabs.Main:Dropdown({
+    Title = "选择食物",
+    Desc = "自己选择",
+    Values = translateList(alimentos),
+    Value = NameToDisplay[ShenChouFood],
+    Multi = false,
+    Callback = function(value)
+        ShenChouFood = DisplayToName[value] or value
+    end
 })
 
-local Toggle = Tab:Toggle({
-    Title = "自动升级营火",
-    Desc = "自动向营火添加燃料物品",
-    Locked = false,
-    Callback = function(state)
-        -- 自动升级营火配置
-        local AutoUpgradeCampfire = {
-            Enabled = state,
-            DropPosition = Vector3.new(0, 19, 0), -- 营火位置
-            CheckInterval = 2, -- 检查间隔
-            SelectedItems = {} -- 选中的燃料物品
-        }
-
-        -- 燃料物品列表
-        local fuelItems = {
-            "Log", "Coal", "Fuel Canister", "Oil Barrel", "Biofuel"
-        }
-
-        -- 物品名称映射（英文到中文）
-        local itemNameMap = {
-            ["Log"] = "原木",
-            ["Coal"] = "煤炭", 
-            ["Fuel Canister"] = "燃料罐",
-            ["Oil Barrel"] = "油桶",
-            ["Biofuel"] = "生物燃料"
-        }
-
-        -- 移动物品到营火位置
-        local function moveItemToCampfire(item)
-            if not item or not item:IsDescendantOf(workspace) then return end
-            
-            local part = item:IsA("Model") and (item.PrimaryPart or item:FindFirstChildWhichIsA("BasePart") or item:FindFirstChild("Handle")) or item
-            if not part or not part:IsA("BasePart") then return end
-
-            -- 设置主部件（如果是模型）
-            if item:IsA("Model") and not item.PrimaryPart then
-                pcall(function() item.PrimaryPart = part end)
-            end
-
-            -- 移动物品
-            pcall(function()
-                local remoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
-                remoteEvents.RequestStartDraggingItem:FireServer(item)
-                if item:IsA("Model") then
-                    item:SetPrimaryPartCFrame(CFrame.new(AutoUpgradeCampfire.DropPosition))
-                else
-                    part.CFrame = CFrame.new(AutoUpgradeCampfire.DropPosition)
-                end
-                remoteEvents.StopDraggingItem:FireServer(item)
-            end)
+Tabs.Main:Input({
+    Title = "进食%",
+    Desc = "当饥饿达到多少%时进食",
+    Value = tostring(hungerThreshold),
+    Placeholder = "例如: 75",
+    Numeric = true,
+    Callback = function(value)
+        local n = tonumber(value)
+        if n then
+            hungerThreshold = math.clamp(n, 0, 100)
         end
+    end
+})
 
-        -- 自动升级营火主函数
-        local function startAutoUpgrade()
-            while AutoUpgradeCampfire.Enabled do
-                -- 检查所有选中的燃料物品
-                for itemName, enabled in pairs(AutoUpgradeCampfire.SelectedItems) do
-                    if not AutoUpgradeCampfire.Enabled then break end
-                    
-                    if enabled then
-                        -- 在场景中查找该物品
-                        local itemsFolder = Workspace:FindFirstChild("Items")
-                        if itemsFolder then
-                            for _, item in ipairs(itemsFolder:GetChildren()) do
-                                if not AutoUpgradeCampfire.Enabled then break end
-                                
-                                if item.Name == itemName then
-                                    moveItemToCampfire(item)
-                                    task.wait(0.1) -- 物品移动间隔
-                                end
-                            end
-                        end
+Tabs.Main:Toggle({
+    Title = "自动进食",
+    Value = false,
+    Callback = function(state)
+        autoFeedxipro = state
+        if state then
+            task.spawn(function()
+                while autoFeedxipro do
+                    task.wait(0.075)
+                    if wiki(ShenChouFood) == 0 then
+                        autoFeedxipro = false
+                        -- Find might not work this way, but we'll leave it as the original intent is unclear
+                        -- Tabs.Combat:Find("Auto Feed"):SetValue(false) 
+                        notifeed(ShenChouFood)
+                        break
+                    end
+                    if ghn() <= hungerThreshold then
+                        feed(ShenChouFood)
                     end
                 end
-                
-                task.wait(AutoUpgradeCampfire.CheckInterval) -- 主循环间隔
-            end
-        end
-
-        -- 根据Toggle状态启动或停止
-        if state then
-            -- 开启前检查是否有选中的物品
-            local hasSelectedItems = false
-            for _, enabled in pairs(AutoUpgradeCampfire.SelectedItems) do
-                if enabled then
-                    hasSelectedItems = true
-                    break
-                end
-            end
-            
-            if not hasSelectedItems then
-                WindUI:Notify({
-                    Title = "自动升级营火",
-                    Content = "请先选择要使用的燃料物品",
-                    Duration = 3
-                })
-                if Toggle.SetValue then
-                    Toggle:SetValue(false)
-                end
-                return
-            end
-            
-            -- 开启自动升级
-            task.spawn(function()
-                WindUI:Notify({
-                    Title = "自动升级营火",
-                    Content = "已开启，正在自动添加燃料",
-                    Duration = 2
-                })
-                startAutoUpgrade()
             end)
-        else
-            -- 关闭自动升级
-            WindUI:Notify({
-                Title = "自动升级营火",
-                Content = "已关闭",
-                Duration = 2
-            })
         end
     end
 })
