@@ -290,12 +290,12 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-Tabs.Combat:Toggle({
+local Toggle = Tab:Toggle({
     Title = "自动砍树",
-    Description = "",
-    Default = false,
-    Callback = function(Value)
-        ActiveAutoChopTree = Value
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        ActiveAutoChopTree = state
         task.spawn(function()
             while ActiveAutoChopTree do
                 local player = game.Players.LocalPlayer
