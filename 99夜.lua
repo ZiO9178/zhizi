@@ -292,41 +292,100 @@ local Tab = Window:Tab({
 
 local Toggle = Tab:Toggle({
     Title = "自动砍树",
-    Desc = "",
+    Desc = "自动砍伐范围内的树木",
     Locked = false,
     Callback = function(state)
-        ActiveAutoChopTree = state
-        task.spawn(function()
-            while ActiveAutoChopTree do
-                local player = game.Players.LocalPlayer
-                local character = player.Character or player.CharacterAdded:Wait()
-                local hrp = character:WaitForChild("HumanoidRootPart")
-                local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
+        local AutoChopTree = {
+            Enabled = state,
+            Distance = 20,
+            Tools = {"Old Axe", "Good Axe", "Strong Axe", "Chainsaw"}
+        }
+
+        local function getChoppingTool()
+            for _, toolName in ipairs(AutoChopTree.Tools) do
+                local tool = LocalPlayer:FindFirstChild("Inventory") and LocalPlayer.Inventory:FindFirstChild(toolName)
+                if tool then
+                    return tool
+                end
+            end
+            return nil
+        end
+
+        local function equipTool(tool)
+            if tool then
+                ReplicatedStorage:WaitForChild("RemoteEvents").EquipItemHandle:FireServer("FireAllClients", tool)
+            end
+        end
+
+        local function startAutoChopTree()
+            while AutoChopTree.Enabled do
+                local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                local tool = getChoppingTool()
                 
-                task.spawn(function()
-                    for _, tree in pairs(workspace.Map.Foliage:GetChildren()) do
-                        if tree:IsA("Model") and (tree.Name == "Small Tree" or tree.Name == "TreeBig1" or tree.Name == "TreeBig2") and tree.PrimaryPart then
-                            local distance = (tree.PrimaryPart.Position - hrp.Position).Magnitude
-                            if distance <= DistanceForAutoChopTree then
-                                game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(tree, weapon, 999, hrp.CFrame)
+                if hrp and tool then
+                    equipTool(tool)
+                    
+                    local trees = {}
+                    
+                    local map = Workspace:FindFirstChild("Map")
+                    if map then
+                        if map:FindFirstChild("Foliage") then
+                            for _, obj in ipairs(map.Foliage:GetChildren()) do
+                                if obj:IsA("Model") and (obj.Name == "Small Tree" or obj.Name == "TreeBig1" or obj.Name == "TreeBig2") then
+                                    table.insert(trees, obj)
+                                end
+                            end
+                        end
+                        
+                        if map:FindFirstChild("Landmarks") then
+                            for _, obj in ipairs(map.Landmarks:GetChildren()) do
+                                if obj:IsA("Model") and (obj.Name == "Small Tree" or obj.Name == "TreeBig1" or obj.Name == "TreeBig2") then
+                                    table.insert(trees, obj)
+                                end
                             end
                         end
                     end
-                end)
-                
-                task.spawn(function()
-                    for _, tree in pairs(workspace.Map.Landmarks:GetChildren()) do
-                        if tree:IsA("Model") and (tree.Name == "Small Tree" or tree.Name == "TreeBig1" or tree.Name == "TreeBig2") and tree.PrimaryPart then
-                            local distance = (tree.PrimaryPart.Position - hrp.Position).Magnitude
-                            if distance <= DistanceForAutoChopTree then
-                                game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(tree, weapon, 999, hrp.CFrame)
+                    
+                    for _, tree in ipairs(trees) do
+                        if not AutoChopTree.Enabled then break end
+                        
+                        local trunk = tree:FindFirstChild("Trunk") or tree.PrimaryPart
+                        if trunk and trunk:IsA("BasePart") then
+                            local distance = (trunk.Position - hrp.Position).Magnitude
+                            if distance <= AutoChopTree.Distance then
+                                pcall(function()
+                                    ReplicatedStorage:WaitForChild("RemoteEvents").ToolDamageObject:InvokeServer(
+                                        tree,
+                                        tool,
+                                        "999",
+                                        CFrame.new(trunk.Position)
+                                    )
+                                end)
                             end
                         end
                     end
-                end)
+                end
                 
                 task.wait(0.1)
             end
-        end)
+        end
+
+        if state then
+            task.spawn(function()
+                WindUI:Notify({
+                    Title = "自动砍树",
+                    Content = "已开启自动砍树功能",
+                    Duration = 2
+                })
+                startAutoChopTree()
+            end)
+        else
+            WindUI:Notify({
+                Title = "自动砍树", 
+                Content = "已关闭自动砍树功能",
+                Duration = 2
+            })
+        end
     end
 })
