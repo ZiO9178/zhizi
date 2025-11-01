@@ -291,141 +291,120 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动进食",
-    Desc = "当饥饿度低于设定值时自动进食",
+    Title = "自动升级营火",
+    Desc = "自动向营火添加燃料物品",
     Locked = false,
     Callback = function(state)
-        -- 自动进食配置
-        local AutoFeed = {
+        -- 自动升级营火配置
+        local AutoUpgradeCampfire = {
             Enabled = state,
-            FoodItem = "Carrot", -- 默认食物
-            HungerThreshold = 75, -- 默认饥饿阈值
-            CheckInterval = 0.075 -- 检查间隔
+            DropPosition = Vector3.new(0, 19, 0), -- 营火位置
+            CheckInterval = 2, -- 检查间隔
+            SelectedItems = {} -- 选中的燃料物品
         }
 
-        -- 获取当前饥饿度百分比
-        local function getHungerPercent()
-            local hungerBar = LocalPlayer.PlayerGui.Interface.StatBars.HungerBar.Bar
-            return math.floor(hungerBar.Size.X.Scale * 100)
-        end
-
-        -- 查找食物物品
-        local function findFoodItem(foodName)
-            local itemsFolder = Workspace:FindFirstChild("Items")
-            if not itemsFolder then return nil end
-            
-            for _, item in ipairs(itemsFolder:GetChildren()) do
-                if item.Name == foodName then
-                    return item
-                end
-            end
-            return nil
-        end
-
-        -- 统计食物数量
-        local function countFoodItems(foodName)
-            local count = 0
-            local itemsFolder = Workspace:FindFirstChild("Items")
-            if not itemsFolder then return 0 end
-            
-            for _, item in ipairs(itemsFolder:GetChildren()) do
-                if item.Name == foodName then
-                    count = count + 1
-                end
-            end
-            return count
-        end
-
-        -- 进食函数
-        local function eatFood(foodName)
-            local foodItem = findFoodItem(foodName)
-            if foodItem then
-                pcall(function()
-                    ReplicatedStorage.RemoteEvents.RequestConsumeItem:InvokeServer(foodItem)
-                end)
-                return true
-            end
-            return false
-        end
-
-        -- 食物名称映射（英文到中文）
-        local foodNameMap = {
-            ["Carrot"] = "胡萝卜",
-            ["Berry"] = "浆果",
-            ["Apple"] = "苹果",
-            ["Cake"] = "蛋糕",
-            ["Chili"] = "辣椒",
-            ["Cooked Morsel"] = "熟肉块",
-            ["Cooked Steak"] = "熟牛排",
-            ["Morsel"] = "肉块",
-            ["Steak"] = "牛排",
-            ["Raw Meat"] = "生肉",
-            ["Cooked Meat"] = "熟肉"
+        -- 燃料物品列表
+        local fuelItems = {
+            "Log", "Coal", "Fuel Canister", "Oil Barrel", "Biofuel"
         }
 
-        -- 获取食物显示名称
-        local function getFoodDisplayName(foodName)
-            return foodNameMap[foodName] or foodName
+        -- 物品名称映射（英文到中文）
+        local itemNameMap = {
+            ["Log"] = "原木",
+            ["Coal"] = "煤炭", 
+            ["Fuel Canister"] = "燃料罐",
+            ["Oil Barrel"] = "油桶",
+            ["Biofuel"] = "生物燃料"
+        }
+
+        -- 移动物品到营火位置
+        local function moveItemToCampfire(item)
+            if not item or not item:IsDescendantOf(workspace) then return end
+            
+            local part = item:IsA("Model") and (item.PrimaryPart or item:FindFirstChildWhichIsA("BasePart") or item:FindFirstChild("Handle")) or item
+            if not part or not part:IsA("BasePart") then return end
+
+            -- 设置主部件（如果是模型）
+            if item:IsA("Model") and not item.PrimaryPart then
+                pcall(function() item.PrimaryPart = part end)
+            end
+
+            -- 移动物品
+            pcall(function()
+                local remoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
+                remoteEvents.RequestStartDraggingItem:FireServer(item)
+                if item:IsA("Model") then
+                    item:SetPrimaryPartCFrame(CFrame.new(AutoUpgradeCampfire.DropPosition))
+                else
+                    part.CFrame = CFrame.new(AutoUpgradeCampfire.DropPosition)
+                end
+                remoteEvents.StopDraggingItem:FireServer(item)
+            end)
         end
 
-        -- 自动进食主函数
-        local function startAutoFeed()
-            while AutoFeed.Enabled do
-                task.wait(AutoFeed.CheckInterval)
-                
-                -- 检查食物是否用完
-                local foodCount = countFoodItems(AutoFeed.FoodItem)
-                if foodCount == 0 then
-                    AutoFeed.Enabled = false
-                    WindUI:Notify({
-                        Title = "自动进食停止",
-                        Content = getFoodDisplayName(AutoFeed.FoodItem) .. " 已用完",
-                        Duration = 3
-                    })
-                    -- 更新Toggle状态
-                    if Toggle.SetValue then
-                        Toggle:SetValue(false)
+        -- 自动升级营火主函数
+        local function startAutoUpgrade()
+            while AutoUpgradeCampfire.Enabled do
+                -- 检查所有选中的燃料物品
+                for itemName, enabled in pairs(AutoUpgradeCampfire.SelectedItems) do
+                    if not AutoUpgradeCampfire.Enabled then break end
+                    
+                    if enabled then
+                        -- 在场景中查找该物品
+                        local itemsFolder = Workspace:FindFirstChild("Items")
+                        if itemsFolder then
+                            for _, item in ipairs(itemsFolder:GetChildren()) do
+                                if not AutoUpgradeCampfire.Enabled then break end
+                                
+                                if item.Name == itemName then
+                                    moveItemToCampfire(item)
+                                    task.wait(0.1) -- 物品移动间隔
+                                end
+                            end
+                        end
                     end
-                    break
                 end
                 
-                -- 检查饥饿度并进食
-                local hungerPercent = getHungerPercent()
-                if hungerPercent <= AutoFeed.HungerThreshold then
-                    eatFood(AutoFeed.FoodItem)
-                end
+                task.wait(AutoUpgradeCampfire.CheckInterval) -- 主循环间隔
             end
         end
 
         -- 根据Toggle状态启动或停止
         if state then
-            -- 开启自动进食
-            task.spawn(function()
-                -- 先检查是否有选择的食物
-                local foodCount = countFoodItems(AutoFeed.FoodItem)
-                if foodCount == 0 then
-                    WindUI:Notify({
-                        Title = "自动进食错误",
-                        Content = "未找到 " .. getFoodDisplayName(AutoFeed.FoodItem),
-                        Duration = 3
-                    })
-                    if Toggle.SetValue then
-                        Toggle:SetValue(false)
-                    end
-                    return
+            -- 开启前检查是否有选中的物品
+            local hasSelectedItems = false
+            for _, enabled in pairs(AutoUpgradeCampfire.SelectedItems) do
+                if enabled then
+                    hasSelectedItems = true
+                    break
                 end
-                
+            end
+            
+            if not hasSelectedItems then
                 WindUI:Notify({
-                    Title = "自动进食",
-                    Content = "已开启，食物: " .. getFoodDisplayName(AutoFeed.FoodItem),
+                    Title = "自动升级营火",
+                    Content = "请先选择要使用的燃料物品",
+                    Duration = 3
+                })
+                if Toggle.SetValue then
+                    Toggle:SetValue(false)
+                end
+                return
+            end
+            
+            -- 开启自动升级
+            task.spawn(function()
+                WindUI:Notify({
+                    Title = "自动升级营火",
+                    Content = "已开启，正在自动添加燃料",
                     Duration = 2
                 })
-                startAutoFeed()
+                startAutoUpgrade()
             end)
         else
-            -- 关闭自动进食
+            -- 关闭自动升级
             WindUI:Notify({
-                Title = "自动进食",
+                Title = "自动升级营火",
                 Content = "已关闭",
                 Duration = 2
             })
