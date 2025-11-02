@@ -261,3 +261,24 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local Toggle = Tab:Toggle({
+    Title = "自动喂食",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        _G.AutoFeed = state
+        if state then
+            task.spawn(function()
+                while _G.AutoFeed do
+                    pcall(function()
+                        local hitbox = workspace.Plots.Plot6.Subject.Subject.Hitbox
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, hitbox, 0)
+                        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, hitbox, 1)
+                    end)
+                    task.wait(0.1)
+                end
+            end)
+        end
+    end
+})
