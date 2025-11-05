@@ -246,26 +246,28 @@ local Toggle = Tab:Toggle({
     Desc = "",
     Locked = false,
     Callback = function(state)
-        local isChopping = state
-        
         if state then
-            spawn(function()
-                while isChopping do
-                    wait(0.1) 
+            _G.AutoTreeLoop = task.spawn(function()
+                while _G.AutoTreeLoop do
+                    local args = {
+                        [1] = "damage",
+                        [2] = "World 1_14431"
+                    }
                     
-                                       
-                    if not isChopping then break end
-                   
-                    game:GetService("ReplicatedStorage").Signal.Tree:FireServer()
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Signal.Tree:FireServer(unpack(args))
+                    end)
+                    
+                    task.wait(0.01)
                 end
             end)
             
-            print("自动砍树已开启")
+            print("[提示] 自动砍树已开启")
         else
-            isChopping = false
-            
-            
-            print("自动砍树已关闭")
+            if _G.AutoTreeLoop then
+                _G.AutoTreeLoop = nil
+                print("[提示] 自动砍树已关闭")
+            end
         end
     end
 })
