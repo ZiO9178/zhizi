@@ -256,7 +256,6 @@ local Toggle = Tab:Toggle({
                 local character = player.Character
                 local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                 
-")
                 
                 if humanoidRootPart then
                     local position = humanoidRootPart.Position - Vector3.new(0, 3, 0)
