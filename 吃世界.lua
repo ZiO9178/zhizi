@@ -245,6 +245,7 @@ local Toggle = Tab:Toggle({
     Title = "自动吃",
     Desc = "",
     Locked = false,
+ false,
     Callback = function(state)
         if state then
             local args = {
@@ -252,11 +253,17 @@ local Toggle = Tab:Toggle({
                 [2] = false,
                 [3] = false
             }
-
-            local player = game:GetService("Players").LocalPlayer
-            player.Character.Events.Grab:FireServer(unpack(args))
-            player.Character.Events.Eat:FireServer()
+            game:GetService("Players").LocalPlayer.Character.Events.Grab:FireServer(unpack(args))
+            
+                       
+            eatLoop = game:GetService("RunService").Heartbeat:Connect(function()
+                game:GetService("Players").LocalPlayer.Character.Events.Eat:FireServer()
+            end)
         else
+            if eatLoop then
+                eatLoop:Disconnect()
+                eatLoop = nil
+            end
         end
     end
 })
