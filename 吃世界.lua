@@ -264,7 +264,7 @@ local Tlocal Toggle = Tab:Toggle({
                     end
                 end
             end)
-          
+            
             spawn(function()
                 while eatLoop and wait(0.1) do
                     if not eatLoop then break end
@@ -276,7 +276,7 @@ local Tlocal Toggle = Tab:Toggle({
                         pcall(function()
                             character.Events.Eat:FireServer()
                         end)
-                    end                    end
+                    end 
                 end
             end)
             
@@ -298,27 +298,6 @@ local Tab = Window:Tab({
     Title = "升级功能",
     Icon = "server",
     Locked = false,
-})
-
-local Toggle = Tab:Toggle({
-    Title = "自动升级最大尺寸",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        if state then
-            while task.wait(0.1) do
-                if not state then break end
-                
-                local args = {
-                    [1] = "MaxSize"
-                }
-                
-                game:GetService("Service("ReplicatedStorage").Events.PurchaseEvent:FireServer(unpack(args))
-            end
-        else
-            print("自动升级已关闭")
-        end
-    end
 })
 
 local Toggle = Tab:Toggle({
@@ -345,7 +324,7 @@ local Toggle = Tab:Toggle({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动升级倍数",
+    Title = "自动升级倍速",
     Desc = "",
     Locked = false,
     Callback = function(state)
