@@ -294,29 +294,32 @@ local Tlocal Toggle = Tab:Toggle({
     end
 })
 
+_G.AutoGrabThrowEnabled = false
+
 local Toggle = Tab:Toggle({
-    Title = "自动投掷",
+    Title = "自动抓取投掷",
     Desc = "",
     Locked = false,
     Callback = function(state)
+        _G.AutoGrabThrowEnabled = state
+        
         if state then
-            while wait(0.5) and _G.AutoGrabThrowEnabled do
-                pcall(function()
-                    local args = {
-                        [1] = false,
-                        [2] = false,
-                        [3] = false
-                    }
+            coroutine.wrap(function()
+                repeat
+                    task.wait(0.6)
                     
-                    game:GetService("Players").LocalPlayer.Character.Events.Grab:FireServer(unpack(args))
                     
-                    wait(0.01)
+                    local character = game.Players.LocalPlayer.Character
+                    if character and character:FindFirstChild("Events") then
+                        local args = {[1] = false, [2] = false, [3] = false}
+                        
+                        character.Events.Grab:FireServer(unpack(args))
+                        task.wait(0.01)
+                        character.Events.Throw:FireServer()
+                    end
                     
-                    game:GetService("Players").LocalPlayer.Character.Events.Throw:FireServer()
-                end)
-            end
-        else
-            _G.AutoGrabThrowEnabled = false
+                until not _G.AutoGrabThrowEnabled
+            end)()
         end
     end
 })
