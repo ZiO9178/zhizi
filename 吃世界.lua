@@ -248,21 +248,41 @@ local Toggle = Tab:Toggle({
  false,
     Callback = function(state)
         if state then
-            local args = {
-                [1] = false,
-                [2] = false,
-                [3] = false
-            }
-            game:GetService("Players").LocalPlayer.Character.Events.Grab:FireServer(unpack(args))
+            local looping = true
             
+            spawn(function()
+                while looping and wait(0.01) do
+                    if not looping then break end
+                    
+
+                    
+                    local player = game:GetService("Players").LocalPlayer
+                    local character = player.Character
+                    
+                    if character and character:FindFirstChild("Events") then
+                        local events = character.Events
+                        
                        
-            eatLoop = game:GetService("RunService").Heartbeat:Connect(function()
-                game:GetService("Players").LocalPlayer.Character.Events.Eat:FireServer()
+                        local args = {false, false, false}
+                        
+                        pcall(function()
+                            events.Grab:FireServer(unpack(args))
+                        end)
+                        
+                        wait(0.01)
+                        
+                        pcall(function()
+                            events.Eat:FireServer()
+                        end)
+                    end
+                end
             end)
+            
+            Toggle._loopingRef = looping
+            
         else
-            if eatLoop then
-                eatLoop:Disconnect()
-                eatLoop = nil
+            if Toggle._loopingRef ~= nil then
+                Toggle._loopingRef = false
             end
         end
     end
