@@ -271,3 +271,204 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local Tab = Window:Tab({
+    Title = "宝箱功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动收集宝箱",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            startAutoCollect()
+        else
+            stopAutoCollect()
+        end
+    end
+})
+
+local isCollecting = false
+local currentIndex = 0
+
+function startAutoCollect()
+    isCollecting = true
+    
+    local chests = getChestList()
+    
+    if #chests == 0 then
+        print("未找到任何宝箱！")
+        return
+    end
+    
+    print("开始自动收集宝箱...")
+    
+    coroutine.wrap(function()
+        for i, chest in ipairs(chests) do
+            if not isCollecting then break end
+            
+            currentIndex = i
+            collectSingleChest(chest, i, #chests)
+            
+            wait(1)
+        end
+        
+        if isCollecting then
+            print("所有宝箱已收集完成")
+            Toggle:Set(false)
+        end
+        
+        isCollecting = false
+    end)()
+end
+
+function stopAutoCollect()
+    isCollecting = false
+    print("已停止自动收集")
+end
+
+function getChestList()
+    local chests = {}
+    
+    if workspace:FindFirstChild("ChestFolder") then
+        for _, obj in pairs(workspace.ChestFolder:GetChildren()) do
+            if obj.Name:lower():find("chest") or obj:IsA("Model") then
+                table.insert(chests, obj)
+            end
+        end
+    else
+        warn("找不到 ChestFolder，将在整个工作区搜索宝箱...")
+        
+        for _, obj in pairs(workspace:GetChildren()) do
+            if obj.Name:lower():find("chest") and obj:IsA("Model") then
+                table.insert(chests, obj)
+            end
+        end
+    end
+    
+    table.sort(chests, function(a, b)
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local charPos = player.Character.HumanoidRootPart.Position
+            local distA = (a:GetPivot().Position - charPos).Magnitude
+            local distB = (b:GetPivot().Position - charPos).Magnitude
+            return distA < distB
+        end
+        return false
+    end)
+    
+    return chests
+end
+
+end
+
+function collectSingleChest(chest, index, totalCount)
+    print(string.format("[%d/%d] 正在前往宝箱: %s", index, totalCount, chest.Name))
+    
+    teleportToChest(chest)
+    
+    wait(2)
+    
+    local success = activateCollectionPoint(chest)
+    
+    if success then
+        print(string.format("✅ [%d/%d] 宝箱 %s 收集成功", index, totalCount, chest.Name))
+    else
+        print(string.format("❌ [%d/%d] 宝箱 %s 收集失败", index, totalCount, chest.Name))
+    end
+end
+
+function teleportToChest(chest)
+    local player = game.Players.LocalPlayer
+    local character = player.CharacterAdded and player. player.Character or player.CharacterAdded:Wait()
+    
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local rootPart = character.HumanoidRootPart
+        
+        local offset = Vector3.new(3, 10, 3)
+        local targetPosition = chest:GetPivot().ivot().Position + offset
+        
+        rootPart.CFrame = CFrame.new(targetPosition)
+        
+        print("📦 已传送到宝箱位置")
+    else
+        warn("无法找到玩家角色或HumanoidRootPart")
+    end
+end
+
+function activateCollectionPoint(chest)
+    local foundProximityPrompt = findAndActivateProximityPrompt(chest)
+    local foundClickDetector = findAndActivateClickDetector(chest)
+    
+    return foundProximityPrompt or foundClickDetector
+end
+
+function findAndActivateProximityPrompt(obj)
+    local function searchForPrompt(currentObj)
+        if currentObj:IsA("ProximityPrompt") then
+            simulateLongPress(currentObj)
+            return true
+        end
+        
+        for _, child in pairs(currentObj:GetChildren()) do
+            if searchForPrompt(child) then
+                return true
+            end
+        end
+        
+        return false
+    end
+    
+    return searchForPrompt(obj)
+end
+
+function findAndActivateClickDetector(obj)
+    local function searchForClickDetector(currentObj)
+        if currentObj:IsA("ClickDetector") then
+            fireclickdetector(currentObj)
+            wait(2)
+            return true
+        end
+        
+        for _, child in pairs(currentObj:GetChildren()) do
+            if searchForClickDetector(child) then
+                return true
+            end
+        end
+        
+        return false
+    end
+    
+    return searchForClickDetector(obj)
+end
+
+function simulateLongPress(prompt)
+    prompt.Enabled = true
+    
+    firesignal(prompt.Triggered)
+    
+    wait(prompt.HoldDuration > 0 and prompt.HoldDuration + 0.5 or 2)
+    
+    return true
+end
+
+Tab:Button({
+    Name = "刷新宝箱列表",
+    Callback = function()
+        local chests = getChestList()
+        print("找到 " .. #chests .. " 个宝箱:")
+        for i, chest in ipairs(chests) do
+            print(i .. ". " .. chest.Name)
+        end
+    end
+})
+
+Tab:Label("自动收集说明:")
+Tab:Label("- 会自动寻找最近的宝箱")
+Tab:Label("- 模拟长按收集动作")  
+Tab:Label("- 收集完后自动前往下一个")
+
+print("🔧 自动收集宝箱模块已加载")
