@@ -294,32 +294,72 @@ local Tlocal Toggle = Tab:Toggle({
     end
 })
 
-_G.AutoGrabThrowEnabled = false
+local Tab = Window:Tab({
+    Title = "升级功能",
+    Icon = "server",
+    Locked = false,
+})
 
 local Toggle = Tab:Toggle({
-    Title = "自动抓取投掷",
+    Title = "自动升级最大尺寸",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        _G.AutoGrabThrowEnabled = state
-        
         if state then
-            coroutine.wrap(function()
-                repeat
-                    task.wait(0.6)
-                    
-                    
-                    local character = game.Players.LocalPlayer.Character
-                    if character and character:FindFirstChild("Events") then
-                        local args = {[1] = false, [2] = false, [3] = false}
-                        
-                        character.Events.Grab:FireServer(unpack(args))
-                        task.wait(0.01)
-                        character.Events.Throw:FireServer()
-                    end
-                    
-                until not _G.AutoGrabThrowEnabled
-            end)()
+            while task.wait(0.1) do
+                if not state then break end
+                
+                local args = {
+                    [1] = "MaxSize"
+                }
+                
+                game:GetService("Service("ReplicatedStorage").Events.PurchaseEvent:FireServer(unpack(args))
+            end
+        else
+            print("自动升级已关闭")
+        end
+    end
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动升级速度",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            local autoUpgradeConnection
+            autoUpgradeConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                local args = {"Speed"}
+                game:GetService("ReplicatedStorage").Events.PurchaseEvent:FireServer(unpack(args))
+            end)
+            
+            Toggle:SetMetadata("AutoUpgradeConnection", autoUpgradeConnection)
+        else
+            local connection = Toggle:GetMetadata("AutoUpgradeConnection")
+            if connection then
+                connection:Disconnect()
+                Toggle:SetMetadata("AutoUpgradeConnection", nil)
+            end
+        end
+    end
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动升级倍数",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            while wait(0.5) and getgenv().AutoUpgrade do
+                local args = {
+                    [1] = "MultiplierMultiplier"
+                }
+                game:GetService("ReplicatedStorage").Events.PurchaseEvent:FireServer(unpack(args))
+            end
+        else
+            if getgenv().AutoUpgrade ~= nil then
+                getgenv().AutoUpgrade = false
+            end
         end
     end
 })
