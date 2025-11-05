@@ -363,7 +363,6 @@ function getChestList()
     return chests
 end
 
-end
 
 function collectSingleChest(chest, index, totalCount)
     print(string.format("[%d/%d] 正在前往宝箱: %s", index, totalCount, chest.Name))
@@ -454,21 +453,3 @@ function simulateLongPress(prompt)
     
     return true
 end
-
-Tab:Button({
-    Name = "刷新宝箱列表",
-    Callback = function()
-        local chests = getChestList()
-        print("找到 " .. #chests .. " 个宝箱:")
-        for i, chest in ipairs(chests) do
-            print(i .. ". " .. chest.Name)
-        end
-    end
-})
-
-Tab:Label("自动收集说明:")
-Tab:Label("- 会自动寻找最近的宝箱")
-Tab:Label("- 模拟长按收集动作")  
-Tab:Label("- 收集完后自动前往下一个")
-
-print("🔧 自动收集宝箱模块已加载")
