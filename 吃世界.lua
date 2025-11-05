@@ -241,49 +241,82 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Toggle = Tab:Toggle({
+local Tlocal Toggle = Tab:Toggle({
     Title = "自动吃",
     Desc = "",
     Locked = false,
- false,
     Callback = function(state)
         if state then
-            local looping = true
+            local grabLoop, eatLoop = true, true
             
             spawn(function()
-                while looping and wait(0.01) do
-                    if not looping then break end
-                    
-
+                while grabLoop and wait(0.1) do
+                    if not grabLoop then break end
                     
                     local player = game:GetService("Players").LocalPlayer
                     local character = player.Character
                     
                     if character and character:FindFirstChild("Events") then
-                        local events = character.Events
-                        
-                       
                         local args = {false, false, false}
-                        
                         pcall(function()
-                            events.Grab:FireServer(unpack(args))
-                        end)
-                        
-                        wait(0.01)
-                        
-                        pcall(function()
-                            events.Eat:FireServer()
+                            character.Events.Grab:FireServer(unpack(args))
                         end)
                     end
                 end
             end)
+          
+            spawn(function()
+                while eatLoop and wait(0.1) do
+                    if not eatLoop then break end
+                    
+                    local player = game:GetService("Players").LocalPlayer
+                    local character = player.Character
+                    
+                    if character and character:FindFirstChild("Events") then
+                        pcall(function()
+                            character.Events.Eat:FireServer()
+                        end)
+                    end                    end
+                end
+            end)
             
-            Toggle._loopingRef = looping
+            Toggle._grabLoop = grabLoop
+            Toggle._eatLoop = eatLoop
             
         else
-            if Toggle._loopingRef ~= nil then
-                Toggle._loopingRef = false
+            if Toggle._grabLoop ~= nil then
+                Toggle._grabLoop = false
             end
+            if Toggle._eatLoop ~= nil then
+                Toggle._eatLoop = false
+            end
+        end
+    end
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动投掷",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            while wait(0.5) and _G.AutoGrabThrowEnabled do
+                pcall(function()
+                    local args = {
+                        [1] = false,
+                        [2] = false,
+                        [3] = false
+                    }
+                    
+                    game:GetService("Players").LocalPlayer.Character.Events.Grab:FireServer(unpack(args))
+                    
+                    wait(0.01)
+                    
+                    game:GetService("Players").LocalPlayer.Character.Events.Throw:FireServer()
+                end)
+            end
+        else
+            _G.AutoGrabThrowEnabled = false
         end
     end
 })
