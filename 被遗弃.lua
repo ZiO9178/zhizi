@@ -242,83 +242,31 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local highlights = {}
-local nameTags = {}
-local healthBars = {}
+local highlights = {} 
 
 local Toggle = Tab:Toggle({
     Title = "透视杀手",
-    Desc = "显示敌人信息",
+    Desc = "",
     Locked = false,
     Callback = function(state)
         if state then
-            -- 创建玩家信息UI
             for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
-                local player = killer.Parent -- 假设killer是Player的子对象
-                
-                -- 创建名字标签
-                local nameTag = Instance.new("TextLabel")
-                nameTag.Text = player.Name
-                nameTag.Size = 20
-                nameTag.Position = UDim2.new(0, 0, 0, -30) -- 附加到头顶
-                nameTag.Parent = player.PlayerGui
-                nameTags[player] = nameTag
-                
-                -- 创建血条
-                local healthBar = Instance.new("ImageLabel")
-                healthBar.Image = "http://www.roblox.com/asset/?id=4934349617" -- 血条图片
-                healthBar.Size = UDim2.new(0, 100, 0, 10)
-                healthBar.Position = UDim2.new(0, 0, 0, -20) -- 附加到名字标签下方
-                healthBar.Parent = player.PlayerGui
-                healthBars[player] = healthBar
-                
-                -- 创建高亮效果
                 local highlight = Instance.new("Highlight")
                 highlight.Parent = killer
-                highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                highlight.FillColor = Color3.fromRGB(255, 0, 0) 
                 highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-                highlights[killer] = highlight
-                
-                -- 初始化血条
-                local maxHealth = player.Character.Humanoid.MaxHealth
-                local health = player.Character.Humanoid.Health
-                healthBar.ImageTransparency = 1 - (health / maxHealth)
+                highlights[killer] = highlight 
             end
         else
-            -- 销毁所有UI元素
-            for player, nameTag in pairs(nameTags) do
-                nameTag:Destroy()
-                nameTags[player] = nil
-            end
-            
-            for player, healthBar in pairs(healthBars) do
-                healthBar:Destroy()
-                healthBars[player] = nil
-            end
-            
             for killer, highlight in pairs(highlights) do
                 if highlight and highlight.Parent then
-                    highlight:Destroy()
+                    highlight:Destroy() 
                 end
             end
-            
-            highlights = {}
-            nameTags = {}
-            healthBars = {}
-        end
+            highlights = {} 
+        end      
     end
 })
-
--- 实时更新血条
-game:GetService("RunService").RenderStepped:Connect(function()
-    if Toggle.State then
-        for player, healthBar in pairs(healthBars) do
-            local health = player.Character.Humanoid.Health
-            local maxHealth = player.Character.Humanoid.MaxHealth
-            healthBar.ImageTransparency = 1 - (health / maxHealth)
-        end
-    end
-end)
 
 local survivorHighlights = {} 
 
@@ -502,16 +450,40 @@ local Toggle = Tab:Toggle({
     Locked = false,
     Callback = function(state)
         if state then
-            while state do
-                if workspace.Map.Ingame.Map.Generator.Health.Value < 100 then
-                    workspace.Map.Ingame.Map.Generator.Remotes.RE:FireServer("Repair")
+            local repairCoroutine = coroutine.create(function()
+                while state do
+                    local PuzzleUI = Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("PuzzleUI", 9999)
+                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     
+                    local FartNapFolder = workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild("Ingame") and workspace.Map.Ingame:FindFirstChild("Map")
+                    if FartNapFolder then
+                        local closestGenerator, closestDistance = nil, 15
+                        for _, g in ipairs(FartNapFolder:GetChildren()) do
+                            if g.Name == "Generator" and g.Progress.Value < 100 then
+                                local distance = (g.Main.Position - playerPosition).Magnitude
+                                if distance <= 15 then
+                                    local repairCount = tonumber(g:GetAttribute("RepairCount")) or 0
+                                    if repairCount < SkibidiCS then
+                                        if distance < closestDistance then
+                                            closestDistance = distance
+                                            closestGenerator = g
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        
+                        if closestGenerator then
+                            closestGenerator.Remotes.RE:FireServer()
+                            closestGenerator:SetAttribute("RepairCount", (tonumber(closestGenerator:GetAttribute("RepairCount")) or 0) + 1)
+                        end
+                    end
                     
-                    wait(5)
-                else
-                    wait(1)
+                    task.wait(SkibidiWait)
                 end
-            end
+            end)
+            
+            coroutine.resume(repairCoroutine)
         else
             print("自动修机已关闭")
         end
