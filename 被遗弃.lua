@@ -1,12 +1,519 @@
-repeat task.wait();until game:IsLoaded() local v0=game:GetService("Players");local v1=game:GetService("RunService");local v2=game:GetService("TweenService");local v3=v0.LocalPlayer;while  not v3 do local v24=0 + 0 ;while true do if (v24==0) then task.wait();v3=v0.LocalPlayer;break;end end end pcall(function() if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop();end end);local function v4() local v25=0 -0 ;local v26;local v27;local v28;while true do if (v25==2) then v26,v27=pcall(function() return gethiddengui and gethiddengui() ;end);if (v26 and v27) then return v27;end v25=2 + 1 ;end if (v25==(1 + 0)) then v26,v27=pcall(function() return get_hidden_gui and get_hidden_gui() ;end);if (v26 and v27) then return v27;end v25=5 -3 ;end if (v25==(4 + 0)) then return game:GetService("CoreGui");end if (v25==0) then v26,v27=pcall(function() return gethui and gethui() ;end);if (v26 and v27) then return v27;end v25=1131 -(87 + 1043) ;end if (v25==(451 -(10 + 438))) then local v72=0 + 0 ;while true do if (v72==1) then v25=14 -10 ;break;end if (v72==(0 + 0)) then v28=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",1185 -(1123 + 57) ) ;if v28 then return v28;end v72=1 + 0 ;end end end end end local v5=v4();local v6=Color3.fromRGB(318 -(163 + 91) ,2075 -(1869 + 61) ,72 + 183 );local function v7(v29) local v30=0;local v31;local v32;local v33;local v34;local v35;local v36;local v37;local v38;local v39;local v40;local v41;local v42;local v43;local v44;local v45;local v46;local v47;local v48;local v49;local v50;local v51;local v52;local v53;local v54;while true do if (v30==(31 -22)) then v50.Font=Enum.Font.GothamBlack;v50.Rotation= -8.56;v50.TextTransparency=0.1 -0 ;v50.ZIndex=1 + 6 ;v50.Parent=v48;v51=Instance.new("UIGradient");v51.Rotation=0;v30=13 -3 ;end if (v30==(5 + 0)) then v45.BackgroundTransparency=1475 -(1329 + 145) ;v45.ZIndex=v42.ZIndex-(972 -(140 + 831)) ;v45.Parent=v41;v46=Instance.new("UICorner");v46.CornerRadius=UDim.new(0,v33);v46.Parent=v45;v47=Instance.new("UIStroke");v30=6;end if (v30==(1852 -(1409 + 441))) then if  not v40 then local v144=v3:FindFirstChildOfClass("PlayerGui") or v3:WaitForChild("PlayerGui",723 -(15 + 703) ) ;if v144 then v39.Parent=v144;end end v41=Instance.new("Frame");v41.Size=UDim2.fromOffset(v31,v31);v41.AnchorPoint=Vector2.new(0.5,0.5 + 0 );v41.Position=UDim2.fromScale(0.5,0.5);v41.BackgroundTransparency=439 -(262 + 176) ;v41.Parent=v39;v30=3;end if (v30==1) then v37,v38=1721.98 -(345 + 1376) ,1.02;v39=Instance.new("ScreenGui");v39.Name="ThunderIntro";v39.IgnoreGuiInset=true;v39.ResetOnSpawn=false;pcall(function() if (syn and syn.protect_gui) then syn.protect_gui(v39);end end);v40=pcall(function() v39.Parent=v5;end);v30=690 -(198 + 490) ;end if (v30==(35 -27)) then v50.Size=UDim2.fromScale(0.7,0.7);v50.AnchorPoint=Vector2.new(0.5,0.5 -0 );v50.Position=UDim2.fromScale(1206.5 -(696 + 510) ,0.5 -0 );v50.BackgroundTransparency=1263 -(1091 + 171) ;v50.Text="被遗弃";v50.TextColor3=v6;v50.TextScaled=true;v30=2 + 7 ;end if (v30==(12 -8)) then v44=Instance.new("UIStroke");v44.Thickness=v32;v44.Color=v6;pcall(function() v44.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v44.Parent=v42;v45=Instance.new("Frame");v45.Size=UDim2.fromScale(3 -2 ,375 -(123 + 251) );v30=24 -19 ;end if (v30==(709 -(208 + 490))) then task.spawn(function() while v53 do local v145=v2:Create(v42,TweenInfo.new(v36,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v42.Rotation + v35 });local v146=v2:Create(v45,TweenInfo.new(v36,Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut),{Rotation=v45.Rotation + v35 });v145:Play();v146:Play();v145.Completed:Wait();end end);task.spawn(function() while v53 do v2:Create(v52,TweenInfo.new(0.6 + 0 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v38}):Play();task.wait(0.6 + 0 );v2:Create(v52,TweenInfo.new(836.6 -(660 + 176) ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Scale=v37}):Play();task.wait(0.6);end end);task.spawn(function() while v53 do for v148=0,44 + 316 ,212 -(14 + 188)  do local v149=675 -(534 + 141) ;local v150;while true do if (v149==(0 + 0)) then v150=0 + 0 ;while true do if (v150==(0 + 0)) then v51.Rotation=v148;task.wait(0.03 -0 );break;end end break;end end end end end);if (v34 and (v34>(0 -0))) then task.delay(v34,function() local v151=0 -0 ;local v152;while true do if (v151==(2 + 1)) then _G.ThunderIntro_Stop();break;end if (v151==0) then if  not v53 then return;end v152=TweenInfo.new(0.4 + 0 ,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut);v151=397 -(115 + 281) ;end if (v151==(2 -1)) then v2:Create(v44,v152,{Transparency=1 + 0 }):Play();v2:Create(v47,v152,{Transparency=1}):Play();v151=2;end if (v151==(4 -2)) then v2:Create(v50,v152,{TextTransparency=3 -2 }):Play();task.wait(0.45);v151=3;end end end);end return v39;end if (v30==7) then v48.Size=UDim2.fromOffset(v49,v49);v48.AnchorPoint=Vector2.new(0.5,0.5);v48.Position=UDim2.fromScale(867.5 -(550 + 317) ,0.5);v48.BackgroundTransparency=1;v48.ZIndex=7 -2 ;v48.Parent=v41;v50=Instance.new("TextLabel");v30=8;end if (v30==(14 -4)) then v51.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(712 -457 ,255,540 -(134 + 151) )),ColorSequenceKeypoint.new(0.5 -0 ,Color3.fromRGB(2170 -(582 + 1408) ,762 -542 ,320 -65 )),ColorSequenceKeypoint.new(1,Color3.fromRGB(960 -705 ,255,255))});v51.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0 -0 ,1),NumberSequenceKeypoint.new(0.5,0.6),NumberSequenceKeypoint.new(1 + 0 ,1)});v51.Parent=v50;v52=Instance.new("UIScale",v42);v52.Scale=1;v53,v54=true,nil;_G.ThunderIntro_Stop=function() local v135=0 + 0 ;while true do if (v135==(1 -0)) then if v54 then v54:Disconnect();end if (v39 and v39.Parent) then v39:Destroy();end break;end if ((0 -0)==v135) then if  not v53 then return;end v53=false;v135=1;end end end;v30=1 + 10 ;end if (v30==(1636 -(1373 + 263))) then v29=v29 or {} ;v31=v29.size or (1210 -(451 + 549)) ;v32=6 + 12 ;v33=27 -9 ;v34=v29.duration or 6 ;v35=90;v36=0.9 -0 ;v30=1;end if (v30==(1390 -(746 + 638))) then v47.Thickness=12 + 18 ;v47.Color=v6;v47.Transparency=0.75;pcall(function() v47.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;end);v47.Parent=v45;v48=Instance.new("Frame");v49=v31-(v32 * (2 -0)) ;v30=7;end if (v30==(344 -(218 + 123))) then v42=Instance.new("Frame");v42.Size=UDim2.fromScale(1582 -(1535 + 46) ,1 + 0 );v42.BackgroundTransparency=1 + 0 ;v42.Parent=v41;v43=Instance.new("UICorner");v43.CornerRadius=UDim.new(560 -(306 + 254) ,v33);v43.Parent=v42;v30=4;end end end v7({duration=1 + 5 });print("反挂机开启");local v8=game:GetService("VirtualUser");game:GetService("Players").LocalPlayer.Idled:connect(function() local v55=0;while true do if (v55==1) then v8:Button2Up(Vector2.new(0 -0 ,1467 -(899 + 568) ),workspace.CurrentCamera.CFrame);break;end if (0==v55) then v8:Button2Down(Vector2.new(0 + 0 ,0 -0 ),workspace.CurrentCamera.CFrame);wait(604 -(268 + 335) );v55=291 -(60 + 230) ;end end end);local v9=Instance.new("Sound");v9.Parent=game.SoundService;v9.SoundId="rbxassetid://4590662766";v9.Volume=3;v9.PlayOnRemove=true;v9:Destroy();local v15=loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))();local v16=v15:CreateWindow({Title="Sxingz Hub|被遗弃",Icon="shield-user",Author="作者:Z某人",Folder="CloudHub",Size=UDim2.fromOffset(1152 -(426 + 146) ,460),Transparent=true,Theme="Dark",Resizable=true,SideBarWidth=24 + 176 ,Background="rbxassetid://77044761659704",BackgroundImageTransparency=0.42,HideSearchBar=false,ScrollBarEnabled=true,User={Enabled=true,Anonymous=false,Callback=function() print("clicked");end}});v16:EditOpenButton({Title="打开Sxingz|被遗弃",Icon="shield-check",CornerRadius=UDim.new(0,16),StrokeThickness=1458 -(282 + 1174) ,Color=ColorSequence.new({ColorSequenceKeypoint.new(811 -(569 + 242) ,Color3.fromHex("FF0000")),ColorSequenceKeypoint.new(0.16 + 0 ,Color3.fromHex("FF7F00")),ColorSequenceKeypoint.new(1251.33 -(721 + 530) ,Color3.fromHex("FFFF00")),ColorSequenceKeypoint.new(0.5 -0 ,Color3.fromHex("00FF00")),ColorSequenceKeypoint.new(0.66 + 0 ,Color3.fromHex("0000FF")),ColorSequenceKeypoint.new(0.83,Color3.fromHex("4B0082")),ColorSequenceKeypoint.new(1501 -(1408 + 92) ,Color3.fromHex("9400D3"))}),Draggable=true});local v17=v16:Tab({Title="透视",Icon="warehouse",Locked=false});local v18={};local v19=v17:Toggle({Title="透视杀手",Desc="",Locked=false,Callback=function(v56) if v56 then for v123,v124 in pairs(workspace.Players.Killers:GetChildren()) do local v125=0;local v126;while true do if (v125==(1087 -(461 + 625))) then v126.FillColor=Color3.fromRGB(1543 -(993 + 295) ,0,0);v126.OutlineColor=Color3.fromRGB(14 + 241 ,255,1171 -(418 + 753) );v125=2;end if (v125==(0 + 0)) then v126=Instance.new("Highlight");v126.Parent=v124;v125=1 + 0 ;end if (v125==2) then v18[v124]=v126;break;end end end else local v66=0;local v67;while true do if (v66==(0 + 0)) then v67=0 + 0 ;while true do if (v67==(529 -(406 + 123))) then for v175,v176 in pairs(v18) do if (v176 and v176.Parent) then v176:Destroy();end end v18={};break;end end break;end end end end});local v20={};local v21=v17:Toggle({Title="透视幸存者",Desc="",Locked=false,Callback=function(v57) if v57 then for v127,v128 in pairs(workspace.Players.Survivors:GetChildren()) do local v129=0;local v130;while true do if (v129==1) then v130.FillColor=Color3.fromRGB(0,2024 -(1749 + 20) ,0 + 0 );v130.OutlineColor=Color3.fromRGB(1577 -(1249 + 73) ,255,91 + 164 );v129=1147 -(466 + 679) ;end if (v129==(4 -2)) then v130.FillTransparency=0.3 -0 ;v20[v128]=v130;break;end if (v129==0) then v130=Instance.new("Highlight");v130.Parent=v128;v129=1901 -(106 + 1794) ;end end end else local v68=0 + 0 ;while true do if (v68==0) then for v162,v163 in pairs(v20) do if (v163 and v163.Parent) then v163:Destroy();end end v20={};break;end end end end});local v22={};local v23=v17:Toggle({Title="透视发电机",Desc="",Locked=false,Callback=function(v58) if v58 then local function v69() for v138,v139 in pairs(workspace.Map.Ingame.Map:GetChildren()) do if ((v139.Name=="Generator") and  not v22[v139]) then local v164=Instance.new("Highlight");v164.Parent=v139;v164.FillColor=Color3.fromRGB(0,51 + 149 ,752 -497 );v164.OutlineColor=Color3.fromRGB(690 -435 ,369 -(4 + 110) ,0);v164.FillTransparency=0.5;v22[v139]=v164;end end end v69();if  not generatorChildAddedConnection then generatorChildAddedConnection=workspace.Map.Ingame.Map.ChildAdded:Connect(function(v147) if (v147.Name=="Generator") then local v173=584 -(57 + 527) ;while true do if (v173==(1427 -(41 + 1386))) then task.wait(0.5);if GeneratorToggle.Value then local v194=Instance.new("Highlight");v194.Parent=v147;v194.FillColor=Color3.fromRGB(103 -(17 + 86) ,200,255);v194.OutlineColor=Color3.fromRGB(255,174 + 81 ,0);v194.FillTransparency=0.5 -0 ;v22[v147]=v194;end break;end end end end);end else local v70=0 -0 ;while true do if (v70==0) then for v170,v171 in pairs(v22) do if (v171 and v171.Parent) then v171:Destroy();end end v22={};v70=167 -(122 + 44) ;end if (v70==(1 -0)) then if generatorChildAddedConnection then local v174=0 -0 ;while true do if ((0 + 0)==v174) then generatorChildAddedConnection:Disconnect();generatorChildAddedConnection=nil;break;end end end break;end end end end});local v17=v16:Tab({Title="耐力",Icon="warehouse",Locked=false});local v19=v17:Toggle({Title="无限耐力",Desc="",Locked=false,Callback=function(v59) local v60=0 + 0 ;local v61;local v62;local v63;local v64;local v65;while true do if (v60==(3 -1)) then v64,v65=pcall(function() local v140=65 -(30 + 35) ;while true do if (v140==(0 + 0)) then if  not v19.originalValues then local v177=1257 -(1043 + 214) ;local v178;local v179;local v180;local v181;while true do if (v177==(3 -2)) then v180=v178:FindFirstChild("Sprinting");v181=v179:FindFirstChild("Sprinting");v177=1214 -(323 + 889) ;end if (v177==(5 -3)) then v19.originalValues={StaminaLoss=nil,StaminaLossDisabled=nil,SprintSpeed=v180 and v180.Value ,SprintFOV=v181 and v181.Value };break;end if ((580 -(361 + 219))==v177) then v178=v63(v62,"SpeedMultipliers");v179=v63(v62,"FOVMultipliers");v177=1;end end end if v59 then for v182,v183 in pairs(getgc(true)) do if (typeof(v183)=="table") then local v201=320 -(53 + 267) ;local v202;while true do if (v201==0) then v202=0;while true do if (v202==(0 + 0)) then if rawget(v183,"StaminaLoss") then local v210=0;while true do if ((413 -(15 + 398))==v210) then v19.originalValues.StaminaLoss=v183.StaminaLoss;v183.StaminaLoss=982 -(18 + 964) ;v210=3 -2 ;end if ((1 + 0)==v210) then print("[✓] Patched StaminaLoss to 0");break;end end end if rawget(v183,"StaminaLossDisabled") then v19.originalValues.StaminaLossDisabled=v183.StaminaLossDisabled;v183.StaminaLossDisabled=true;print("[✓] Disabled StaminaLoss");end break;end end break;end end end end else for v184,v185 in pairs(getgc(true)) do if (typeof(v185)=="table") then local v203=0;local v204;while true do if (0==v203) then v204=0 + 0 ;while true do if (v204==0) then if (rawget(v185,"StaminaLoss") and (v19.originalValues.StaminaLoss~=nil)) then local v213=0;local v214;while true do if (v213==(850 -(20 + 830))) then v214=0 + 0 ;while true do if ((126 -(116 + 10))==v214) then v185.StaminaLoss=v19.originalValues.StaminaLoss;print("[✓] Restored StaminaLoss to original value");break;end end break;end end end if (rawget(v185,"StaminaLossDisabled") and (v19.originalValues.StaminaLossDisabled~=nil)) then local v215=0 + 0 ;local v216;while true do if (v215==(738 -(542 + 196))) then v216=0;while true do if (v216==(0 -0)) then v185.StaminaLossDisabled=v19.originalValues.StaminaLossDisabled;print("[✓] Restored StaminaLossDisabled");break;end end break;end end end break;end end break;end end end end if v19.originalValues.SprintSpeed then local v186=0 + 0 ;local v187;local v188;while true do if (v186==1) then if v188 then v188.Value=v19.originalValues.SprintSpeed;end break;end if ((0 + 0)==v186) then v187=v63(v62,"SpeedMultipliers");v188=v187:FindFirstChild("Sprinting");v186=1;end end end if v19.originalValues.SprintFOV then local v189=0 + 0 ;local v190;local v191;local v192;while true do if (v189==1) then v192=nil;while true do if (v190==(2 -1)) then if v192 then v192.Value=v19.originalValues.SprintFOV;end break;end if (v190==0) then local v207=0 -0 ;while true do if (v207==1) then v190=1552 -(1126 + 425) ;break;end if ((405 -(118 + 287))==v207) then v191=v63(v62,"FOVMultipliers");v192=v191:FindFirstChild("Sprinting");v207=3 -2 ;end end end end break;end if (v189==(1121 -(118 + 1003))) then v190=0;v191=nil;v189=1;end end end end break;end end end);if  not v64 then warn("[!] Failed to patch stamina:",v65);else print((v59 and "[✓] Stamina patch executed successfully") or "[✓] Stamina patch disabled" );end break;end if (v60==(0 -0)) then v61=game.Players.LocalPlayer;v62=v61.Character or v61.CharacterAdded:Wait() ;v60=378 -(142 + 235) ;end if (v60==1) then v63=nil;function v63(v141,v142,v143) return v141:WaitForChild(v142,v143 or (45 -35) );end v60=1 + 1 ;end end end});
--- ⚠️ WARNING: integrity protected!
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+repeat task.wait() until game:IsLoaded()
 
-]]--
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local LocalPlayer = Players.LocalPlayer
+while not LocalPlayer do
+	task.wait()
+	LocalPlayer = Players.LocalPlayer
+end
+
+pcall(function()
+	if _G.ThunderIntro_Stop then _G.ThunderIntro_Stop() end
+end)
+
+local function resolveGuiParent()
+	local ok, res = pcall(function() return (gethui and gethui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (get_hidden_gui and get_hidden_gui()) end)
+	if ok and res then return res end
+	ok, res = pcall(function() return (gethiddengui and gethiddengui()) end)
+	if ok and res then return res end
+	local pg = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+	if pg then return pg end
+	return game:GetService("CoreGui")
+end
+
+local guiParent = resolveGuiParent()
+
+local BLUE  = Color3.fromRGB(64, 145, 255)
+
+local function Start(opts)
+	opts = opts or {}
+	local SIZE            = opts.size or 210
+	local STROKE_THICK    = 18
+	local CORNER          = 18
+	local DURATION        = opts.duration or 6 
+	local SPIN_STEP_DEG   = 90
+	local SPIN_STEP_TIME  = 0.90
+	local BREATH_MIN, BREATH_MAX = 0.98, 1.02
+
+	local gui = Instance.new("ScreenGui")
+	gui.Name = "ThunderIntro"
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	pcall(function() if syn and syn.protect_gui then syn.protect_gui(gui) end end)
+	local ok = pcall(function() gui.Parent = guiParent end)
+	if not ok then
+		local fallback = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 5)
+		if fallback then gui.Parent = fallback end
+	end
+
+	local root = Instance.new("Frame")
+	root.Size = UDim2.fromOffset(SIZE, SIZE)
+	root.AnchorPoint = Vector2.new(0.5, 0.5)
+	root.Position = UDim2.fromScale(0.5, 0.5)
+	root.BackgroundTransparency = 1
+	root.Parent = gui
+
+	local ring = Instance.new("Frame")
+	ring.Size = UDim2.fromScale(1, 1)
+	ring.BackgroundTransparency = 1
+	ring.Parent = root
+	local cornerRing = Instance.new("UICorner") cornerRing.CornerRadius = UDim.new(0, CORNER) cornerRing.Parent = ring
+	local ringStroke = Instance.new("UIStroke")
+	ringStroke.Thickness = STROKE_THICK
+	ringStroke.Color = BLUE
+	pcall(function() ringStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	ringStroke.Parent = ring
+
+	local glow = Instance.new("Frame")
+	glow.Size = UDim2.fromScale(1, 1)
+	glow.BackgroundTransparency = 1
+	glow.ZIndex = ring.ZIndex - 1
+	glow.Parent = root
+	local cornerGlow = Instance.new("UICorner") cornerGlow.CornerRadius = UDim.new(0, CORNER) cornerGlow.Parent = glow
+	local glowStroke = Instance.new("UIStroke")
+	glowStroke.Thickness = 30
+	glowStroke.Color = BLUE
+	glowStroke.Transparency = 0.75
+	pcall(function() glowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end)
+	glowStroke.Parent = glow
+
+	local inner = Instance.new("Frame")
+	local innerSize = SIZE - STROKE_THICK * 2
+	inner.Size = UDim2.fromOffset(innerSize, innerSize)
+	inner.AnchorPoint = Vector2.new(0.5, 0.5)
+	inner.Position = UDim2.fromScale(0.5, 0.5)
+	inner.BackgroundTransparency = 1
+	inner.ZIndex = 5
+	inner.Parent = root
+
+	
+	local thunderText = Instance.new("TextLabel")
+	thunderText.Size = UDim2.fromScale(0.7, 0.7)
+	thunderText.AnchorPoint = Vector2.new(0.5, 0.5)
+	thunderText.Position = UDim2.fromScale(0.5, 0.5)
+	thunderText.BackgroundTransparency = 1
+	thunderText.Text = "被遗弃"
+	thunderText.TextColor3 = BLUE
+	thunderText.TextScaled = true
+	thunderText.Font = Enum.Font.GothamBlack
+	thunderText.Rotation = -8.56
+	thunderText.TextTransparency = 0.10
+	thunderText.ZIndex = 7
+	thunderText.Parent = inner
+
+	
+	local gradient = Instance.new("UIGradient")
+	gradient.Rotation = 0
+	gradient.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(180,220,255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255))
+	}
+	gradient.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 1),
+		NumberSequenceKeypoint.new(0.5, 0.6),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	gradient.Parent = thunderText
+
+	local ringScale = Instance.new("UIScale", ring) ringScale.Scale = 1
+
+	local alive, hbConn = true, nil
+	_G.ThunderIntro_Stop = function()
+		if not alive then return end
+		alive = false
+		if hbConn then hbConn:Disconnect() end
+		if gui and gui.Parent then gui:Destroy() end
+	end
+	
+	-- Spin
+	task.spawn(function()
+		while alive do
+			local tw1 = TweenService:Create(ring, TweenInfo.new(SPIN_STEP_TIME, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = ring.Rotation + SPIN_STEP_DEG})
+			local tw2 = TweenService:Create(glow, TweenInfo.new(SPIN_STEP_TIME,   Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Rotation = glow.Rotation + SPIN_STEP_DEG})
+			tw1:Play() tw2:Play()
+			tw1.Completed:Wait()
+		end
+	end)
+	
+	-- Breathe
+	task.spawn(function()
+		while alive do
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MAX}):Play()
+			task.wait(0.6)
+			TweenService:Create(ringScale, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Scale = BREATH_MIN}):Play()
+			task.wait(0.6)
+		end
+	end)
+
+	-- Gradient sheen animation
+	task.spawn(function()
+		while alive do
+			for i = 0,360,10 do
+				gradient.Rotation = i
+				task.wait(0.03)
+			end
+		end
+	end)
+
+	-- Auto fade + destroy
+	if DURATION and DURATION > 0 then
+		task.delay(DURATION, function()
+			if not alive then return end
+			local ti = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+			TweenService:Create(ringStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(glowStroke,  ti, {Transparency = 1}):Play()
+			TweenService:Create(thunderText, ti, {TextTransparency = 1}):Play()
+			task.wait(0.45)
+			_G.ThunderIntro_Stop()
+		end)
+	end
+
+	return gui
+end
+
+Start({duration = 6}) -- lasts longer
+
+print("反挂机开启")
+		local vu = game:GetService("VirtualUser")
+		game:GetService("Players").LocalPlayer.Idled:connect(function()
+		   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		   wait(1)
+		   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
+
+local Sound = Instance.new("Sound")
+        Sound.Parent = game.SoundService
+        Sound.SoundId = "rbxassetid://4590662766"
+        Sound.Volume = 3
+        Sound.PlayOnRemove = true
+        Sound:Destroy()
+        
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
+
+local Window = WindUI:CreateWindow({
+        Title = "Sxingz Hub|被遗弃",
+        Icon = "shield-user",
+        Author = "作者:Z某人",
+        Folder = "CloudHub",
+        Size = UDim2.fromOffset(580, 460),
+        Transparent = true,
+        Theme = "Dark",
+        Resizable = true,
+        SideBarWidth = 200,
+        Background = "rbxassetid://77044761659704",
+        BackgroundImageTransparency = 0.42,
+        HideSearchBar = false,
+        ScrollBarEnabled = true,
+        User = {
+            Enabled = true,
+            Anonymous = false,
+            Callback = function()
+                print("clicked")
+            end,
+    },
+})  
+
+Window:EditOpenButton({
+    Title = "打开Sxingz|被遗弃",
+    Icon = "shield-check",
+    CornerRadius = UDim.new(0,16),
+    StrokeThickness = 2,
+    Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromHex("FF0000")),
+        ColorSequenceKeypoint.new(0.16, Color3.fromHex("FF7F00")),
+        ColorSequenceKeypoint.new(0.33, Color3.fromHex("FFFF00")),
+        ColorSequenceKeypoint.new(0.5, Color3.fromHex("00FF00")),
+        ColorSequenceKeypoint.new(0.66, Color3.fromHex("0000FF")),
+        ColorSequenceKeypoint.new(0.83, Color3.fromHex("4B0082")),
+        ColorSequenceKeypoint.new(1, Color3.fromHex("9400D3"))
+    }),
+    Draggable = true,
+})
+
+local Tab = Window:Tab({
+    Title = "透视功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local highlights = {}
+local nameTags = {}
+local healthBars = {}
+
+local Toggle = Tab:Toggle({
+    Title = "透视杀手",
+    Desc = "显示敌人信息",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            -- 创建玩家信息UI
+            for _, killer in pairs(workspace.Players.Killers:GetChildren()) do
+                local player = killer.Parent -- 假设killer是Player的子对象
+                
+                -- 创建名字标签
+                local nameTag = Instance.new("TextLabel")
+                nameTag.Text = player.Name
+                nameTag.Size = 20
+                nameTag.Position = UDim2.new(0, 0, 0, -30) -- 附加到头顶
+                nameTag.Parent = player.PlayerGui
+                nameTags[player] = nameTag
+                
+                -- 创建血条
+                local healthBar = Instance.new("ImageLabel")
+                healthBar.Image = "http://www.roblox.com/asset/?id=4934349617" -- 血条图片
+                healthBar.Size = UDim2.new(0, 100, 0, 10)
+                healthBar.Position = UDim2.new(0, 0, 0, -20) -- 附加到名字标签下方
+                healthBar.Parent = player.PlayerGui
+                healthBars[player] = healthBar
+                
+                -- 创建高亮效果
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = killer
+                highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                highlights[killer] = highlight
+                
+                -- 初始化血条
+                local maxHealth = player.Character.Humanoid.MaxHealth
+                local health = player.Character.Humanoid.Health
+                healthBar.ImageTransparency = 1 - (health / maxHealth)
+            end
+        else
+            -- 销毁所有UI元素
+            for player, nameTag in pairs(nameTags) do
+                nameTag:Destroy()
+                nameTags[player] = nil
+            end
+            
+            for player, healthBar in pairs(healthBars) do
+                healthBar:Destroy()
+                healthBars[player] = nil
+            end
+            
+            for killer, highlight in pairs(highlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy()
+                end
+            end
+            
+            highlights = {}
+            nameTags = {}
+            healthBars = {}
+        end
+    end
+})
+
+-- 实时更新血条
+game:GetService("RunService").RenderStepped:Connect(function()
+    if Toggle.State then
+        for player, healthBar in pairs(healthBars) do
+            local health = player.Character.Humanoid.Health
+            local maxHealth = player.Character.Humanoid.MaxHealth
+            healthBar.ImageTransparency = 1 - (health / maxHealth)
+        end
+    end
+end)
+
+local survivorHighlights = {} 
+
+local SurvivorToggle = Tab:Toggle({
+    Title = "透视幸存者",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            for _, survivor in pairs(workspace.Players.Survivors:GetChildren()) do
+                local highlight = Instance.new("Highlight")
+                highlight.Parent = survivor
+                highlight.FillColor = Color3.fromRGB(0, 255, 0) 
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                highlight.FillTransparency = 0.3 
+                survivorHighlights[survivor] = highlight 
+            end
+        else
+            for survivor, highlight in pairs(survivorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy() 
+                end
+            end
+            survivorHighlights = {} 
+        end      
+    end
+})
+
+local generatorHighlights = {} 
+
+local GeneratorToggle = Tab:Toggle({
+    Title = "透视发电机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            local function highlightGenerators()
+                for _, generator in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+                    if generator.Name == "Generator" and not generatorHighlights[generator] then
+                        local highlight = Instance.new("Highlight")
+                        highlight.Parent = generator
+                        highlight.FillColor = Color3.fromRGB(0, 200, 255) 
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                        highlight.FillTransparency = 0.5
+                        generatorHighlights[generator] = highlight 
+                    end
+                end
+            end
+            
+            highlightGenerators()
+            
+            if not generatorChildAddedConnection then
+                generatorChildAddedConnection = workspace.Map.Ingame.Map.ChildAdded:Connect(function(child)
+                    if child.Name == "Generator" then
+                        task.wait(0.5) 
+                        if GeneratorToggle.Value then 
+                            local highlight = Instance.new("Highlight")
+                            highlight.Parent = child
+                            highlight.FillColor = Color3.fromRGB(0, 200, 255)
+                            highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+                            highlight.FillTransparency = 0.5
+                            generatorHighlights[child] = highlight
+                        end
+                    end
+                end)
+            end
+        else
+            for generator, highlight in pairs(generatorHighlights) do
+                if highlight and highlight.Parent then
+                    highlight:Destroy()
+                end
+            end
+            generatorHighlights = {} 
+            
+            if generatorChildAddedConnection then
+                generatorChildAddedConnection:Disconnect()
+                generatorChildAddedConnection = nil
+            end
+        end      
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "耐力功能",
+    Icon = "warehouse",
+    Locked = false,
+})
+
+local Toggle = Tab:Toggle({
+    Title = "无限耐力",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+
+        local function waitFor(child, name, timeout)
+            return child:WaitForChild(name, timeout or 10)
+        end
+
+        local success, err = pcall(function()
+            if not Toggle.originalValues then
+                local speedMultFolder = waitFor(character, "SpeedMultipliers")
+                local fovMultFolder = waitFor(character, "FOVMultipliers")
+                
+                local speedValue = speedMultFolder:FindFirstChild("Sprinting")
+                local fovValue = fovMultFolder:FindFirstChild("Sprinting")
+                
+                Toggle.originalValues = {
+                    StaminaLoss = nil,
+                    StaminaLossDisabled = nil,
+                    SprintSpeed = speedValue and speedValue.Value,
+                    SprintFOV = fovValue and fovValue.Value
+                }
+            end
+
+            if state then
+                for _, module in pairs(getgc(true)) do
+                    if typeof(module) == "table" then
+                        if rawget(module, "StaminaLoss") then
+                            Toggle.originalValues.StaminaLoss = module.StaminaLoss
+                            module.StaminaLoss = 0
+                            print("[✓] Patched StaminaLoss to 0")
+                        end
+                        if rawget(module, "StaminaLossDisabled") then
+                            Toggle.originalValues.StaminaLossDisabled = module.StaminaLossDisabled
+                            module.StaminaLossDisabled = true
+                            print("[✓] Disabled StaminaLoss")
+                        end
+                    end
+                end
+            else
+                for _, module in pairs(getgc(true)) do
+                    if typeof(module) == "table" then
+                        if rawget(module, "StaminaLoss") and Toggle.originalValues.StaminaLoss ~= nil then
+                            module.StaminaLoss = Toggle.originalValues.StaminaLoss
+                            print("[✓] Restored StaminaLoss to original value")
+                        end
+                        if rawget(module, "StaminaLossDisabled") and Toggle.originalValues.StaminaLossDisabled ~= nil then
+                            module.StaminaLossDisabled = Toggle.originalValues.StaminaLossDisabled
+                            print("[✓] Restored StaminaLossDisabled")
+                        end
+                    end
+                end
+                
+                if Toggle.originalValues.SprintSpeed then
+                    local speedMultFolder = waitFor(character, "SpeedMultipliers")
+                    local speedValue = speedMultFolder:FindFirstChild("Sprinting")
+                    if speedValue then
+                        speedValue.Value = Toggle.originalValues.SprintSpeed
+                    end
+                end
+                
+                if Toggle.originalValues.SprintFOV then
+                    local fovMultFolder = waitFor(character, "FOVMultipliers")
+                    local fovValue = fovMultFolder:FindFirstChild("Sprinting")
+                    if fovValue then
+                        fovValue.Value = Toggle.originalValues.SprintFOV
+                    end
+                end
+            end
+        end)
+
+        if not success then
+            warn("[!] Failed to patch stamina:", err)
+        else
+            print(state and "[✓] Stamina patch executed successfully" or "[✓] Stamina patch disabled")
+        end     
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "修机功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Toggle = Tab:Toggle({
+    Title = "自动修机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        if state then
+            while state do
+                if workspace.Map.Ingame.Map.Generator.Health.Value < 100 then
+                    workspace.Map.Ingame.Map.Generator.Remotes.RE:FireServer("Repair")
+                    
+                    
+                    wait(5)
+                else
+                    wait(1)
+                end
+            end
+        else
+            print("自动修机已关闭")
+        end
+    end
+})
