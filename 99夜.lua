@@ -284,53 +284,60 @@ local Button = Tab:Button({
     end
 })
 
-Tabs.Main:Section({ Title = "自动吃食物", Icon = "utensils" })
-Tabs.Main:Dropdown({
-    Title = "选择食物",
-    Desc = "自己选择",
-    Values = translateList(alimentos),
-    Value = NameToDisplay[ShenChouFood],
-    Multi = false,
+local Tab = Window:Tab({
+    Title = "树木功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Slider = Tab:Slider({
+    Title = "自动砍树范围",
+    Step = 1,
+    Min = 0,
+    Max = 100,
+    Default = DefaultChopTreeDistance,
     Callback = function(value)
-        ShenChouFood = DisplayToName[value] or value
+        DistanceForAutoChopTree = value
     end
 })
 
-Tabs.Main:Input({
-    Title = "进食%",
-    Desc = "当饥饿达到多少%时进食",
-    Value = tostring(hungerThreshold),
-    Placeholder = "例如: 75",
-    Numeric = true,
-    Callback = function(value)
-        local n = tonumber(value)
-        if n then
-            hungerThreshold = math.clamp(n, 0, 100)
-        end
-    end
-})
-
-Tabs.Main:Toggle({
-    Title = "自动进食",
-    Value = false,
-    Callback = function(state)
-        autoFeedxipro = state
-        if state then
-            task.spawn(function()
-                while autoFeedxipro do
-                    task.wait(0.075)
-                    if wiki(ShenChouFood) == 0 then
-                        autoFeedxipro = false
-                        -- Find might not work this way, but we'll leave it as the original intent is unclear
-                        -- Tabs.Combat:Find("Auto Feed"):SetValue(false) 
-                        notifeed(ShenChouFood)
-                        break
+Tabs.Combat:Toggle({
+    Title = "自动砍树",
+    Description = "",
+    Default = false,
+    Callback = function(Value)
+        ActiveAutoChopTree = Value
+        task.spawn(function()
+            while ActiveAutoChopTree do
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local hrp = character:WaitForChild("HumanoidRootPart")
+                local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
+                
+                task.spawn(function()
+                    for _, tree in pairs(workspace.Map.Foliage:GetChildren()) do
+                        if tree:IsA("Model") and (tree.Name == "Small Tree" or tree.Name == "TreeBig1" or tree.Name == "TreeBig2") and tree.PrimaryPart then
+                            local distance = (tree.PrimaryPart.Position - hrp.Position).Magnitude
+                            if distance <= DistanceForAutoChopTree then
+                                game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(tree, weapon, 999, hrp.CFrame)
+                            end
+                        end
                     end
-                    if ghn() <= hungerThreshold then
-                        feed(ShenChouFood)
+                end)
+                
+                task.spawn(function()
+                    for _, tree in pairs(workspace.Map.Landmarks:GetChildren()) do
+                        if tree:IsA("Model") and (tree.Name == "Small Tree" or tree.Name == "TreeBig1" or tree.Name == "TreeBig2") and tree.PrimaryPart then
+                            local distance = (tree.PrimaryPart.Position - hrp.Position).Magnitude
+                            if distance <= DistanceForAutoChopTree then
+                                game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(tree, weapon, 999, hrp.CFrame)
+                            end
+                        end
                     end
-                end
-            end)
-        end
+                end)
+                
+                task.wait(0.1)
+            end
+        end)
     end
 })
