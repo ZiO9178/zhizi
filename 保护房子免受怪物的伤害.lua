@@ -243,71 +243,32 @@ local Tab = Window:Tab({
 
 local Toggle = Tab:Toggle({
     Title = "无限子弹",
-    Desc = "",
+    Desc = "开启后自动补充子弹",
     Locked = false,
     Callback = function(state)
-        local ammoLoop = nil
-        
         if state then
-            ammoLoop = coroutine.wrap(function()
-                while state do
-                    local LocalPlayer = game:GetService("Players").LocalPlayer
-                    if not LocalPlayer or not LocalPlayer.Character then
-                        wait(0.1)
-                        continue
+            -- 开启无限子弹
+            _G.InfAmmo = true
+            while _G.InfAmmo do
+                local args = {
+                    [1] = 1,
+                    [2] = 5,
+                    [3] = 0
+                }
+                local player = game:GetService("Players").LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local revolver = character:FindFirstChild("Revolver")
+                if revolver then
+                    local gunServer = revolver:FindFirstChild("GunServer")
+                    if gunServer and gunServer:FindFirstChild("ChangeMagAndAmmo") then
+                        gunServer.ChangeMagAndAmmo:FireServer(unpack(args))
                     end
-                    
-                    local Revolver = LocalPlayer.Character:FindFirstChild("Revolver")
-                    if not Revolver or not Revolver:FindFirstChild("GunServer") then
-                        wait(0.1)
-                        continue
-                    end
-                    
-                    local ammoArgs = {[1] = 1, [2] = 4, [3] = 0}
-                    Revolver.GunServer.ChangeMagAndAmmo:FireServer(unpack(ammoArgs))
-                    
-                    local visualArgs = {
-                        [1] = Revolver,
-                        [2] = Revolver:FindFirstChild("Handle"),
-                        [3] = workspace.Camera.ViewmodelStorage:FindFirstChild("v_Revolver")?.Handle,
-                        [4] = {[1] = Vector3.new(0.9345483779907227, -0.1734820455312729, -0.31068187952041626)},
-                        [5] = {[1] = Vector3.new(0.9091312289237976, -0.18989786505699158, -0.37070101499557495)},
-                        [6] = Revolver.Handle:FindFirstChild("GunFirePoint1"),
-                        [7] = Revolver.Handle:FindFirstChild("GunMuzzlePoint1"),
-                        [8] = {
-                            ["ChargeLevel"] = 0,
-                            ["ExplosionEffectFolder"] = game:GetService("ReplicatedStorage").Miscs.GunVisualEffects.Common.ExplosionEffect,
-                            ["MuzzleFolder"] = game:GetService("ReplicatedStorage").Miscs.GunVisualEffects.Common.MuzzleEffect,
-                            ["HitEffectFolder"] = game:GetService("ReplicatedStorage").Miscs.GunVisualEffects.Common.HitEffect,
-                            ["BloodEffectFolder"] = game:GetService("ReplicatedStorage").Miscs.GunVisualEffects.Common.BloodEffect
-                        }
-                    }
-                    
-                    local audioArgs = {
-                        [1] = {
-                            ["Echo"] = true,
-                            ["DistantSoundVolume"] = 1.5,
-                            ["Silenced"] = false,
-                            ["Instance"] = Revolver.Handle:FindFirstChild("1")?.FireSounds.FireSound,
-                            ["Origin"] = Revolver.Handle:FindFirstChild("GunMuzzlePoint1"),
-                            ["DistantSoundIds"] = {[1] = 177174605}
-                        }
-                    }
-                    
-                    local Remotes = game:GetService("ReplicatedStorage").Remotes
-                    if Remotes and Remotes:FindFirstChild("VisualizeBullet") then
-                        Remotes.VisualizeBullet:FireServer(unpack(visualArgs))
-                    end
-                    if Remotes and Remotes:FindFirstChild("PlayAudio") then
-                        Remotes.PlayAudio:FireServer(unpack(audioArgs))
-                    end
-                    
-                    wait(0.05)
                 end
-            end)
-            ammoLoop()
+                wait(0.1) -- 控制频率，避免卡死
+            end
         else
-            state = false
+            -- 关闭无限子弹
+            _G.InfAmmo = false
         end
     end
 })
