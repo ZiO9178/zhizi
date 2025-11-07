@@ -242,8 +242,8 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动攻击",
-    Desc = "",
+    Title = "自动瞄准僵尸",
+    Desc = "锁定相机到最近的僵尸并自动攻击",
     Locked = false,
     Callback = function(state)
         if state then
@@ -258,17 +258,17 @@ local Toggle = Tab:Toggle({
                             cameraPart.CFrame = CFrame.lookAt(playerPos, playerPos + direction)
                             
                             local args = {
-                                [1] = nil, --[[buffer]],
-                                [2] = {}
+                                buffer.fromstring("\v")  -- 攻击 buffer（可根据游戏调整）
                             }
                             
                             game:GetService("ReplicatedStorage").ByteNetReliable:FireServer(unpack(args))
-                            wait(0.05)
+                            wait(0.05)  -- 调整射击速率
                         end
                     end
-                    wait(0.1)
+                    wait(0.1)  -- 循环延迟
                 end
             end)
         end
+        -- 当 state 为 false 时，循环自然停止
     end
 })
