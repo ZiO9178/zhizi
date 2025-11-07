@@ -242,27 +242,27 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动修发电机",
+    Title = "自动修机",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        if _G.GeneratorRepairLoop then
-            task.cancel(_G.GeneratorRepairLoop)
-            _G.GeneratorRepairLoop = nil
-        end
-
+        _G.AutoRepairGenerator = state
         if state then
-            _G.GeneratorRepairLoop = task.spawn(function()
-                while task.wait(1) do
-                    local Generator = workspace.Map.Generator
-                    if Generator and Generator:FindFirstChild("Health") and Generator.Health.Value < 100 then
-                        print("[自动修发电机] 检测到损坏，执行修复...")
-                        if Generator:FindFirstChild("Repair") and typeof(Generator.Repair) == "Function" then
-                            Generator:Repair()
+            spawn(function()
+                while _G.AutoRepairGenerator do
+                    wait()
+                    local repairUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("RepairUI")
+                    if repairUI then
+                        local pointer = repairUI:FindFirstChild("Pointer")
+                        local whiteZone = repairUI:FindFirstChild("WhiteZone")
+                        if pointer and whiteZone then
+                            local isInWhiteZone = 
+                                pointer.Position.X >= whiteZone.Position.X and
+                                pointer.Position.X <= whiteZone.Position.X + whiteZone.Size.X
+                            if isInWhiteZone then
+                                game:GetService("ReplicatedStorage").RemoteEvents.RepairGenerator:Fire()
+                            end
                         end
-                        Generator.Health.Value = math.min(Generator.Health.Value + 20, 100)
-                        
-                        task.wait(0.5)
                     end
                 end
             end)
@@ -277,67 +277,33 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "发电机透视",
+    Title = "透视发电机",
     Desc = "",
     Locked = false,
     Callback = function(state)
-        if workspace:FindFirstChild("GeneratorESP") then
-            workspace.GeneratorESP:Destroy()
-        end
-
-        if state then
-            local ESPFolder = Instance.new("Folder")
-            ESPFolder.Name = "GeneratorESP"
-            ESPFolder.Parent = workspace
-
-            local function updateESP()
-                for _, esp in ipairs(ESPFolder:GetChildren()) do
-                    esp:Destroy()
-                end
-
-                local LocalPlayer = game.Players.LocalPlayer
-                if not LocalPlayer or not LocalPlayer.Character then return end
-                local PlayerRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                if not PlayerRoot then return end
-
-                for _, Generator in ipairs(workspace.Map.Generator:GetChildren()) do
-                    local GenPart = Generator:FindFirstChildWhichIsA("BasePart") or Generator.PrimaryPart
-                    if not GenPart then continue end
-
-                    local BillboardGui = Instance.new("BillboardGui")
-                    local NameLabel = Instance.new("TextLabel")
-                    local DistanceLabel = Instance.new("TextLabel")
-
-                    BillboardGui.Adornee = GenPart
-                    BillboardGui.Size = UDim2.new(0, 200, 0, 50)
-                    BillboardGui.AlwaysOnTop = true
-                    BillboardGui.Parent = ESPFolder
-
-                    NameLabel.Text = Generator.Name
-                    NameLabel.Size = UDim2.new(1, 0, 0.5, 0)
-                    NameLabel.Position = UDim2.new(0, 0, 0, 0)
-                    NameLabel.TextColor3 = Color3.new(0, 1, 0)
-                    NameLabel.BackgroundTransparency = 1
-                    NameLabel.TextScaled = true
-                    NameLabel.Parent = BillboardGui
-
-                    local Distance = math.floor((PlayerRoot.Position - GenPart.Position).Magnitude)
-                    DistanceLabel.Text = "距离: " .. Distance .. "  studs"
-                    DistanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
-                    DistanceLabel.Position = UDim2.new(0, 0, 0.5, 0)
-                    DistanceLabel.TextColor3 = Color3.new(1, 1, 0)
-                    DistanceLabel.BackgroundTransparency = 1
-                    DistanceLabel.TextScaled = true
-                    DistanceLabel.Parent = BillboardGui
+        local generator = workspace.Map:FindFirstChild("Generator")
+        if generator then
+            for _, part in ipairs(generator:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    if not part:FindFirstChild("OriginalColor") then
+                        local original = Instance.new("Color3Value")
+                        original.Name = "OriginalColor"
+                        original.Value = part.Color
+                        original.Parent = part
+                    end
+                    local originalColor = part.OriginalColor.Value
+                    
+                    if state then
+                        part.Color = Color3.new(1, 1, 1)
+                        part.Transparency = 0.5
+                    else
+                        part.Color = originalColor
+                        part.Transparency = 0
+                    end
                 end
             end
-
-            updateESP()
-            game:GetService("RunService").RenderStepped:Connect(function()
-                if ESPFolder.Parent then
-                    updateESP()
-                end
-            end)
+        else
+            warn("未找到发电机部件")
         end
     end
 })
