@@ -241,34 +241,35 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local InfiniteAmmoEnabled = false
+
 local Toggle = Tab:Toggle({
     Title = "无限子弹",
-    Desc = "开启后自动补充子弹",
+    Desc = "",
     Locked = false,
     Callback = function(state)
+        InfiniteAmmoEnabled = state
+
         if state then
-            -- 开启无限子弹
-            _G.InfAmmo = true
-            while _G.InfAmmo do
-                local args = {
-                    [1] = 1,
-                    [2] = 5,
-                    [3] = 0
-                }
-                local player = game:GetService("Players").LocalPlayer
-                local character = player.Character or player.CharacterAdded:Wait()
-                local revolver = character:FindFirstChild("Revolver")
-                if revolver then
-                    local gunServer = revolver:FindFirstChild("GunServer")
-                    if gunServer and gunServer:FindFirstChild("ChangeMagAndAmmo") then
-                        gunServer.ChangeMagAndAmmo:FireServer(unpack(args))
+            spawn(function()
+                while InfiniteAmmoEnabled do
+                    local success, err = pcall(function()
+                        local args = {
+                            [1] = 1,
+                            [2] = 9999, 
+                            [3] = 0
+                        }
+                        game:GetService("Players").LocalPlayer.Character.Revolver.GunServer.ChangeMagAndAmmo:FireServer(unpack(args))
+                    end)
+
+                    if not success then
+                        warn("ChangeMagAndAmmo 出错：", err)
+                        wait(1)
+                    else
+                        wait(0.1)
                     end
                 end
-                wait(0.1) -- 控制频率，避免卡死
-            end
-        else
-            -- 关闭无限子弹
-            _G.InfAmmo = false
+            end)
         end
     end
 })
