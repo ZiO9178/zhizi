@@ -241,43 +241,6 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Hook = {
-    Players = {
-        ["Killer"] = {Color = Color3.fromRGB(255, 0, 0), On = true},
-        ["Survivor"] = {Color = Color3.fromRGB(0, 255, 0), On = true}
-    },
-    Objects = {
-        ["Generator"] = {Color = Color3.fromRGB(203, 132, 66), On = true},
-        ["Gate"] = {Color = Color3.fromRGB(255, 255, 255), On = true},
-        ["Pallet"] = {Color = Color3.fromRGB(255, 255, 0), On = true},
-        ["Window"] = {Color = Color3.fromRGB(255, 255, 255), On = true},
-        ["Hook"] = {Color = Color3.fromRGB(255, 0, 0), On = true},
-        ["Pumpkin"] = {Color = Color3.fromRGB(255, 140, 0), On = true}
-    }
-}
-
-local Players = game:GetService("Players")
-local localPlayer = Players.LocalPlayer
-local Workspace = game:GetService("Workspace")
-
-local function ESP(obj, color)
-    if not obj or obj:FindFirstChild("H") then return end
-    local h = Instance.new("Highlight")
-    h.Name = "H"
-    h.Adornee = obj
-    h.FillColor = color
-    h.OutlineColor = color
-    h.FillTransparency = 0.9
-    h.OutlineTransparency = 0
-    h.Parent = obj
-end
-
-local function RemoveESP(obj)
-    if not obj then return end
-    local h = obj:FindFirstChild("H")
-    if h then h:Destroy() end
-end
-
 local Toggle = Tab:Toggle({
     Title = "透视杀手",
     Desc = "",
