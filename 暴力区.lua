@@ -455,35 +455,3 @@ local Toggle = Tab:Toggle({
         end)
     end
 })
-
-local Toggle = Tab:Toggle({
-    Title = "透视南瓜",
-    Desc = "",
-    Locked = false,
-    Callback = function(state)
-        Hook.Objects["Pumpkin"].On = state
-        local targetFolder = Workspace.Map:FindFirstChild("Pumpkins") or Workspace.Map
-
-        for _, obj in ipairs(targetFolder:GetDescendants()) do
-            if obj.Name == "Pumpkin" then
-                state and ESP(obj, Hook.Objects["Pumpkin"].Color) or RemoveESP(obj)
-            end
-        end
-
-        targetFolder.DescendantAdded:Connect(function(newObj)
-            task.wait(0.05)
-            if newObj.Name == "Pumpkin" and Hook.Objects["Pumpkin"].On then
-                ESP(newObj, Hook.Objects["Pumpkin"].Color)
-            end
-        end)
-    end
-})
-
-task.spawn(function()
-    task.wait(1)
-    for _, toggle in ipairs({Tab:GetChildren()}) do
-        if toggle:IsA("Toggle") then
-            toggle:Fire()
-        end
-    end
-end)
