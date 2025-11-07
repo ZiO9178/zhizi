@@ -265,3 +265,37 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local Tab = Window:Tab({
+    Title = "出售功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Button = Tab:Button({
+    Title = "全部出售",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+        local inventory = game:GetService("Players").LocalPlayer.PlayerGui.Profile.Inventory
+        if not inventory then warn("背包界面未找到") return end
+        
+        local itemsToSell = {}
+        for _, item in ipairs(inventory:GetChildren()) do
+            table.insert(itemsToSell, item)
+        end
+        
+        local args = {
+            [1] = itemsToSell,  
+            [2] = {}            
+        }
+        
+        local sellRemote = game:GetService("ReplicatedStorage").Systems.ItemSelling.SellItem
+        if sellRemote then
+            sellRemote:FireServer(unpack(args))
+            warn("已发送出售请求，共" .. #itemsToSell .. "件物品")
+        else
+            warn("出售远程事件未找到")
+        end
+    end
+})
