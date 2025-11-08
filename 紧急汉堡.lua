@@ -241,66 +241,72 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
+local collecting = false
+
 local Toggle = Tab:Toggle({
-    Title = "自动抢银行",
-    Desc = "",
+    Title = "Auto Collect Bank Money",
+    Desc = "Teleports to each money table, holds E to collect, then moves to the next one in a loop",
     Locked = false,
     Callback = function(state)
-        local collecting = false
+        collecting = state
         if state then
-            collecting = true
             spawn(function()
+                local player = game.Players.LocalPlayer
+                local function getCharacter()
+                    local char = player.Character or player.CharacterAdded:Wait()
+                    return char:WaitForChild("HumanoidRootPart")
+                end
+                local humanoidRootPart = getCharacter()
+                player.CharacterAdded:Connect(function()
+                    humanoidRootPart = getCharacter()
+                end)
+                
+                local bankFolder = workspace.Rob_Alarm.Robberys.Bank
+                local geldTischFolder = bankFolder:WaitForChild("GeldTisch")  -- Assuming GeldTisch is a folder containing multiple money parts
+                
+                -- Get initial list of money parts (assuming they are Models or Parts with ProximityPrompts)
+                local moneyParts = geldTischFolder:GetChildren()
+                local numMoneys = #moneyParts
+                if numMoneys == 0 then return end  -- No moneys to collect
+                
+                local currentIndex = 1
+                
                 while collecting do
-                    local success, err = pcall(function()
-                        local bank = workspace.Rob_Alarm.Robberys.Bank
-                        local pile = bank:GetChildren()[31]
-                        local itemHolder = pile.ItemHolder
-                        local moneys = {}
-                        for _, child in pairs(itemHolder:GetChildren()) do
-                            if child:IsA("Model") or child.Name:match("%d+") then
-                                table.insert(moneys, child)
-                            end
+                    local moneyPart = moneyParts[currentIndex]
+                    
+                    -- Skip if this money doesn't exist anymore (collected or invalid)
+                    if moneyPart and moneyPart.Parent then
+                        -- Teleport in front of the money
+                        humanoidRootPart.CFrame = moneyPart:GetModelCFrame() * CFrame.new(0, 0, -5)  -- Adjust offset as needed
+                        
+                        -- Wait a bit for proximity
+                        wait(0.5)
+                        
+                        -- Find and trigger ProximityPrompt (assumes exploit supports fireproximityprompt)
+                        local prompt = moneyPart:FindFirstChildOfClass("ProximityPrompt")
+                        if prompt then
+                            fireproximityprompt(prompt)  -- This simulates holding E; repeat if needed for "long press"
+                            -- If long press is required, you can loop: for i=1,10 do fireproximityprompt(prompt) wait(0.1) end
+                        else
+                            -- Fallback: Simulate key press if no prompt (requires exploit VirtualInputManager)
+                            -- virtualinputmanager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                            -- wait(2)  -- Hold for 2 seconds
+                            -- virtualinputmanager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
                         end
                         
-                        if #moneys == 0 then
-                            collecting = false
-                            return
+                        -- Wait until this specific money is collected (part destroyed/removed)
+                        while moneyPart.Parent and collecting do
+                            wait(0.1)
                         end
                         
-                        for _, money in pairs(moneys) do
-                            if not collecting then return end
-                            
-                            local player = game.Players.LocalPlayer
-                            local char = player.Character
-                            if char and char:FindFirstChild("HumanoidRootPart") and money.PrimaryPart then
-                                char.HumanoidRootPart.CFrame = money.PrimaryPart.CFrame * CFrame.new(0, 0, -3)
-                            end
-                            
-                            wait(0.5)
-                            
-                            local VirtualInputManager = game:GetService("VirtualInputManager")
-                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                            wait(3)
-                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-                            
-                            wait(1)
-                            
-                            if not money.Parent then
-                            end
-                        end
-                        
-                        wait(2) 
-                    end)
-                    if err then
-                        warn("Error in auto collect: " .. tostring(err))
+                        print("Collected money at index " .. currentIndex)
                     end
-                    if #itemHolder:GetChildren() == 0 then
-                        collecting = false
-                    end
+                    
+                    -- Move to next
+                    currentIndex = (currentIndex % numMoneys) + 1
+                    wait(0.5)  -- Small delay between collections
                 end
             end)
-        else
-            collecting = false
         end
     end
 })
