@@ -241,30 +241,31 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local autoFishEnabled = false
-local toggle = Tab:Toggle({
-    Title = "自动钓鱼",
-    Desc = "开启或关闭自动钓鱼",
+local Tab = -- Assume Tab is already defined in your script, e.g., from a UI library like Fluent or similar
+
+local isFishing = false
+local fishingLoop
+
+local Toggle = Tab:Toggle({
+    Title = "Auto Fishing",
+    Desc = "Automatically fishes for you",
     Locked = false,
     Callback = function(state)
-        autoFishEnabled = state
-        if state then
-            spawn(function()
-                while autoFishEnabled do
-                    -- 模拟钓鱼动作
-                    -- 例如：触发钓鱼事件或点击钓鱼按钮
-                    game:GetService("ReplicatedStorage").Remotes.StartFishing:FireServer()
-                    
-                    -- 等待一段时间，等待鱼咬钩（根据游戏机制调整）
-                    wait(5)
-                    
-                    -- 确认鱼咬钩后，拉钓钩
-                    game:GetService("ReplicatedStorage").Remotes.CatchFish:FireServer()
-                    
-                    -- 等待下一次钓鱼间隔
-                    wait(2)
+        isFishing = state
+        if isFishing then
+            fishingLoop = spawn(function()
+                while isFishing do
+                    local remotes = game:GetService("ReplicatedStorage").Remotes
+                    if remotes:FindFirstChild("FishGame12") then
+                        -- Assuming FishGame12 is a RemoteEvent; use FireServer if it's an event
+                        -- If it's a RemoteFunction, use InvokeServer instead
+                        remotes.FishGame12:FireServer()  -- Or :InvokeServer() if RemoteFunction
+                    end
+                    wait(1)  -- Adjust delay as needed to avoid rate limits or detection; e.g., wait(0.5) or based on game mechanics
                 end
             end)
+        else
+            -- Stop the loop if needed; spawn doesn't return a thread to cancel, but setting flag stops it
         end
     end
 })
