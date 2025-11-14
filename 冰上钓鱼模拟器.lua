@@ -241,8 +241,6 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local Tab = -- Assume Tab is already defined in your script, e.g., from a UI library like Fluent or similar
-
 local isFishing = false
 local fishingLoop
 
