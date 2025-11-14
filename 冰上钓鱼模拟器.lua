@@ -241,29 +241,125 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local isFishing = false
-local fishingLoop
-
 local Toggle = Tab:Toggle({
-    Title = "Auto Fishing",
-    Desc = "Automatically fishes for you",
+    Title = "自动钓鱼",
+    Desc = "自动检测并收杆",
     Locked = false,
     Callback = function(state)
-        isFishing = state
-        if isFishing then
-            fishingLoop = spawn(function()
-                while isFishing do
-                    local remotes = game:GetService("ReplicatedStorage").Remotes
-                    if remotes:FindFirstChild("FishGame12") then
-                        -- Assuming FishGame12 is a RemoteEvent; use FireServer if it's an event
-                        -- If it's a RemoteFunction, use InvokeServer instead
-                        remotes.FishGame12:FireServer()  -- Or :InvokeServer() if RemoteFunction
-                    end
-                    wait(1)  -- Adjust delay as needed to avoid rate limits or detection; e.g., wait(0.5) or based on game mechanics
-                end
-            end)
+        -- 全局变量控制开关状态
+        getgenv().autoFishEnabled = state
+        
+        if state then
+            -- 启动自动钓鱼
+            startAutoFish()
+            print("自动钓鱼已开启")
         else
-            -- Stop the loop if needed; spawn doesn't return a thread to cancel, but setting flag stops it
+            -- 停止自动钓鱼
+            print("自动钓鱼已关闭")
         end
     end
 })
+
+-- 自动钓鱼主函数
+function startAutoFish()
+    -- 创建钓鱼状态变量
+    getgenv().fishing = false
+    
+    -- 监听钓鱼相关事件
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    local localPlayer = Players.LocalPlayer
+    
+    -- 监听鱼上钩事件（根据实际游戏调整）
+    local function waitForBite()
+        -- 方法1: 等待远程事件触发
+        if ReplicatedStorage.Remotes:FindFirstChild("FishBite") then
+            ReplicatedStorage.Remotes.FishBite.OnClientEvent:Wait()
+            return true
+        end
+        
+        -- 方法2: 检测UI提示（常见钓鱼游戏机制）
+        local playerGui = localPlayer:WaitForChild("PlayerGui")
+        local fishingUI = playerGui:FindFirstChild("FishingUI") -- 根据实际UI名称修改
+        
+        if fishingUI then
+            -- 等待"!"或"Fish!"等提示出现
+            while autoFishEnabled do
+                if fishingUI:FindFirstChild("BiteIndicator") and fishingUI.BiteIndicator.Visible then
+                    return true
+                end
+                wait(0.1)
+            end
+        end
+        
+        -- 方法3: 简单粗暴的随机等待（备用方案）
+        local waitTime = math.random(3, 8) -- 随机等待3-8秒
+        for i = 1, waitTime * 10 do
+            if not autoFishEnabled then return false end
+            wait(0.1)
+        end
+        
+        return autoFishEnabled
+    end
+    
+    -- 主循环
+    while autoFishEnabled do
+        if not getgenv().fishing then
+            getgenv().fishing = true
+            
+            -- 开始钓鱼
+            pcall(function()
+                ReplicatedStorage.Remotes.FishGame12:FireServer()
+            end)
+            
+            print("投竿等待中...")
+            
+            -- 等待鱼上钩
+            local caught = waitForBite()
+            
+            if caught and autoFishEnabled then
+                print("鱼上钩了！自动收杆...")
+                
+                -- 立即收杆
+                pcall(function()
+                    -- 可能需要多次触发或触发不同事件
+                    ReplicatedStorage.Remotes.FishGame12:FireServer()
+                    
+                    -- 如果收杆是另一个事件，取消注释并修改
+                    -- ReplicatedStorage.Remotes.ReelIn:FireServer()
+                end)
+                
+                -- 等待奖励处理
+                wait(1)
+            end
+            
+            getgenv().fishing = false
+            
+            -- 冷却时间
+            wait(2)
+        else
+            wait(0.5)
+        end
+    end
+end
+
+-- 防止重复运行
+if getgenv().autoFishScriptLoaded then
+    print("自动钓鱼脚本已加载")
+else
+    getgenv().autoFishScriptLoaded = true
+    
+    -- 可选: 添加UI提示
+    local function notify(text)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "自动钓鱼",
+            Text = text,
+            Duration = 3
+        })
+    end
+    
+    -- 在游戏界面加载完成后通知
+    if game:IsLoaded() then
+        notify("自动钓鱼脚本已就绪")
+    end
+end
