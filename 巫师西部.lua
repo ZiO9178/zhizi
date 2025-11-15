@@ -242,70 +242,78 @@ local Tab = Window:Tab({
 })
 
 local Toggle = Tab:Toggle({
-    Title = "自动攻击周围敌人",
-    Desc = "自动使用木杖攻击附近的敌人",
+    Title = "自动攻击玩家",
+    Desc = "自动攻击周围workspace.Missions.PoachersTest中的玩家",
     Locked = false,
     Callback = function(state)
         if state then
             -- 开启自动攻击
-            _G.AutoAttack = true
-            
-            -- 创建攻击循环
-            spawn(function()
-                while _G.AutoAttack and wait(0.5) do -- 每0.5秒攻击一次
-                    pcall(function()
-                        local character = game:GetService("Players").LocalPlayer.Character
-                        local wand = character:FindFirstChild("Wooden Wand")
-                        
-                        if wand and wand:FindFirstChild("ToolListnerEvent") then
-                            -- 获取玩家位置
-                            local playerPos = character.HumanoidRootPart.Position
-                            
-                            -- 在玩家周围生成攻击位置
-                            local attackPositions = {}
-                            local hitData = {}
-                            
-                            -- 在玩家周围生成8个攻击点
-                            for i = 1, 8 do
-                                local angle = (i / 8) * math.pi * 2
-                                local offset = Vector3.new(
-                                    math.cos(angle) * 10, -- 10单位半径
-                                    0,
-                                    math.sin(angle) * 10
-                                )
-                                local attackPos = playerPos + offset
-                                table.insert(attackPositions, attackPos)
-                                
-                                -- 添加命中数据
-                                table.insert(hitData, {
-                                    workspace.Terrain,
-                                    attackPos,
-                                    Vector3.new(0, 1, 0),
-                                    "Mud"
-                                })
+            local autoAttackConnection
+            autoAttackConnection = game:GetService("RunService").Heartbeat:Connect(function()
+                -- 获取本地玩家和角色
+                local localPlayer = game:GetService("Players").LocalPlayer
+                local character = localPlayer.Character
+                
+                if character and character:FindFirstChild("Wooden Wand") then
+                    local wand = character:FindFirstChild("Wooden Wand")
+                    
+                    -- 查找周围的PoachersTest任务
+                    local missions = workspace:FindFirstChild("Missions")
+                    if missions then
+                        local poachersTest = missions:FindFirstChild("PoachersTest")
+                        if poachersTest then
+                            -- 获取PoachersTest中的所有玩家
+                            for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                                if player ~= localPlayer and player.Character then
+                                    local targetCharacter = player.Character
+                                    local humanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+                                    
+                                    if humanoidRootPart then
+                                        -- 计算距离
+                                        local distance = (character.HumanoidRootPart.Position - humanoidRootPart.Position).Magnitude
+                                        
+                                        -- 如果距离在攻击范围内（例如50以内）
+                                        if distance < 50 then
+                                            -- 创建攻击参数
+                                            local args = {
+                                                [1] = "Activate",
+                                                [2] = character.HumanoidRootPart.Position, -- 起始位置
+                                                [3] = humanoidRootPart.Position, -- 目标位置
+                                                [4] = wand.PistolConfig,
+                                                [5] = {
+                                                    [1] = humanoidRootPart.Position -- 目标点
+                                                },
+                                                [6] = {
+                                                    [1] = {
+                                                        [1] = workspace.Terrain,
+                                                        [2] = humanoidRootPart.Position,
+                                                        [3] = Vector3.new(0, 1, 0),
+                                                        [4] = "Mud"
+                                                    }
+                                                },
+                                                [7] = {},
+                                                [8] = {}
+                                            }
+                                            
+                                            -- 发射攻击
+                                            wand.ToolListnerEvent:FireServer(unpack(args))
+                                        end
+                                    end
+                                end
                             end
-                            
-                            -- 构建参数
-                            local args = {
-                                [1] = "Activate",
-                                [2] = Vector3.new(-494.4742431640625, 76.85777282714844, 703.857177734375),
-                                [3] = Vector3.new(-686.0789794921875, 161.1499481201172, 574.8493041992188),
-                                [4] = wand.PistolConfig,
-                                [5] = attackPositions,
-                                [6] = hitData,
-                                [7] = {},
-                                [8] = {}
-                            }
-                            
-                            -- 发射攻击
-                            wand.ToolListnerEvent:FireServer(unpack(args))
                         end
-                    end)
+                    end
                 end
             end)
+            
+            -- 保存连接以便关闭时断开
+            getgenv().AutoAttackConnection = autoAttackConnection
         else
             -- 关闭自动攻击
-            _G.AutoAttack = false
+            if getgenv().AutoAttackConnection then
+                getgenv().AutoAttackConnection:Disconnect()
+                getgenv().AutoAttackConnection = nil
+            end
         end
     end
 })
