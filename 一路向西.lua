@@ -242,71 +242,49 @@ local Tab = Window:Tab({
 })
 
 local Button = Tab:Button({
-    Title = "传送全部箱子",
-    Desc = "将所有箱子传送到玩家位置",
+    Title = "传送所有箱子",
+    Desc = "点击将 ChestFolder 中所有箱子传送到你身边",
     Locked = false,
     Callback = function()
-        -- 获取玩家角色
-        local player = game.Players.LocalPlayer
-        local character = player.CharacterAdded and player.Character or player.CharacterAdded:Wait()
-        
-        if not character then
-            warn("无法找到玩家角色")
+        -- 获取本地玩家和玩家角色（确保玩家已加载）
+        local LocalPlayer = game.Players.LocalPlayer
+        if not LocalPlayer or not LocalPlayer.Character then
+            warn("玩家未加载完成！")
+            return
+        end
+        local PlayerRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if not PlayerRoot then
+            warn("未找到玩家根部件！")
             return
         end
         
-        -- 获取玩家位置
-        local playerPosition = character:FindFirstChild("HumanoidRootPart")
-        if not playerPosition then
-            warn("无法找到玩家位置")
+        -- 获取箱子文件夹，判断是否存在
+        local ChestFolder = workspace:FindFirstChild("ChestFolder")
+        if not ChestFolder then
+            warn("workspace 中未找到 ChestFolder！")
             return
         end
         
-        -- 获取箱子文件夹
-        local chestFolder = workspace:FindFirstChild("ChestFolder")
-        if not chestFolder then
-            warn("找不到 ChestFolder 文件夹")
-            return
-        end
-        
-        -- 计数器
-        local teleportedCount = 0
-        
-        -- 遍历所有箱子
-        for _, chest in pairs(chestFolder:GetChildren()) do
-            -- 检查是否为模型且有主部件
-            if chest:IsA("Model") then
-                local primaryPart = chest.PrimaryPart
-                if not primaryPart then
-                    -- 如果没有主部件，尝试找到第一个BasePart
-                    for _, part in pairs(chest:GetChildren()) do
-                        if part:IsA("BasePart") then
-                            primaryPart = part
-                            break
-                        end
+        -- 遍历文件夹中所有箱子（假设箱子是 Part/Model 类型，名称含"Chest"可按需修改）
+        for _, Chest in ipairs(ChestFolder:GetChildren()) do
+            -- 过滤有效箱子（可根据实际箱子类型调整，比如只选 Part 或特定模型）
+            if Chest:IsA("Part") or Chest:IsA("Model") then
+                -- 传送箱子到玩家位置（偏移 2 格避免重叠）
+                local TargetPos = PlayerRoot.Position + Vector3.new(0, 2, 0)
+                if Chest:IsA("Model") then
+                    -- 模型需移动 PrimaryPart（需确保模型已设置 PrimaryPart）
+                    if Chest.PrimaryPart then
+                        Chest:SetPrimaryPartCFrame(CFrame.new(TargetPos))
+                    else
+                        warn(Chest.Name .. " 模型未设置 PrimaryPart！")
                     end
-                end
-                
-                -- 传送箱子到玩家位置
-                if primaryPart then
-                    -- 在玩家周围随机分布箱子，避免重叠
-                    local offset = Vector3.new(
-                        math.random(-10, 10),  -- X轴偏移
-                        0,                     -- Y轴（高度）
-                        math.random(-10, 10)   -- Z轴偏移
-                    )
-                    
-                    chest:SetPrimaryPartCFrame(CFrame.new(playerPosition.Position + offset))
-                    teleportedCount = teleportedCount + 1
+                else
+                    -- 零件直接设置位置
+                    Chest.CFrame = CFrame.new(TargetPos)
                 end
             end
         end
         
-        -- 显示结果
-        if teleportedCount > 0 then
-            print(`成功传送 {teleportedCount} 个箱子到玩家位置`)
-        else
-            print("没有找到可传送的箱子")
-        end
+        print("所有箱子已传送至玩家位置！")
     end
 })
