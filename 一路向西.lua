@@ -243,53 +243,70 @@ local Tab = Window:Tab({
 
 local Button = Tab:Button({
     Title = "传送全部箱子",
-    Desc = "将所有箱子整齐排列在玩家周围",
+    Desc = "将所有箱子传送到玩家位置",
     Locked = false,
     Callback = function()
         -- 获取玩家角色
         local player = game.Players.LocalPlayer
-        local character = player.Character
+        local character = player.CharacterAdded and player.Character or player.CharacterAdded:Wait()
         
         if not character then
-            character = player.CharacterAdded:Wait()
-        end
-        
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        local chestFolder = workspace:FindFirstChild("ChestFolder")
-        
-        if not chestFolder then
-            warn("❌ 找不到 ChestFolder 文件夹")
+            warn("无法找到玩家角色")
             return
         end
         
-        local chests = {}
+        -- 获取玩家位置
+        local playerPosition = character:FindFirstChild("HumanoidRootPart")
+        if not playerPosition then
+            warn("无法找到玩家位置")
+            return
+        end
         
-        -- 收集所有箱子
-        for _, item in pairs(chestFolder:GetChildren()) do
-            if item:IsA("Model") and item.PrimaryPart then
-                table.insert(chests, item)
+        -- 获取箱子文件夹
+        local chestFolder = workspace:FindFirstChild("ChestFolder")
+        if not chestFolder then
+            warn("找不到 ChestFolder 文件夹")
+            return
+        end
+        
+        -- 计数器
+        local teleportedCount = 0
+        
+        -- 遍历所有箱子
+        for _, chest in pairs(chestFolder:GetChildren()) do
+            -- 检查是否为模型且有主部件
+            if chest:IsA("Model") then
+                local primaryPart = chest.PrimaryPart
+                if not primaryPart then
+                    -- 如果没有主部件，尝试找到第一个BasePart
+                    for _, part in pairs(chest:GetChildren()) do
+                        if part:IsA("BasePart") then
+                            primaryPart = part
+                            break
+                        end
+                    end
+                end
+                
+                -- 传送箱子到玩家位置
+                if primaryPart then
+                    -- 在玩家周围随机分布箱子，避免重叠
+                    local offset = Vector3.new(
+                        math.random(-10, 10),  -- X轴偏移
+                        0,                     -- Y轴（高度）
+                        math.random(-10, 10)   -- Z轴偏移
+                    )
+                    
+                    chest:SetPrimaryPartCFrame(CFrame.new(playerPosition.Position + offset))
+                    teleportedCount = teleportedCount + 1
+                end
             end
         end
         
-        if #chests == 0 then
-            warn("❌ 没有找到有效的箱子")
-            return
+        -- 显示结果
+        if teleportedCount > 0 then
+            print(`成功传送 {teleportedCount} 个箱子到玩家位置`)
+        else
+            print("没有找到可传送的箱子")
         end
-        
-        -- 在玩家周围圆形排列箱子
-        local center = humanoidRootPart.Position
-        local radius = 8  -- 排列半径
-        local angleIncrement = (2 * math.pi) / #chests
-        
-        for i, chest in ipairs(chests) do
-            local angle = angleIncrement * (i - 1)
-            local x = center.X + radius * math.cos(angle)
-            local z = center.Z + radius * math.sin(angle)
-            local position = Vector3.new(x, center.Y, z)
-            
-            chest:SetPrimaryPartCFrame(CFrame.new(position))
-        end
-        
-        print(`✅ 成功排列 {#chests} 个箱子在玩家周围`)
     end
 })
