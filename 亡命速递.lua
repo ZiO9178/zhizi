@@ -193,7 +193,7 @@ local Sound = Instance.new("Sound")
         Sound.PlayOnRemove = true
         Sound:Destroy()
         
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZiO9178/jb/refs/heads/main/windui.lua"))()
 
 local Window = WindUI:CreateWindow({
         Title = "Sxingz Hub|亡命速递",
@@ -310,55 +310,39 @@ local Tab = Window:Tab({
     Locked = false,
 })
 
-local localPlayer = game:GetService("Players").LocalPlayer
-local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-local rootPart = character:WaitForChild("HumanoidRootPart")
-local interactiveItem = workspace.GameSystem.InteractiveItem
-local maxDistance = 10
-local toggleEnabled = false
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remoteEvent = ReplicatedStorage:FindFirstChild("Remote_Event")
 
-local function simulateKeyPressE()
-    print("Simulating E key press!")
-end
-
-local runService = game:GetService("RunService")
-local connection = nil
-
-local function checkProximity()
-    if not rootPart or not interactiveItem or not interactiveItem.PrimaryPart then
-        return
-    end
-    
-    local distance = (rootPart.Position - interactiveItem.PrimaryPart.Position).Magnitude
-    
-    if distance <= maxDistance then
-        simulateKeyPressE()
-    end
+-- Check if the remote event exists before trying to use it
+if not remoteEvent then
+    warn("RemoteEvent 'Remote_Event' not found in ReplicatedStorage!")
+    -- You might want to skip defining the toggle if the event is missing
+    return
 end
 
 local Toggle = Tab:Toggle({
-    Title = "自动互动",
-    Desc = "",
+    Title = "Auto-Trigger RemoteEvent",
+    Desc = "Fires Remote_Event when toggled.",
     Locked = false,
+    -- The 'state' variable is true if the toggle is ON, and false if it's OFF.
     Callback = function(state)
-        toggleEnabled = state
-        
-        if state then
-            if not connection then
-                connection = runService.Heartbeat:Connect(checkProximity)
-                print("自动按 E 功能已开启。")
-            end
+        -- 'workspace.GameSystem.InteractiveItem' is not used, 
+        -- but this is where your action would go.
+
+        if state == true then
+            -- When the toggle is turned ON:
+            -- Fire the RemoteEvent to the server.
+            -- You need to determine what arguments (if any) the server expects.
+            remoteEvent:FireServer("StartAction", 123) 
+            -- Replace "StartAction", 123 with the actual arguments needed.
+            
+            print("Toggle ON: Fired Remote_Event with arguments 'StartAction', 123")
         else
-            if connection then
-                connection:Disconnect()
-                connection = nil
-                print("自动按 E 功能已关闭。")
-            end
+            -- When the toggle is turned OFF:
+            -- You might fire it again to stop the action, or do nothing.
+            remoteEvent:FireServer("StopAction")
+            
+            print("Toggle OFF: Fired Remote_Event with argument 'StopAction'")
         end
     end
 })
-
-localPlayer.CharacterAdded:Connect(function(newCharacter)
-    character = newCharacter
-    rootPart = character:WaitForChild("HumanoidRootPart")
-end)
