@@ -311,16 +311,14 @@ local Tab = Window:Tab({
 })
 
 local Button = Tab:Button({
-    Title = "Teleport All Loots",
-    Desc = "Moves all world loots to your character's position.",
+    Title = "传送全部物品",
+    Desc = "要打开过的箱子才能拿",
     Locked = false,
     Callback = function()
-        -- Define the target player (assuming 'game.Players.LocalPlayer' is the correct player)
         local Player = game.Players.LocalPlayer
         local Character = Player and Player.Character
         local HRP = Character and Character:FindFirstChild("HumanoidRootPart")
 
-        -- Check if the player is valid and has a HumanoidRootPart
         if not HRP then
             warn("Player character or HumanoidRootPart not found!")
             return
@@ -329,14 +327,10 @@ local Button = Tab:Button({
         local TargetPosition = HRP.CFrame.Position
         local WorldLoots = workspace.GameSystem.Loots.World
 
-        -- Loop through all children (loots) in the World container
         for _, Loot in ipairs(WorldLoots:GetChildren()) do
-            -- Ensure the item is a BasePart (and can be moved)
             if Loot:IsA("BasePart") then
-                -- Move the loot to the player's position
                 Loot.CFrame = CFrame.new(TargetPosition)
             elseif Loot:IsA("Model") then
-                -- If it's a Model, try moving its PrimaryPart or setting its position
                 if Loot.PrimaryPart then
                     Loot:SetPrimaryPartCFrame(CFrame.new(TargetPosition))
                 end
@@ -344,5 +338,41 @@ local Button = Tab:Button({
         end
 
         print("Successfully teleported all loots!")
+    end
+})
+
+local Tab = Window:Tab({
+    Title = "传送功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local TargetPosition = Vector3.new(100, 10, 100) -- **Change these coordinates to your desired teleport location!**
+-- OR, if you have a part named 'NextAreaSpawn' in the workspace:
+-- local TargetPart = workspace.NextAreaSpawn 
+
+local Button = Tab:Button({
+    Title = "传送到下一个战利品", -- Give it a clear Title
+    Desc = "", -- Give it a helpful description
+    Locked = false,
+    Callback = function()
+        -- 1. Get the local player
+        local Player = game:GetService("Players").LocalPlayer
+        
+        -- 2. Check if the character exists (it might not be loaded yet)
+        if Player and Player.Character and Player.Character.PrimaryPart then
+            
+            -- Method A: Teleport to a fixed Vector3 position
+            Player.Character.PrimaryPart.CFrame = CFrame.new(TargetPosition)
+            
+            -- Method B: Teleport to the position of a specific Part (uncomment and replace lines above if using this)
+            -- if TargetPart then
+            --    Player.Character:SetPrimaryPartCFrame(TargetPart.CFrame)
+            -- end
+            
+            print("Player teleported successfully!")
+        else
+            warn("Could not teleport: Character not found.")
+        end
     end
 })
