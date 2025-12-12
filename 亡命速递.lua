@@ -305,44 +305,44 @@ local Button = Tab:Button({
 })
 
 local Tab = Window:Tab({
-    Title = "互动功能",
+    Title = "物品功能",
     Icon = "server",
     Locked = false,
 })
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local remoteEvent = ReplicatedStorage:FindFirstChild("Remote_Event")
-
--- Check if the remote event exists before trying to use it
-if not remoteEvent then
-    warn("RemoteEvent 'Remote_Event' not found in ReplicatedStorage!")
-    -- You might want to skip defining the toggle if the event is missing
-    return
-end
-
-local Toggle = Tab:Toggle({
-    Title = "Auto-Trigger RemoteEvent",
-    Desc = "Fires Remote_Event when toggled.",
+local Button = Tab:Button({
+    Title = "Teleport All Loots",
+    Desc = "Moves all world loots to your character's position.",
     Locked = false,
-    -- The 'state' variable is true if the toggle is ON, and false if it's OFF.
-    Callback = function(state)
-        -- 'workspace.GameSystem.InteractiveItem' is not used, 
-        -- but this is where your action would go.
+    Callback = function()
+        -- Define the target player (assuming 'game.Players.LocalPlayer' is the correct player)
+        local Player = game.Players.LocalPlayer
+        local Character = Player and Player.Character
+        local HRP = Character and Character:FindFirstChild("HumanoidRootPart")
 
-        if state == true then
-            -- When the toggle is turned ON:
-            -- Fire the RemoteEvent to the server.
-            -- You need to determine what arguments (if any) the server expects.
-            remoteEvent:FireServer("StartAction", 123) 
-            -- Replace "StartAction", 123 with the actual arguments needed.
-            
-            print("Toggle ON: Fired Remote_Event with arguments 'StartAction', 123")
-        else
-            -- When the toggle is turned OFF:
-            -- You might fire it again to stop the action, or do nothing.
-            remoteEvent:FireServer("StopAction")
-            
-            print("Toggle OFF: Fired Remote_Event with argument 'StopAction'")
+        -- Check if the player is valid and has a HumanoidRootPart
+        if not HRP then
+            warn("Player character or HumanoidRootPart not found!")
+            return
         end
+
+        local TargetPosition = HRP.CFrame.Position
+        local WorldLoots = workspace.GameSystem.Loots.World
+
+        -- Loop through all children (loots) in the World container
+        for _, Loot in ipairs(WorldLoots:GetChildren()) do
+            -- Ensure the item is a BasePart (and can be moved)
+            if Loot:IsA("BasePart") then
+                -- Move the loot to the player's position
+                Loot.CFrame = CFrame.new(TargetPosition)
+            elseif Loot:IsA("Model") then
+                -- If it's a Model, try moving its PrimaryPart or setting its position
+                if Loot.PrimaryPart then
+                    Loot:SetPrimaryPartCFrame(CFrame.new(TargetPosition))
+                end
+            end
+        end
+
+        print("Successfully teleported all loots!")
     end
 })
