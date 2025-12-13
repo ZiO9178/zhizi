@@ -433,6 +433,66 @@ local Toggle = Tab:Toggle({
     end
 })
 
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local LocalPlayer = Players.LocalPlayer
+
+local running = false
+local loopConn
+
+local function getHRP()
+    local char = LocalPlayer.Character
+    return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+local function pressE()
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
+end
+
+local Toggle = Tab:Toggle({
+    Title = "自动拾取掉落现金",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        running = state
+
+        if loopConn then
+            loopConn:Disconnect()
+            loopConn = nil
+        end
+        if not running then return end
+
+        loopConn = RunService.Heartbeat:Connect(function()
+            if not running then return end
+
+            local cash = workspace:FindFirstChild("Local")
+                and workspace.Local:FindFirstChild("Gizmos")
+                and workspace.Local.Gizmos:FindFirstChild("Green")
+                and workspace.Local.Gizmos.Green:FindFirstChild("CashBundle")
+
+            local hrp = getHRP()
+            if not (cash and hrp) then return end
+
+            local cf
+            if cash:IsA("BasePart") then
+                cf = cash.CFrame
+            else
+                local part = cash:FindFirstChildWhichIsA("BasePart", true)
+                if part then cf = part.CFrame end
+            end
+            if not cf then return end
+
+            hrp.CFrame = cf
+            pressE()
+        end)
+    end
+})
+
 local Tab = Window:Tab({
     Title = "绘制功能",
     Icon = "server",
@@ -498,7 +558,6 @@ local function makeGui(plr, character)
 		local maxhp = math.max(1, math.floor(humanoid.MaxHealth + 0.5))
 		label.Text = string.format("%s  [%d/%d]", plr.Name, hp, maxhp)
 
-		-- 简单颜色：血量越低越红
 		local ratio = humanoid.Health / math.max(1, humanoid.MaxHealth)
 		label.TextColor3 = Color3.fromRGB(255, math.floor(255 * ratio), math.floor(255 * ratio))
 	end
@@ -525,19 +584,16 @@ local function enableESP()
 	espEnabled = true
 	disconnectAll()
 
-	-- 已有玩家
 	for _, plr in ipairs(Players:GetPlayers()) do
 		hookPlayer(plr)
 	end
 
-	-- 新玩家
 	table.insert(conns, Players.PlayerAdded:Connect(function(plr)
 		if espEnabled then
 			hookPlayer(plr)
 		end
 	end))
 
-	-- 玩家离开清理
 	table.insert(conns, Players.PlayerRemoving:Connect(function(plr)
 		removeGui(plr)
 	end))
@@ -553,8 +609,8 @@ local function disableESP()
 end
 
 local Toggle = Tab:Toggle({
-	Title = "名字+血量绘制",
-	Desc = "头顶显示玩家名字和血量",
+	Title = "绘制玩家",
+	Desc = "",
 	Locked = false,
 	Callback = function(state)
 		if state then
@@ -563,4 +619,182 @@ local Toggle = Tab:Toggle({
 			disableESP()
 		end
 	end
+})
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local atmEspEnabled = false
+local atmEspConn = nil
+local created = {}
+
+local function getAdornee(atm)
+    if not atm or not atm.Parent then return nil end
+    if atm:IsA("BasePart") then return atm end
+    local p = atm:FindFirstChildWhichIsA("BasePart", true)
+    return p
+end
+
+local function addATM(atm)
+    if created[atm] then return end
+    local part = getAdornee(atm)
+    if not part then return end
+
+    local bb = Instance.new("BillboardGui")
+    bb.Name = "ATM_ESP"
+    bb.Adornee = part
+    bb.AlwaysOnTop = true
+    bb.Size = UDim2.fromOffset(200, 50)
+    bb.StudsOffsetWorldSpace = Vector3.new(0, 2.5, 0)
+    bb.Parent = part
+
+    local label = Instance.new("TextLabel")
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.fromScale(1, 1)
+    label.Font = Enum.Font.SourceSansBold
+    label.TextScaled = true
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextStrokeTransparency = 0
+    label.Text = "ATM"
+    label.Parent = bb
+
+    created[atm] = bb
+end
+
+local function removeAll()
+    for atm, bb in pairs(created) do
+        if bb and bb.Parent then bb:Destroy() end
+        created[atm] = nil
+    end
+end
+
+local function scanAll()
+    local root = workspace:FindFirstChild("Local")
+    root = root and root:FindFirstChild("Gizmos")
+    root = root and root:FindFirstChild("White")
+    if not root then return end
+
+    for _, inst in ipairs(root:GetDescendants()) do
+        if inst.Name == "ATM" then
+            addATM(inst)
+        end
+    end
+end
+
+local Toggle = Tab:Toggle({
+    Title = "绘制ATM机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        atmEspEnabled = state
+
+        if atmEspEnabled then
+            scanAll()
+            local root = workspace:FindFirstChild("Local")
+            root = root and root:FindFirstChild("Gizmos")
+            root = root and root:FindFirstChild("White")
+            if root then
+                atmEspConn = root.DescendantAdded:Connect(function(inst)
+                    if not atmEspEnabled then return end
+                    if inst.Name == "ATM" then
+                        task.defer(addATM, inst)
+                    end
+                end)
+            end
+        else
+            if atmEspConn then atmEspConn:Disconnect() atmEspConn = nil end
+            removeAll()
+        end
+    end
+})
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local regEspEnabled = false
+local regEspConn = nil
+local created = {}
+
+local function getAdornee(modelOrPart)
+    if not modelOrPart or not modelOrPart.Parent then return nil end
+    if modelOrPart:IsA("BasePart") then return modelOrPart end
+    return modelOrPart:FindFirstChildWhichIsA("BasePart", true)
+end
+
+local function addRegister(reg)
+    if created[reg] then return end
+    local part = getAdornee(reg)
+    if not part then return end
+
+    local bb = Instance.new("BillboardGui")
+    bb.Name = "REGISTER_ESP"
+    bb.Adornee = part
+    bb.AlwaysOnTop = true
+    bb.Size = UDim2.fromOffset(220, 55)
+    bb.StudsOffsetWorldSpace = Vector3.new(0, 2.5, 0)
+    bb.Parent = part
+
+    local label = Instance.new("TextLabel")
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.fromScale(1, 1)
+    label.Font = Enum.Font.SourceSansBold
+    label.TextScaled = true
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextStrokeTransparency = 0
+    label.Text = "印钞机"
+    label.Parent = bb
+
+    created[reg] = bb
+end
+
+local function removeAll()
+    for reg, bb in pairs(created) do
+        if bb and bb.Parent then bb:Destroy() end
+        created[reg] = nil
+    end
+end
+
+local function scanAll()
+    local root = workspace:FindFirstChild("Local")
+    root = root and root:FindFirstChild("Gizmos")
+    root = root and root:FindFirstChild("White")
+    root = root and root:FindFirstChild("Register")
+    if not root then return end
+
+    addRegister(root)
+    for _, inst in ipairs(root:GetDescendants()) do
+        if inst:IsA("Model") or inst:IsA("BasePart") then
+            addRegister(inst)
+        end
+    end
+end
+
+local Toggle = Tab:Toggle({
+    Title = "绘制印钞机",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        regEspEnabled = state
+
+        if regEspEnabled then
+            scanAll()
+
+            local root = workspace:FindFirstChild("Local")
+            root = root and root:FindFirstChild("Gizmos")
+            root = root and root:FindFirstChild("White")
+            root = root and root:FindFirstChild("Register")
+
+            if root then
+                regEspConn = root.DescendantAdded:Connect(function(inst)
+                    if not regEspEnabled then return end
+                    if inst:IsA("Model") or inst:IsA("BasePart") then
+                        task.defer(addRegister, inst)
+                    end
+                end)
+            end
+        else
+            if regEspConn then regEspConn:Disconnect() regEspConn = nil end
+            removeAll()
+        end
+    end
 })
