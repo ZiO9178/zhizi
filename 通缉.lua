@@ -360,10 +360,10 @@ local Toggle = Tab:Toggle({
                         pcall(pressE)
                         task.wait(0.1)  -- 按完E后的间隔（可调）
                     else
-                        task.wait(0.3)
+                        task.wait(0.1)
                     end
                 else
-                    task.wait(0.3)
+                    task.wait(0.1)
                 end
             end
         end)
