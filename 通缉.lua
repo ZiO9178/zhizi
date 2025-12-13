@@ -333,7 +333,7 @@ end
 
 local Toggle = Tab:Toggle({
     Title = "自动抢夺ATM机",
-    Desc = "",
+    Desc = "附近要有ATM机",
     Locked = false,
     Callback = function(state)
         running = state
@@ -364,11 +364,73 @@ local Toggle = Tab:Toggle({
             end
             if not cf then return end
 
-            -- 直接传送到ATM位置（不加附近偏移）
             hrp.CFrame = cf
-            task.wait(0.25) -- 传送后等待（可调大/调小）
+            task.wait(1)
 
-            -- 模拟按E
+            pressE()
+        end)
+    end
+})
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local LocalPlayer = Players.LocalPlayer
+
+local running = false
+local loopConn
+
+local function getHRP()
+    local char = LocalPlayer.Character
+    return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+local function pressE()
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
+end
+
+local Toggle = Tab:Toggle({
+    Title = "自动抢夺印钞机",
+    Desc = "附近要有印钞机",
+    Locked = false,
+    Callback = function(state)
+        running = state
+
+        if loopConn then
+            loopConn:Disconnect()
+            loopConn = nil
+        end
+        if not running then return end
+
+        loopConn = RunService.Heartbeat:Connect(function()
+            if not running then return end
+
+            local register = workspace:FindFirstChild("Local")
+                and workspace.Local:FindFirstChild("Gizmos")
+                and workspace.Local.Gizmos:FindFirstChild("White")
+                and workspace.Local.Gizmos.White:FindFirstChild("Register")
+
+            local hrp = getHRP()
+            if not (register and hrp) then return end
+
+            local cf
+            if register:IsA("BasePart") then
+                cf = register.CFrame
+            else
+                local part = register:FindFirstChildWhichIsA("BasePart", true)
+                if part then cf = part.CFrame end
+            end
+            if not cf then return end
+
+            -- 传送
+            hrp.CFrame = cf
+            -- 等待
+            task.wait(1) -- 可调
+            -- 按E
             pressE()
         end)
     end
