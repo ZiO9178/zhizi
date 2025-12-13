@@ -356,9 +356,9 @@ local Toggle = Tab:Toggle({
 
                     if cf then
                         hrp.CFrame = cf
-                        task.wait(0.25) -- 传送后等待（可调大/调小）
+                        task.wait(0.30) -- 传送后等待（可调大/调小）
                         pcall(pressE)
-                        task.wait(0.6)  -- 按完E后的间隔（可调）
+                        task.wait(0.1)  -- 按完E后的间隔（可调）
                     else
                         task.wait(0.3)
                     end
