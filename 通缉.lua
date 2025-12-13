@@ -316,7 +316,7 @@ local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
 local running = false
-local loopTask
+local loopConn
 
 local function getHRP()
     local char = LocalPlayer.Character
@@ -324,48 +324,52 @@ local function getHRP()
 end
 
 local function pressE()
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-    task.wait(0.08)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
 end
 
 local Toggle = Tab:Toggle({
-    Title = "自动抢夺ATM",
-    Desc = "要在ATM附近",
+    Title = "自动抢夺ATM机",
+    Desc = "",
     Locked = false,
     Callback = function(state)
         running = state
+
+        if loopConn then
+            loopConn:Disconnect()
+            loopConn = nil
+        end
         if not running then return end
 
-        loopTask = task.spawn(function()
-            while running do
-                local atm = workspace:FindFirstChild("Local")
-                    and workspace.Local:FindFirstChild("Gizmos")
-                    and workspace.Local.Gizmos:FindFirstChild("White")
-                    and workspace.Local.Gizmos.White:FindFirstChild("ATM")
+        loopConn = RunService.Heartbeat:Connect(function()
+            if not running then return end
 
-                local hrp = getHRP()
-                if atm and hrp then
-                    local cf
-                    if atm:IsA("BasePart") then
-                        cf = atm.CFrame
-                    else
-                        local part = atm:FindFirstChildWhichIsA("BasePart", true)
-                        if part then cf = part.CFrame end
-                    end
+            local atm = workspace:FindFirstChild("Local")
+                and workspace.Local:FindFirstChild("Gizmos")
+                and workspace.Local.Gizmos:FindFirstChild("White")
+                and workspace.Local.Gizmos.White:FindFirstChild("ATM")
 
-                    if cf then
-                        hrp.CFrame = cf
-                        task.wait(0.30) -- 传送后等待（可调大/调小）
-                        pcall(pressE)
-                        task.wait(0.1)  -- 按完E后的间隔（可调）
-                    else
-                        task.wait(0.1)
-                    end
-                else
-                    task.wait(0.1)
-                end
+            local hrp = getHRP()
+            if not (atm and hrp) then return end
+
+            local cf
+            if atm:IsA("BasePart") then
+                cf = atm.CFrame
+            else
+                local part = atm:FindFirstChildWhichIsA("BasePart", true)
+                if part then cf = part.CFrame end
             end
+            if not cf then return end
+
+            -- 直接传送到ATM位置（不加附近偏移）
+            hrp.CFrame = cf
+            task.wait(0.25) -- 传送后等待（可调大/调小）
+
+            -- 模拟按E
+            pressE()
         end)
     end
 })
