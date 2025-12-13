@@ -798,3 +798,40 @@ local Toggle = Tab:Toggle({
         end
     end
 })
+
+local Tab = Window:Tab({
+    Title = "出售功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local running = false
+
+local Toggle = Tab:Toggle({
+    Title = "自动出售",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        running = state
+        if not running then return end
+
+        task.spawn(function()
+            while running do
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Shared.Core.Network
+                        :FindFirstChild("2YdK2c9A"):InvokeServer()
+                end)
+                task.wait(0.1)
+            end
+        end)
+    end
+})
+
+local Button = Tab:Button({
+    Title = "手动出售",
+    Desc = "",
+    Locked = false,
+    Callback = function()
+    game:GetService("ReplicatedStorage").Shared.Core.Network:FindFirstChild("2YdK2c9A"):InvokeServer()
+    end
+})
