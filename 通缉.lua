@@ -426,12 +426,141 @@ local Toggle = Tab:Toggle({
             end
             if not cf then return end
 
-            -- 传送
             hrp.CFrame = cf
-            -- 等待
-            task.wait(1) -- 可调
-            -- 按E
+            task.wait(1)
             pressE()
         end)
     end
+})
+
+local Tab = Window:Tab({
+    Title = "绘制功能",
+    Icon = "server",
+    Locked = false,
+})
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local espEnabled = false
+local conns = {}
+local guisByPlayer = {}
+
+local function disconnectAll()
+	for _, c in ipairs(conns) do
+		if c and c.Disconnect then c:Disconnect() end
+	end
+	table.clear(conns)
+end
+
+local function removeGui(plr)
+	local gui = guisByPlayer[plr]
+	if gui then
+		gui:Destroy()
+		guisByPlayer[plr] = nil
+	end
+end
+
+local function makeGui(plr, character)
+	if plr == Players.LocalPlayer then return end
+	if not character then return end
+
+	local head = character:FindFirstChild("Head")
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not head or not humanoid then return end
+
+	removeGui(plr)
+
+	local bb = Instance.new("BillboardGui")
+	bb.Name = "NameHpESP"
+	bb.AlwaysOnTop = true
+	bb.Size = UDim2.fromOffset(200, 50)
+	bb.StudsOffsetWorldSpace = Vector3.new(0, 2.5, 0)
+	bb.MaxDistance = 250
+	bb.Parent = head
+
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.fromScale(1, 1)
+	label.Font = Enum.Font.GothamBold
+	label.TextSize = 14
+	label.TextStrokeTransparency = 0.2
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.Parent = bb
+
+	guisByPlayer[plr] = bb
+
+	local function update()
+		if not espEnabled then return end
+		if humanoid.Parent == nil or head.Parent == nil then return end
+
+		local hp = math.max(0, math.floor(humanoid.Health + 0.5))
+		local maxhp = math.max(1, math.floor(humanoid.MaxHealth + 0.5))
+		label.Text = string.format("%s  [%d/%d]", plr.Name, hp, maxhp)
+
+		-- 简单颜色：血量越低越红
+		local ratio = humanoid.Health / math.max(1, humanoid.MaxHealth)
+		label.TextColor3 = Color3.fromRGB(255, math.floor(255 * ratio), math.floor(255 * ratio))
+	end
+
+	update()
+	table.insert(conns, humanoid.HealthChanged:Connect(update))
+	table.insert(conns, humanoid:GetPropertyChangedSignal("MaxHealth"):Connect(update))
+end
+
+local function hookPlayer(plr)
+	table.insert(conns, plr.CharacterAdded:Connect(function(char)
+		if espEnabled then
+			task.wait(0.2)
+			makeGui(plr, char)
+		end
+	end))
+
+	if plr.Character and espEnabled then
+		makeGui(plr, plr.Character)
+	end
+end
+
+local function enableESP()
+	espEnabled = true
+	disconnectAll()
+
+	-- 已有玩家
+	for _, plr in ipairs(Players:GetPlayers()) do
+		hookPlayer(plr)
+	end
+
+	-- 新玩家
+	table.insert(conns, Players.PlayerAdded:Connect(function(plr)
+		if espEnabled then
+			hookPlayer(plr)
+		end
+	end))
+
+	-- 玩家离开清理
+	table.insert(conns, Players.PlayerRemoving:Connect(function(plr)
+		removeGui(plr)
+	end))
+end
+
+local function disableESP()
+	espEnabled = false
+	disconnectAll()
+	for plr, _ in pairs(guisByPlayer) do
+		removeGui(plr)
+	end
+	table.clear(guisByPlayer)
+end
+
+local Toggle = Tab:Toggle({
+	Title = "名字+血量绘制",
+	Desc = "头顶显示玩家名字和血量",
+	Locked = false,
+	Callback = function(state)
+		if state then
+			enableESP()
+		else
+			disableESP()
+		end
+	end
 })
