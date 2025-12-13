@@ -312,6 +312,7 @@ local Tab = Window:Tab({
 
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
 local running = false
@@ -322,20 +323,17 @@ local function getHRP()
     return char and char:FindFirstChild("HumanoidRootPart")
 end
 
-local function fireAnyPromptIn(inst)
-    local prompt = inst:FindFirstChildWhichIsA("ProximityPrompt", true)
-    if prompt then
-        pcall(function()
-            fireproximityprompt(prompt)
-        end)
-        return true
-    end
-    return false
+local function pressE()
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
 end
 
 local Toggle = Tab:Toggle({
-    Title = "自动传送并抢夺",
-    Desc = "传送到ATM并自动触发交互",
+    Title = "自动传送并按E抢夺",
+    Desc = "",
     Locked = false,
     Callback = function(state)
         running = state
@@ -344,7 +342,6 @@ local Toggle = Tab:Toggle({
             loopConn:Disconnect()
             loopConn = nil
         end
-
         if not running then return end
 
         loopConn = RunService.Heartbeat:Connect(function()
@@ -358,7 +355,6 @@ local Toggle = Tab:Toggle({
             local hrp = getHRP()
             if not (atm and hrp) then return end
 
-            -- 传送到ATM附近（避免卡进模型）
             local cf
             if atm:IsA("BasePart") then
                 cf = atm.CFrame
@@ -368,10 +364,11 @@ local Toggle = Tab:Toggle({
             end
             if not cf then return end
 
-            hrp.CFrame = cf * CFrame.new(0, 0, 3)
+            -- 直接传送到ATM位置（不加附近偏移）
+            hrp.CFrame = cf
 
-            -- 自动点击/抢夺：触发最近的 ProximityPrompt
-            fireAnyPromptIn(atm)
+            -- 模拟按E
+            pressE()
         end)
     end
 })
