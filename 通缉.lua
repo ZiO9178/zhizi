@@ -493,6 +493,62 @@ local Toggle = Tab:Toggle({
     end
 })
 
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local lp = Players.LocalPlayer
+
+local function getHRP()
+    local ch = lp.Character
+    return ch and ch:FindFirstChild("HumanoidRootPart")
+end
+
+local function pressE()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.05)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+local function tpTo(part, offset)
+    local hrp = getHRP()
+    if not (hrp and part and part:IsA("BasePart")) then return end
+    hrp.CFrame = part.CFrame * CFrame.new(offset or Vector3.new(0, 0, -3))
+end
+
+local running = false
+
+local Toggle = Tab:Toggle({
+    Title = "自动拾取金银条",
+    Desc = "",
+    Locked = false,
+    Callback = function(state)
+        running = state
+        if not running then return end
+
+        task.spawn(function()
+            while running do
+                local gold = workspace.Local.Gizmos.White:FindFirstChild("Gold Bar")
+                local silver = workspace.Local.Gizmos.White:FindFirstChild("Silver Bar")
+
+                if gold and gold:IsA("BasePart") then
+                    tpTo(gold, Vector3.new(0, 0, -3))
+                    task.wait(0.15)
+                    pressE()
+                    task.wait(0.4)
+                end
+
+                if silver and silver:IsA("BasePart") then
+                    tpTo(silver, Vector3.new(0, 0, -3))
+                    task.wait(0.15)
+                    pressE()
+                    task.wait(0.4)
+                end
+
+                task.wait(0.2)
+            end
+        end)
+    end
+})
+
 local Tab = Window:Tab({
     Title = "绘制功能",
     Icon = "server",
