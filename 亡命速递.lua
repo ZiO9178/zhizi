@@ -320,48 +320,117 @@ local Tab = Window:Tab({
 })
 
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local lp = Players.LocalPlayer
-local autoConn
+local running = false
+
+local function getHRP()
+    local ch = lp.Character
+    return ch and ch:FindFirstChild("HumanoidRootPart")
+end
+
+local function pressE()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.05)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
 
 local Toggle = Tab:Toggle({
-    Title = "自动互动",
-    Desc = "",
+    Title = "靠近自动按E",
+    Desc = "靠近目标后自动触发",
     Locked = false,
     Callback = function(state)
-        if state then
-            autoConn = RunService.Heartbeat:Connect(function()
-                local char = lp.Character
-                local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                if not hrp then return end
+        running = state
+        if not running then return end
 
-                local item = workspace:FindFirstChild("GameSystem")
-                    and workspace.GameSystem:FindFirstChild("InteractiveItem")
-                if not item then return end
+        task.spawn(function()
+            local target = workspace.GameSystem.InteractiveItem:WaitForChild("Cabinet_13")
+            local range = 6 -- 触发距离
+            local cooldown = 0.6 -- 防止狂按
 
-                local prompt = item:FindFirstChildWhichIsA("ProximityPrompt", true)
-                if not prompt or not prompt.Enabled then return end
-
-                local part = prompt.Parent
-                if not (part and part:IsA("BasePart")) then
-                    part = part and part:FindFirstChildWhichIsA("BasePart", true)
+            local last = 0
+            while running do
+                local hrp = getHRP()
+                if hrp and target and target.Parent then
+                    local p = target:GetPivot().Position
+                    local d = (hrp.Position - p).Magnitude
+                    if d <= range and (time() - last) >= cooldown then
+                        last = time()
+                        pressE()
+                    end
                 end
-                if not part then return end
+                task.wait(0.1)
+            end
+        end)
+    end
+})
 
-                local dist = (hrp.Position - part.Position).Magnitude
-                local triggerDist = prompt.MaxActivationDistance or 10
+local function setEspForInstance(inst, enabled)
+    if not inst or not inst.Parent then return end
 
-                if dist <= triggerDist then
-                    pcall(function()
-                        prompt:InputHoldBegin()
-                        task.wait(0.05)
-                        prompt:InputHoldEnd()
-                    end)
-                end
-            end)
-        else
-            if autoConn then autoConn:Disconnect(); autoConn = nil end
+    local tag = "ESP_NAME_TAG"
+    local hiTag = "ESP_HIGHLIGHT_TAG"
+
+    if enabled then
+        -- Highlight
+        if not inst:FindFirstChild(hiTag) then
+            local h = Instance.new("Highlight")
+            h.Name = hiTag
+            h.FillTransparency = 0.6
+            h.OutlineTransparency = 0
+            h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            h.Parent = inst
         end
+
+        -- Billboard name
+        if not inst:FindFirstChild(tag) then
+            local adorneePart = inst:IsA("BasePart") and inst or inst:FindFirstChildWhichIsA("BasePart")
+            if not adorneePart then return end
+
+            local bb = Instance.new("BillboardGui")
+            bb.Name = tag
+            bb.Adornee = adorneePart
+            bb.AlwaysOnTop = true
+            bb.Size = UDim2.new(0, 200, 0, 50)
+            bb.StudsOffset = Vector3.new(0, 2, 0)
+            bb.Parent = inst
+
+            local tl = Instance.new("TextLabel")
+            tl.BackgroundTransparency = 1
+            tl.Size = UDim2.new(1, 0, 1, 0)
+            tl.Text = inst.Name
+            tl.TextColor3 = Color3.fromRGB(255, 255, 0)
+            tl.TextStrokeTransparency = 0
+            tl.Font = Enum.Font.GothamBold
+            tl.TextScaled = true
+            tl.Parent = bb
+        end
+    else
+        local bb = inst:FindFirstChild(tag)
+        if bb then bb:Destroy() end
+        local h = inst:FindFirstChild(hiTag)
+        if h then h:Destroy() end
+    end
+end
+
+local function applyEspToBuckets(enabled)
+    local root = workspace:FindFirstChild("GameSystem")
+        and workspace.GameSystem:FindFirstChild("InteractiveItem")
+    if not root then return end
+
+    for _, inst in ipairs(root:GetDescendants()) do
+        if inst.Name:find("Cabinet_") then -- 这里改成 "Bucket" 或 "桶" 等
+            setEspForInstance(inst, enabled)
+        end
+    end
+end
+
+local Toggle = Tab:Toggle({
+    Title = "显示桶名字",
+    Desc = "给桶/柜子绘制高亮+名字",
+    Locked = false,
+    Callback = function(state)
+        applyEspToBuckets(state)
     end
 })
