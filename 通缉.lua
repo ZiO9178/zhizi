@@ -493,28 +493,33 @@ local Toggle = Tab:Toggle({
     end
 })
 
+local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager")
-local lp = Players.LocalPlayer
+local LocalPlayer = Players.LocalPlayer
+
+local running = false
+local loopConn
 
 local function getHRP()
-    local ch = lp.Character
-    return ch and ch:FindFirstChild("HumanoidRootPart")
+    local char = LocalPlayer.Character
+    return char and char:FindFirstChild("HumanoidRootPart")
 end
 
 local function pressE()
-    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-    task.wait(0.05)
-    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    end)
 end
 
-local function tpTo(part, offset)
-    local hrp = getHRP()
-    if not (hrp and part and part:IsA("BasePart")) then return end
-    hrp.CFrame = part.CFrame * CFrame.new(offset or Vector3.new(0, 0, -3))
+local function getCF(inst)
+    if not inst then return nil end
+    if inst:IsA("BasePart") then return inst.CFrame end
+    local part = inst:FindFirstChildWhichIsA("BasePart", true)
+    return part and part.CFrame or nil
 end
-
-local running = false
 
 local Toggle = Tab:Toggle({
     Title = "自动拾取金银条",
@@ -522,29 +527,37 @@ local Toggle = Tab:Toggle({
     Locked = false,
     Callback = function(state)
         running = state
+
+        if loopConn then
+            loopConn:Disconnect()
+            loopConn = nil
+        end
         if not running then return end
 
-        task.spawn(function()
-            while running do
-                local gold = workspace.Local.Gizmos.White:FindFirstChild("Gold Bar")
-                local silver = workspace.Local.Gizmos.White:FindFirstChild("Silver Bar")
+        loopConn = RunService.Heartbeat:Connect(function()
+            if not running then return end
 
-                if gold and gold:IsA("BasePart") then
-                    tpTo(gold, Vector3.new(0, 0, -3))
-                    task.wait(0.15)
-                    pressE()
-                    task.wait(0.4)
-                end
+            local white = workspace:FindFirstChild("Local")
+                and workspace.Local:FindFirstChild("Gizmos")
+                and workspace.Local.Gizmos:FindFirstChild("White")
 
-                if silver and silver:IsA("BasePart") then
-                    tpTo(silver, Vector3.new(0, 0, -3))
-                    task.wait(0.15)
-                    pressE()
-                    task.wait(0.4)
-                end
+            if not white then return end
 
-                task.wait(0.2)
-            end
+            local gold = white:FindFirstChild("Gold Bar")
+            local silver = white:FindFirstChild("Silver Bar")
+
+            local target = gold or silver
+            if not target then return end
+
+            local hrp = getHRP()
+            if not hrp then return end
+
+            local cf = getCF(target)
+            if not cf then return end
+
+            hrp.CFrame = cf
+            task.wait(0.25)
+            pressE()
         end)
     end
 })
