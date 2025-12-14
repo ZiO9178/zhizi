@@ -193,7 +193,7 @@ local Sound = Instance.new("Sound")
         Sound.PlayOnRemove = true
         Sound:Destroy()
         
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZiO9178/jb/refs/heads/main/windui.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/CNHM/asg/refs/heads/main/wind%20ui.lua"))()
 
 local Window = WindUI:CreateWindow({
         Title = "Sxingz Hub|亡命速递",
@@ -304,75 +304,64 @@ local Button = Tab:Button({
     end
 })
 
-local Tab = Window:Tab({
-    Title = "物品功能",
-    Icon = "server",
-    Locked = false,
-})
-
 local Button = Tab:Button({
-    Title = "传送全部物品",
-    Desc = "要打开过的箱子才能拿",
+    Title = "电脑键盘",
+    Desc = "",
     Locked = false,
     Callback = function()
-        local Player = game.Players.LocalPlayer
-        local Character = Player and Player.Character
-        local HRP = Character and Character:FindFirstChild("HumanoidRootPart")
-
-        if not HRP then
-            warn("Player character or HumanoidRootPart not found!")
-            return
-        end
-
-        local TargetPosition = HRP.CFrame.Position
-        local WorldLoots = workspace.GameSystem.Loots.World
-
-        for _, Loot in ipairs(WorldLoots:GetChildren()) do
-            if Loot:IsA("BasePart") then
-                Loot.CFrame = CFrame.new(TargetPosition)
-            elseif Loot:IsA("Model") then
-                if Loot.PrimaryPart then
-                    Loot:SetPrimaryPartCFrame(CFrame.new(TargetPosition))
-                end
-            end
-        end
-
-        print("Successfully teleported all loots!")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt", true))()
     end
 })
 
 local Tab = Window:Tab({
-    Title = "传送功能",
+    Title = "互动功能",
     Icon = "server",
     Locked = false,
 })
 
-local TargetPosition = Vector3.new(100, 10, 100) -- **Change these coordinates to your desired teleport location!**
--- OR, if you have a part named 'NextAreaSpawn' in the workspace:
--- local TargetPart = workspace.NextAreaSpawn 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
-local Button = Tab:Button({
-    Title = "传送到下一个战利品", -- Give it a clear Title
-    Desc = "", -- Give it a helpful description
+local lp = Players.LocalPlayer
+local autoConn
+
+local Toggle = Tab:Toggle({
+    Title = "自动互动",
+    Desc = "",
     Locked = false,
-    Callback = function()
-        -- 1. Get the local player
-        local Player = game:GetService("Players").LocalPlayer
-        
-        -- 2. Check if the character exists (it might not be loaded yet)
-        if Player and Player.Character and Player.Character.PrimaryPart then
-            
-            -- Method A: Teleport to a fixed Vector3 position
-            Player.Character.PrimaryPart.CFrame = CFrame.new(TargetPosition)
-            
-            -- Method B: Teleport to the position of a specific Part (uncomment and replace lines above if using this)
-            -- if TargetPart then
-            --    Player.Character:SetPrimaryPartCFrame(TargetPart.CFrame)
-            -- end
-            
-            print("Player teleported successfully!")
+    Callback = function(state)
+        if state then
+            autoConn = RunService.Heartbeat:Connect(function()
+                local char = lp.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                if not hrp then return end
+
+                local item = workspace:FindFirstChild("GameSystem")
+                    and workspace.GameSystem:FindFirstChild("InteractiveItem")
+                if not item then return end
+
+                local prompt = item:FindFirstChildWhichIsA("ProximityPrompt", true)
+                if not prompt or not prompt.Enabled then return end
+
+                local part = prompt.Parent
+                if not (part and part:IsA("BasePart")) then
+                    part = part and part:FindFirstChildWhichIsA("BasePart", true)
+                end
+                if not part then return end
+
+                local dist = (hrp.Position - part.Position).Magnitude
+                local triggerDist = prompt.MaxActivationDistance or 10
+
+                if dist <= triggerDist then
+                    pcall(function()
+                        prompt:InputHoldBegin()
+                        task.wait(0.05)
+                        prompt:InputHoldEnd()
+                    end)
+                end
+            end)
         else
-            warn("Could not teleport: Character not found.")
+            if autoConn then autoConn:Disconnect(); autoConn = nil end
         end
     end
 })
