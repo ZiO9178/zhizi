@@ -800,38 +800,25 @@ local Toggle = Tab:Toggle({
 })
 
 local Tab = Window:Tab({
-    Title = "出售功能",
+    Title = "传送功能",
     Icon = "server",
     Locked = false,
 })
 
-local running = false
-
-local Toggle = Tab:Toggle({
-    Title = "自动出售",
+local Button = Tab:Button({
+    Title = "传送到奥菲的价值兑换",
     Desc = "",
     Locked = false,
-    Callback = function(state)
-        running = state
-        if not running then return end
-
-        task.spawn(function()
-            while running do
-                pcall(function()
-                    game:GetService("ReplicatedStorage").Shared.Core.Network
-                        :FindFirstChild("2YdK2c9A"):InvokeServer()
-                end)
-                task.wait(0.1)
-            end
-        end)
+    Callback = function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2907.68848, 37.1002731, 1652.74817, 0.848566413, -4.45639659e-09, -0.529088855, 1.39437417e-09, 1, -6.18644203e-09, 0.529088855, 4.51185889e-09, 0.848566413)
     end
 })
 
 local Button = Tab:Button({
-    Title = "手动出售",
+    Title = "传送到绿洲银行",
     Desc = "",
     Locked = false,
     Callback = function()
-    game:GetService("ReplicatedStorage").Shared.Core.Network:FindFirstChild("2YdK2c9A"):InvokeServer()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-431.537354, 39.6113892, -1400.08313, -0.901108384, 1.73675332e-08, -0.433593899, 6.04852257e-09, 1, 2.74846066e-08, 0.433593899, 2.21440075e-08, -0.901108384)
     end
 })
