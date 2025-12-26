@@ -203,7 +203,7 @@ Section2:CreateToggle({
 })
 
 Section2:CreateToggle({
-    Name = "自动拾取金银条",
+    Name = "自动拾取战利品",
     Flag = "",
     CurrentValue = false,
     Callback = function(enabled)
@@ -217,7 +217,7 @@ Section2:CreateToggle({
 
             local function getRoot()
                 local ch = lp.Character or lp.CharacterAdded:Wait()
-                return ch:WaitForChild("HumanoidRootPart", 5)
+                return ch:WaitForChild("HumanoidRootPart", 10)
             end
 
             local function toPart(obj)
@@ -230,30 +230,41 @@ Section2:CreateToggle({
             end
 
             local function getTargetParts()
-                local localFolder = workspace:FindFirstChild("Local")
-                local gizmos = localFolder and localFolder:FindFirstChild("Gizmos")
-                local white = gizmos and gizmos:FindFirstChild("White")
+                local white = workspace:FindFirstChild("Local") 
+                    and workspace.Local:FindFirstChild("Gizmos") 
+                    and workspace.Local.Gizmos:FindFirstChild("White")
+                
                 if not white then return {} end
 
-                local gold = toPart(white:FindFirstChild("Gold Bar"))
-                local silver = toPart(white:FindFirstChild("Silver Bar"))
-
+                local targetNames = {"Gold Bar", "Silver Bar", "Sapphire"}
                 local parts = {}
-                if gold then table.insert(parts, gold) end
-                if silver then table.insert(parts, silver) end
+
+                for _, name in ipairs(targetNames) do
+                    local obj = white:FindFirstChild(name)
+                    local part = toPart(obj)
+                    if part then
+                        table.insert(parts, part)
+                    end
+                end
                 return parts
+            end
+
+            local hrp = getRoot()
+            if hrp then
+                hrp.CFrame = CFrame.new(-400.492279, 617.151733, -1242.72632, -0.912052214, -1.09039995e-08, -0.410074085, 1.46502668e-08, 1, -5.91742051e-08, 0.410074085, -5.99776584e-08, -0.912052214)
+                task.wait(0.6)
             end
 
             local idx = 1
             while getgenv().AutoTpPressE_Bars do
-                local hrp = getRoot()
+                hrp = getRoot()
                 local parts = getTargetParts()
 
                 if hrp and #parts > 0 then
                     if idx > #parts then idx = 1 end
                     local target = parts[idx]
 
-                    hrp.CFrame = target.CFrame * CFrame.new(0, 0, -3)
+                    hrp.CFrame = target.CFrame * CFrame.new(0, 0, -2.5)
 
                     task.wait(0.2)
                     VIM:SendKeyEvent(true, Enum.KeyCode.E, false, game)
@@ -261,8 +272,9 @@ Section2:CreateToggle({
                     VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 
                     idx += 1
-                    task.wait(0.5)
+                    task.wait(0.4)
                 else
+                    idx = 1
                     task.wait(0.5)
                 end
             end
@@ -298,6 +310,14 @@ Section3:CreateButton({
     Callback = function()
         print("")
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1578.02393, 119.169289, -718.579773, -0.395326763, -5.95983245e-08, -0.918540537, -9.65633831e-08, 1, -2.33242137e-08, 0.918540537, 7.94766919e-08, -0.395326763)
+    end
+})
+
+Section3:CreateButton({
+    Name = "传送到金库",
+    Callback = function()
+        print("")
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400.492279, 617.151733, -1242.72632, -0.912052214, -1.09039995e-08, -0.410074085, 1.46502668e-08, 1, -5.91742051e-08, 0.410074085, -5.99776584e-08, -0.912052214)
     end
 })
 
