@@ -632,65 +632,94 @@ local Tab6 = Window:CreateTab({
 
 local Section6 = Tab6:CreateSection("显示范围")
 
--- 在脚本顶部的配置部分
-local RangeCircle = nil -- 用于存储圆环对象
-local AttackRange = 15 -- 攻击距离数值
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
 
-Section6:CreateToggle({
-    Name = "显示攻击范围",
-    Flag = "AttackRangeToggle",
-    CurrentValue = false,
-    Callback = function(Value)
-        _G.ShowRange = Value -- 使用全局变量控制循环运行
-        
-        if Value then
-            -- 创建可视化的圆环
-            if not RangeCircle then
-                RangeCircle = Instance.new("Part")
-                RangeCircle.Name = "AttackRangeVisual"
-                RangeCircle.Shape = Enum.PartType.Cylinder
-                RangeCircle.Brightening = 0
-                RangeCircle.Transparency = 0.5 -- 半透明
-                RangeCircle.Color = Color3.fromRGB(255, 0, 0) -- 红色
-                RangeCircle.CanCollide = false
-                RangeCircle.Anchored = true
-                RangeCircle.Material = Enum.Material.ForceField -- 产生流光效果
-                RangeCircle.Parent = game.Workspace
-            end
+-- 配置
+local Range = 25 -- 攻击范围
+local AttackAll = false
 
-            -- 开启实时刷新位置的协程
-            task.spawn(function()
-                while _G.ShowRange do
-                    local Character = game.Players.LocalPlayer.Character
-                    local RootPart = Character and Character:FindFirstChild("HumanoidRootPart")
+-- 变量
+local RangeBall = nil
+local AttackConnection = nil
 
-                    if RootPart and RangeCircle then
-                        -- 更新圆环的大小和位置
-                        RangeCircle.Size = Vector3.new(0.1, AttackRange * 2, AttackRange * 2)
-                        RangeCircle.CFrame = RootPart.CFrame * CFrame.Angles(0, 0, math.rad(90)) - Vector3.new(0, 2.5, 0)
-                        
-                        -- 示例：在此处检测范围内的敌人
-                        local params = OverlapParams.new()
-                        local partsInRadius = workspace:GetPartBoundsInRadius(RootPart.Position, AttackRange, params)
-                        
-                        for _, part in pairs(partsInRadius) do
-                            if part.Parent:FindFirstChild("Humanoid") and part.Parent.Name ~= game.Players.LocalPlayer.Name then
-                                -- print("发现在范围内的目标: " .. part.Parent.Name)
-                            end
-                        end
+-- 创建范围显示
+local function CreateRangeBall()
+    if RangeBall then return end
+
+    RangeBall = Instance.new("SphereHandleAdornment")
+    RangeBall.Name = "AttackRange"
+    RangeBall.Adornee = LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+    RangeBall.Radius = Range
+    RangeBall.AlwaysOnTop = true
+    RangeBall.ZIndex = 10
+    RangeBall.Transparency = 0.6
+    RangeBall.Color3 = Color3.fromRGB(255, 0, 0)
+    RangeBall.Parent = workspace
+end
+
+-- 删除范围显示
+local function RemoveRangeBall()
+    if RangeBall then
+        RangeBall:Destroy()
+        RangeBall = nil
+    end
+end
+
+-- 开始攻击
+local function StartAttack()
+    if AttackConnection then return end
+
+    AttackConnection = RunService.Heartbeat:Connect(function()
+        if not AttackAll then return end
+        if not LocalPlayer.Character then return end
+
+        local hrp = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer
+            and plr.Character
+            and plr.Character:FindFirstChild("Humanoid")
+            and plr.Character:FindFirstChild("HumanoidRootPart")
+            and plr.Character.Humanoid.Health > 0 then
+
+                local dist = (plr.Character.HumanoidRootPart.Position - hrp.Position).Magnitude
+                if dist <= Range then
+                    local tool = LocalPlayer.Character:FindFirstChildOfClass("Tool")
+                    if tool then
+                        tool:Activate()
                     end
-                    task.wait() -- 保持刷新率
                 end
-                
-                -- 当 Toggle 关闭时销毁圆环
-                if RangeCircle then
-                    RangeCircle:Destroy()
-                    RangeCircle = nil
-                end
-            end)
+            end
+        end
+    end)
+end
+
+-- 停止攻击
+local function StopAttack()
+    if AttackConnection then
+        AttackConnection:Disconnect()
+        AttackConnection = nil
+    end
+end
+
+-- Toggle
+Section6:CreateToggle({
+    Name = "攻击范围",
+    Flag = "AttackAllRange",
+    CurrentValue = false,
+    Callback = function(value)
+        AttackAll = value
+        print("攻击全部玩家:", value)
+
+        if value then
+            CreateRangeBall()
+            StartAttack()
         else
-            -- 明确关闭开关
-            _G.ShowRange = false
+            StopAttack()
+            RemoveRangeBall()
         end
     end
 })
