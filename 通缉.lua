@@ -632,42 +632,66 @@ local Tab6 = Window:CreateTab({
 
 local Section6 = Tab6:CreateSection("显示范围")
 
-Section2:CreateToggle({
+-- 在脚本顶部的配置部分
+local RangeCircle = nil -- 用于存储圆环对象
+local AttackRange = 15 -- 攻击距离数值
+
+Section6:CreateToggle({
     Name = "显示攻击范围",
-    Flag = "",
+    Flag = "AttackRangeToggle",
     CurrentValue = false,
     Callback = function(Value)
-        _G.ShowAttackRange = Value
+        _G.ShowRange = Value -- 使用全局变量控制循环运行
         
-        if _G.ShowAttackRange then
-            local rangePart = Instance.new("Part")
-            rangePart.Name = "AttackRangeVisual"
-            rangePart.Shape = Enum.PartType.Cylinder
-            rangePart.BrightRigidityEnabled = true
-            rangePart.Anchored = true
-            rangePart.CanCollide = false
-            rangePart.Transparency = 0.5
-            rangePart.Color = Color3.fromRGB(255, 0, 0)
-            rangePart.Parent = game.Workspace
-            
-            local rangeRadius = 15 
-            rangePart.Size = Vector3.new(0.5, rangeRadius * 2, rangeRadius * 2)
-            
+        if Value then
+            -- 创建可视化的圆环
+            if not RangeCircle then
+                RangeCircle = Instance.new("Part")
+                RangeCircle.Name = "AttackRangeVisual"
+                RangeCircle.Shape = Enum.PartType.Cylinder
+                RangeCircle.Brightening = 0
+                RangeCircle.Transparency = 0.5 -- 半透明
+                RangeCircle.Color = Color3.fromRGB(255, 0, 0) -- 红色
+                RangeCircle.CanCollide = false
+                RangeCircle.Anchored = true
+                RangeCircle.Material = Enum.Material.ForceField -- 产生流光效果
+                RangeCircle.Parent = game.Workspace
+            end
+
+            -- 开启实时刷新位置的协程
             task.spawn(function()
-                while _G.ShowAttackRange and rangePart.Parent do
-                    local character = game.Players.LocalPlayer.Character
-                    if character and character:FindFirstChild("HumanoidRootPart") then
-                        rangePart.CFrame = character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, math.rad(90)) + Vector3.new(0, -3, 0)
+                while _G.ShowRange do
+                    local Character = game.Players.LocalPlayer.Character
+                    local RootPart = Character and Character:FindFirstChild("HumanoidRootPart")
+
+                    if RootPart and RangeCircle then
+                        -- 更新圆环的大小和位置
+                        RangeCircle.Size = Vector3.new(0.1, AttackRange * 2, AttackRange * 2)
+                        RangeCircle.CFrame = RootPart.CFrame * CFrame.Angles(0, 0, math.rad(90)) - Vector3.new(0, 2.5, 0)
+                        
+                        -- 示例：在此处检测范围内的敌人
+                        local params = OverlapParams.new()
+                        local partsInRadius = workspace:GetPartBoundsInRadius(RootPart.Position, AttackRange, params)
+                        
+                        for _, part in pairs(partsInRadius) do
+                            if part.Parent:FindFirstChild("Humanoid") and part.Parent.Name ~= game.Players.LocalPlayer.Name then
+                                -- print("发现在范围内的目标: " .. part.Parent.Name)
+                            end
+                        end
                     end
-                    task.wait()
+                    task.wait() -- 保持刷新率
                 end
-                rangePart:Destroy()
+                
+                -- 当 Toggle 关闭时销毁圆环
+                if RangeCircle then
+                    RangeCircle:Destroy()
+                    RangeCircle = nil
+                end
             end)
         else
-            _G.ShowAttackRange = false
+            -- 明确关闭开关
+            _G.ShowRange = false
         end
-        
-        print("攻击范围状态:", Value)
     end
 })
 
